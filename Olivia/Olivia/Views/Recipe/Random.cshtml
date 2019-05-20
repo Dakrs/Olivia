@@ -1,0 +1,22 @@
+﻿@model Olivia.ViewModels.RandomRecipeViewModel
+@{
+    ViewBag.Title = "Random";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var className = Model.Users.Count > 0 ? "popular" : null;
+}
+<h2 class="popular">@Model.Recipe.Name</h2>
+@if (Model.Users.Count == 0)
+{
+    <text> Nobody has ever used this recipe.. </text>
+}
+else
+{
+    <ul>
+        @foreach (var user in Model.Users)
+        {
+            <li>@user.Name</li>
+        }
+    </ul>
+}

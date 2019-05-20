@@ -1,0 +1,10 @@
+﻿@using System.Security.Cryptography
+@using Microsoft.AspNet.Identity
+@if (!Request.IsAuthenticated)
+{
+    @Html.Action("Login", "Account")
+}
+else
+{
+    @Html.Action("Index", "Manage")
+}
