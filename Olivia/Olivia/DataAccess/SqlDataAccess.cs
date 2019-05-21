@@ -24,6 +24,14 @@ namespace Olivia.DataAccess
             }
         }
 
+        public static T getSingle<T>(string sql, T data)
+        {
+            using (IDbConnection cnn = new SqlConnection(GetConnectionString()))
+            {
+                return cnn.Query<T>(sql, data).Last<T>();
+            }
+        }
+
         public static int SaveData<T>(string sql, T data)
         {
             using (IDbConnection cnn = new SqlConnection(GetConnectionString()))

@@ -178,6 +178,10 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Migrations\201905210742137_201905210741520_AutomaticMigration.cs" />
+    <Compile Include="Migrations\201905210742137_201905210741520_AutomaticMigration.Designer.cs">
+      <DependentUpon>201905210742137_201905210741520_AutomaticMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Ingredient.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Models\Recipe.cs" />
@@ -266,6 +270,9 @@
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\Recipe\ViewAll.cshtml" />
     <Content Include="Views\Recipe\Create.cshtml" />
+    <Content Include="Views\Recipe\Details.cshtml" />
+    <Content Include="Views\Recipe\Edit.cshtml" />
+    <Content Include="Views\Recipe\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -289,6 +296,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905201851039_InitialMigrations.resx">
       <DependentUpon>201905201851039_InitialMigrations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905210742137_201905210741520_AutomaticMigration.resx">
+      <DependentUpon>201905210742137_201905210741520_AutomaticMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

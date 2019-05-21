@@ -34,17 +34,45 @@ namespace Olivia.DataAccess
 
         public static int CreateRecipe(Recipe recipe)
         {
-            string sql = @"insert into dbo.Recipe  (Name, Description, Type, Calories, Fat, Carbs, Protein, Fiber, Sodium) 
-                                            values (@Name, @Description, @Type, @Calories, @Fat, @Carbs, @Protein, @Fiber, @Sodium);";
+            string sql = @"insert into dbo.Recipe  (Name, Description, Type, Calories, Fat, Carbs, Protein, Fiber, Sodium, Active) 
+                                            values (@Name, @Description, @Type, @Calories, @Fat, @Carbs, @Protein, @Fiber, @Sodium, '1');";
+
+            return SqlDataAccess.SaveData(sql, recipe);
+        }
+
+        public static int EditRecipe(Recipe recipe)
+        {
+            string sql = @"update dbo.Recipe set Name=@Name, Description=@Description, Type=@Type, Calories=@Calories, 
+                                                    Fat=@Fat, Carbs=@Carbs, Protein=@Protein, Fiber=@Fiber, Sodium=@Sodium where Id=@Id;";
 
             return SqlDataAccess.SaveData(sql, recipe);
         }
 
         public static List<Recipe> LoadRecipes()
         {
-            string sql = @"select * from dbo.Recipe;";
+            string sql = @"select * from dbo.Recipe where Active='1';";
 
             return SqlDataAccess.LoadData<Recipe>(sql);
+        }
+
+
+        public static Recipe getRecipe(int id)
+        {
+            var rec = new Recipe
+            {
+                Id = id
+            };
+
+            string sql = @"select * from dbo.Recipe where Id=@Id and Active='1';";
+
+            return SqlDataAccess.getSingle<Recipe>(sql, rec);
+        }
+
+        public static int DeleteRecipe(Recipe r)
+        {
+            string sql = @"update dbo.Recipe set Active='0' where Id=@Id";
+
+            return SqlDataAccess.SaveData(sql, r);
         }
     }
 }

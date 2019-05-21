@@ -20,9 +20,9 @@
         <tr>
             <td>
                 <h3>@item.Name</h3>
-                @Html.ActionLink("Edit", "Recipe", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Recipe", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Recipe", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "Edit/" + item.Id, new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details/" + item.Id, new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete/" + item.Id, new { /* id=item.PrimaryKey */ })
             </td>
         </tr>
     }

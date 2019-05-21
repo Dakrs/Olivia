@@ -28,12 +28,12 @@ namespace Olivia.Controllers
 
         public ActionResult ViewAll()
         {
-            var recipesDAO = RecipeDAO.LoadRecipes();
+            var recipes = RecipeDAO.LoadRecipes();
 
 
             var viewModel = new ViewAllRecipesViewModel
             {
-                Recipes = recipesDAO
+                Recipes = recipes
             };
 
 
@@ -63,13 +63,56 @@ namespace Olivia.Controllers
             return View();
         }
 
+        public ActionResult Details(int id)
 
-        public ActionResult Edit(int id)
         {
-            return Content("id= " + id);
+            var recipe = RecipeDAO.getRecipe(id);
+
+
+            return View(recipe);
         }
 
 
+        public ActionResult Edit(int id)
+        {
+
+            Recipe recipe = RecipeDAO.getRecipe(id);
+
+            return View(recipe);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Recipe recipe)
+        {
+
+            if (ModelState.IsValid)
+            {
+                RecipeDAO.EditRecipe(recipe);
+
+                return RedirectToAction("ViewAll", "Recipe");
+            }
+
+
+            return View();
+        }
+
+        public ActionResult Delete(int id)
+        {
+            Recipe recipe = RecipeDAO.getRecipe(id);
+            return View(recipe);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(Recipe recipe)
+        {
+
+        RecipeDAO.DeleteRecipe(recipe);
+
+        return RedirectToAction("ViewAll", "Recipe");
+
+        }
 
         public ActionResult Index(int? pageIndex, string sortBy)
         {
