@@ -13,18 +13,11 @@
     </header>
     <nav id="menu">
         <ul class="links">
-            <li>@Html.ActionLink("Home","Index","Home",null,null)</li>
+            <li>@Html.ActionLink("Home", "Index", "Home", null, null)</li>
             <li>@Html.ActionLink("Register", "Register", "Home", null, null)</li>
             <li>@Html.ActionLink("Log In", "Login", "Home", null, null)</li>
         </ul>
     </nav>
-    <section id="banner" class="bg-img" data-bg="frontimage.jpg">
-        <div class="inner">
-            <header>
-                <h1>This is Olivia</h1>
-            </header>
-        </div>
-    </section>
     @RenderBody()
     <script src="~/frontpage/assets/js/jquery.min.js"></script>
     <script src="~/frontpage/assets/js/jquery.scrolly.min.js"></script>
@@ -35,3 +28,4 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
