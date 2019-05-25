@@ -1,111 +1,176 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.Data.SqlClient;
-using System.Data;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using Olivia.DataAccess;
+using Olivia.Controllers;
 using Olivia.Models;
 
 namespace Olivia.DataAccess
 {
-    public class RecipeDAO : IDAO<Recipe>
+    public class RecipeDAO
     {
-        private Connection _connection;
-
-        public RecipeDAO()
+        public void Insert(Recipe recipe)
         {
-            _connection = new Connection();
+            RecipeData data = new RecipeData(recipe);
+
+            string sql = @"insert into dbo.Recipe  (Name, Description, Type, Calories, Fat, Carbs, Protein, Fiber, Sodium) 
+                                            values (@Name, @Description, @Type, @Calories, @Fat, @Carbs, @Protein, @Fiber, @Sodium);";
+            SqlDataAccess.SaveData(sql, data);
+
+            int recipe_id = FindByName(recipe.Name).Id_Recipe;
+            foreach (IngredientRecipe ing in recipe.Ingredients)
+            {
+                if (ing.Name == null)
+                    continue;
+                Ingredient current = new Ingredient();
+                try
+                {
+                    current = current.IngredientDAO.FindByName(ing.Name);
+                }
+                catch (Exception e)
+                {
+                    current.Name = ing.Name;
+                    current.IngredientDAO.Insert(current);
+                    current = current.IngredientDAO.FindByName(ing.Name);
+                }
+
+                RecipeIngredientData data2 = new RecipeIngredientData(recipe_id, current.Id_Ingredient, ing.Quantity , ing.Unit);
+                
+
+                sql = @"insert into dbo.Recipe_Ingredient (Id_Recipe, Id_Ingredient, Quantity, Unit)
+                                                            values (@Id_Recipe, @Id_Ingredient, @Quantity, @Unit);";
+                SqlDataAccess.SaveData(sql, data2);
+            }
+
+            for (int i = 0; i < recipe.Instructions.Count ; i++)
+            {
+                if (recipe.Instructions[i].Designation == null)
+                    continue;
+
+                recipe.Instructions[i].Position = i;
+                recipe.Instructions[i].Id_Recipe = recipe_id;
+                InstructionData data3 = new InstructionData(recipe.Instructions[i]);
+                sql = @"insert into dbo.Instruction (Designation, Duration, Position, Id_Recipe)
+                                                    values (@Designation, @Duration, @Position, @Id_Recipe);";
+                SqlDataAccess.SaveData(sql, data3);
+            }
+
         }
 
-        public Collection<Recipe> ListAll()
+        public void Edit(Recipe recipe)
         {
-            Collection<Recipe> receitas = new Collection<Recipe>();
+            RecipeData data = new RecipeData(recipe);
 
-            using (SqlCommand command = _connection.Fetch().CreateCommand())
+            string sql = @"update dbo.Recipe set Name=@Name, Description=@Description, Type=@Type, Calories=@Calories, Fat=@Fat, Carbs=@Carbs, Protein=@Protein, Fiber=@Fiber, Sodium=@Sodium
+                                            where Id_Recipe='" + recipe.Id_Recipe + "';";
+            SqlDataAccess.SaveData(sql, data);
+
+            int recipe_id = recipe.Id_Recipe;
+            foreach (IngredientRecipe ing in recipe.Ingredients)
             {
-                command.CommandType = CommandType.Text;
-                command.CommandText = "SELECT * FROM Receita";
-
-                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                if (ing.Name == null)
+                    continue;
+                Ingredient current = new Ingredient();
+                try
                 {
-                    DataTable tab = new DataTable();
-                    adapter.Fill(tab);
-
-                    foreach(DataRow row in tab.Rows)
+                    current = current.IngredientDAO.FindByName(ing.Name);
+                    try
                     {
-                        Recipe r = new Recipe
-                        {
-                            Id = int.Parse(row["id_receita"].ToString()),
-                            Name = row["nome"].ToString(),
-                            Description = row["descricao"].ToString(),
-                            CreatorId = int.Parse(row["autor"].ToString()),
-                            Type = int.Parse(row["tipo"].ToString()),
-                            Calories = float.Parse(row["calorias"].ToString()),
-                            Protein = float.Parse(row["proteina"].ToString()),
-                            Fat = float.Parse(row["gordura"].ToString()),
-                            Carbs = float.Parse(row["carbohidratos"].ToString()),
-                            Fiber = float.Parse(row["fibra"].ToString()),
-                            Sodium = float.Parse(row["sodio"].ToString())
-                        };
-                        r.refreshInstructions();
-                        receitas.Add(r);
-                    }
+                        RecipeIngredientData ri = current.FindRecipeUsage(recipe_id);
+                        sql = @"update dbo.Recipe_Ingredient set Quantity=@Quantity, Unit=@Unit where Id_Recipe=@Id_Recipe and Id_Ingredient=@Id_Ingredient;";
+                        SqlDataAccess.SaveData(sql, ri);
+                    } catch (Exception e)
+                    {
+                        RecipeIngredientData ri = new RecipeIngredientData(recipe_id, current.Id_Ingredient, ing.Quantity, ing.Unit);
+                        sql = @"insert into dbo.Recipe_Ingredient (Id_Recipe, Id_Ingredient, Quantity, Unit)
+                                                            values (@Id_Recipe, @Id_Ingredient, @Quantity, @Unit);";
+                        SqlDataAccess.SaveData(sql, ri);
+                    }                  
+                }
+                catch (Exception e)
+                {
+                    current.Name = ing.Name;
+                    current.IngredientDAO.Insert(current);
+                    current = current.IngredientDAO.FindByName(ing.Name);
+
+                    RecipeIngredientData ri = new RecipeIngredientData(recipe_id, current.Id_Ingredient, ing.Quantity, ing.Unit);
+
+                    sql = @"insert into dbo.Recipe_Ingredient (Id_Recipe, Id_Ingredient, Quantity, Unit)
+                                                            values (@Id_Recipe, @Id_Ingredient, @Quantity, @Unit);";
+                    SqlDataAccess.SaveData(sql, ri);
+                }
+            }
+
+            for (int i = 0; i < recipe.Instructions.Count; i++)
+            {
+                if (recipe.Instructions[i].Designation == null)
+                    continue;
+                try
+                {
+                    InstructionData ins = recipe.GetInstructionByPosition(i);
+                    ins.Designation = recipe.Instructions[i].Designation;
+                    ins.Duration = recipe.Instructions[i].Duration;
+
+                    sql = @"update dbo.Instruction set Designation=@Designation, Duration=@Duration where Id_Recipe=@Id_Recipe and Position=@Position;";
+                    SqlDataAccess.SaveData(sql, ins);
+                } catch (Exception e)
+                {
+                    recipe.Instructions[i].Position = i;
+                    recipe.Instructions[i].Id_Recipe = recipe_id;
+                    InstructionData ins = new InstructionData(recipe.Instructions[i]);
+
+                    sql = @"delete from dbo.Instruction where Id_Recipe='" + recipe_id + "' and Position='" + i + "';";
+                    SqlDataAccess.SaveData(sql, ins);
+
+                    sql = @"insert into dbo.Instruction (Designation, Duration, Position, Id_Recipe)
+                                                    values (@Designation, @Duration, @Position, @Id_Recipe);";
+                    SqlDataAccess.SaveData(sql, ins);
+
 
                 }
             }
-            return receitas;
+
+        }
+
+
+        public List<Recipe> LoadRecipes()
+        {
+            string sql = @"select * from dbo.Recipe where Active='1';";
+
+            return SqlDataAccess.LoadData<Recipe>(sql);
         }
 
         public Recipe FindById(int id)
         {
-            using (SqlCommand command = _connection.Fetch().CreateCommand())
+            string sql = @"select * from dbo.Recipe where Id_Recipe='" + id + "' and Active='1';";
+            try
             {
-                command.CommandType = CommandType.Text;
-                command.CommandText = "SELECT * FROM Receita Where id_receita=@key";
-                command.Parameters.Add("@key", SqlDbType.Int).Value = id;
-
-                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
-                {
-                    DataTable result = new DataTable();
-                    adapter.Fill(result);
-
-                    Recipe r = null;
-                    if (result.Rows.Count != 0) {
-
-                        DataRow row = result.Rows[0];
-                            r = new Recipe
-                            {
-                                Id = int.Parse(row["id_receita"].ToString()),
-                                Name = row["nome"].ToString(),
-                                Description = row["descricao"].ToString(),
-                                CreatorId = int.Parse(row["autor"].ToString()),
-                                Type = int.Parse(row["tipo"].ToString()),
-                                Calories = float.Parse(row["calorias"].ToString()),
-                                Protein = float.Parse(row["proteina"].ToString()),
-                                Fat = float.Parse(row["gordura"].ToString()),
-                                Carbs = float.Parse(row["carbohidratos"].ToString()),
-                                Fiber = float.Parse(row["fibra"].ToString()),
-                                Sodium = float.Parse(row["sodio"].ToString())
-                            };
-                        r.refreshInstructions();
-                    }
-
-                    return r;
-                }
+                Recipe r = SqlDataAccess.LoadData<Recipe>(sql).Single<Recipe>();
+                r.Instructions = r.InstructionDAO.GetInstructions(r.Id_Recipe);
+                r.Ingredients = r.IngredientDAO.GetIngredients(r.Id_Recipe);
+                return r;
+            }
+            catch (Exception e)
+            {
+                return null;
             }
         }
 
-        public Recipe Insert(Recipe r)
+        public Recipe FindByName(string name)
         {
-            throw new NotImplementedException();
+            string sql = @"select * from dbo.Recipe where Name='" + name + "' and Active='1';";
+
+            return SqlDataAccess.LoadData<Recipe>(sql).First<Recipe>();
         }
 
-        public bool remove(Recipe r)
+        public void Delete(int id)
         {
-            throw new NotImplementedException();
-        }
+            string sql = @"update dbo.Recipe set Active='0' where Id_Recipe='" + id + "';";
 
-        public bool Update(Recipe obj)
-        {
-            throw new NotImplementedException();
+
+                SqlDataAccess.SaveData(sql, 1);         
+
         }
     }
 }

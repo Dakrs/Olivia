@@ -1,53 +1,59 @@
 ﻿using System;
-using System.Data.SqlClient;
-using Olivia.Models;
-using System.Collections.ObjectModel;
-using System.Data;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using Olivia.DataAccess;
+using Olivia.Controllers;
+using Olivia.Models;
 
 namespace Olivia.DataAccess
 {
     public class InstructionDAO
     {
-        private Connection _connection;
-
-        public InstructionDAO()
+        public int Insert(Instruction instruction)
         {
-            _connection = new Connection();
+
+            string sql = @"insert into dbo.Instruction  (Designation, Duration, Position, Id_Recipe) 
+                                            values (@Designation, @Duration , @Position , @Id_Recipe);";
+
+            InstructionData data = new InstructionData(instruction);
+
+            return SqlDataAccess.SaveData(sql, data);
         }
 
-        public List<Instruction> InstructionsForRecipe(int id)
+        public List<Instruction> LoadInstructions()
         {
-            List<Instruction> result = new List<Instruction>();
+            string sql = @"select * from dbo.Instruction;";
 
-            using (SqlCommand command = _connection.Fetch().CreateCommand())
-            {
-                command.CommandType = CommandType.Text;
-                command.CommandText = "SELECT * FROM Instrucao WHERE id_receita=@recep ORDER BY posicao ASC";
-
-                command.Parameters.Add("@recep", SqlDbType.Int).Value = id;
-
-                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
-                {
-                    DataTable tab = new DataTable();
-                    adapter.Fill(tab);
-
-                    foreach(DataRow row in tab.Rows)
-                    {
-                        Instruction i = new Instruction
-                        {
-                            Description = row["designacao"].ToString(),
-                            Duration = int.Parse(row["duracao"].ToString())
-                        };
-                        result.Add(i);
-                    }
-                }
-
-            }
-
-            return result;
+            return SqlDataAccess.LoadData<Instruction>(sql);
         }
 
+        public Instruction FindById(int id)
+        {
+            string sql = @"select * from dbo.Instruction where Id_Instruction='" + id + "';";
 
+            return SqlDataAccess.LoadData<Instruction>(sql).Single<Instruction>();
+        }
+
+        public Instruction FindByName(string name)
+        {
+            string sql = @"select * from dbo.Instruction where Name='" + name + "';";
+
+            return SqlDataAccess.LoadData<Instruction>(sql).Single<Instruction>();
+        }
+
+        public InstructionData GetInstruction(int recipe_id, int pos)
+        {
+            string sql = @"select * from dbo.Instruction where Id_Recipe='" + recipe_id + "' and Position='" + pos + "';";
+
+            return SqlDataAccess.LoadData<InstructionData>(sql).Single<InstructionData>();
+        }
+
+        public List<Instruction> GetInstructions(int id_recipe)
+        {
+            string sql = @"select * from dbo.Instruction where Id_Recipe='" + id_recipe + "';";
+
+            return SqlDataAccess.LoadData<Instruction>(sql);
+        }
     }
 }
