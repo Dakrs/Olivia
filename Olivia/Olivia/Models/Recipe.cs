@@ -40,6 +40,18 @@ namespace Olivia.Models
         {
             return InstructionDAO.GetInstruction(Id_Recipe, pos);
         }
+
+        public void DeleteIngredients()
+        {
+            IngredientDAO.DeleteRecipeIngredients(Id_Recipe);
+            return;
+        }
+
+        public void DeleteInstruction(int position)
+        {
+            InstructionDAO.DeleteInstruction(Id_Recipe, position);
+        }
+
     }
 
     public class IngredientRecipe

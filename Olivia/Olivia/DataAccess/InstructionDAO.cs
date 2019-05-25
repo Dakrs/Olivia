@@ -55,5 +55,11 @@ namespace Olivia.DataAccess
 
             return SqlDataAccess.LoadData<Instruction>(sql);
         }
+
+        public void DeleteInstruction(int recipe_id, int position)
+        {
+            string sql = @"delete from dbo.Instruction where Id_Recipe='" + recipe_id + "' and Position='" + position + "';";
+            SqlDataAccess.SaveData(sql, sql);
+        }
     }
 }

@@ -36,6 +36,7 @@ namespace Olivia.Models
             Protein = recipe.Protein;
             Fiber = recipe.Fiber;
             Name = recipe.Name;
+            Sodium = recipe.Sodium;
         }
 
     }

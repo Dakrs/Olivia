@@ -67,6 +67,7 @@ namespace Olivia.DataAccess
             SqlDataAccess.SaveData(sql, data);
 
             int recipe_id = recipe.Id_Recipe;
+            recipe.DeleteIngredients();
             foreach (IngredientRecipe ing in recipe.Ingredients)
             {
                 if (ing.Name == null)
@@ -75,37 +76,29 @@ namespace Olivia.DataAccess
                 try
                 {
                     current = current.IngredientDAO.FindByName(ing.Name);
-                    try
-                    {
-                        RecipeIngredientData ri = current.FindRecipeUsage(recipe_id);
-                        sql = @"update dbo.Recipe_Ingredient set Quantity=@Quantity, Unit=@Unit where Id_Recipe=@Id_Recipe and Id_Ingredient=@Id_Ingredient;";
-                        SqlDataAccess.SaveData(sql, ri);
-                    } catch (Exception e)
-                    {
-                        RecipeIngredientData ri = new RecipeIngredientData(recipe_id, current.Id_Ingredient, ing.Quantity, ing.Unit);
-                        sql = @"insert into dbo.Recipe_Ingredient (Id_Recipe, Id_Ingredient, Quantity, Unit)
-                                                            values (@Id_Recipe, @Id_Ingredient, @Quantity, @Unit);";
-                        SqlDataAccess.SaveData(sql, ri);
-                    }                  
                 }
                 catch (Exception e)
                 {
                     current.Name = ing.Name;
                     current.IngredientDAO.Insert(current);
                     current = current.IngredientDAO.FindByName(ing.Name);
-
-                    RecipeIngredientData ri = new RecipeIngredientData(recipe_id, current.Id_Ingredient, ing.Quantity, ing.Unit);
-
-                    sql = @"insert into dbo.Recipe_Ingredient (Id_Recipe, Id_Ingredient, Quantity, Unit)
-                                                            values (@Id_Recipe, @Id_Ingredient, @Quantity, @Unit);";
-                    SqlDataAccess.SaveData(sql, ri);
                 }
+
+                RecipeIngredientData data2 = new RecipeIngredientData(recipe_id, current.Id_Ingredient, ing.Quantity, ing.Unit);
+
+
+                sql = @"insert into dbo.Recipe_Ingredient (Id_Recipe, Id_Ingredient, Quantity, Unit)
+                                                            values (@Id_Recipe, @Id_Ingredient, @Quantity, @Unit);";
+                SqlDataAccess.SaveData(sql, data2);
             }
 
             for (int i = 0; i < recipe.Instructions.Count; i++)
             {
                 if (recipe.Instructions[i].Designation == null)
+                {
+                    recipe.DeleteInstruction(i);
                     continue;
+                }
                 try
                 {
                     InstructionData ins = recipe.GetInstructionByPosition(i);

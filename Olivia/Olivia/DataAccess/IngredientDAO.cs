@@ -69,5 +69,11 @@ namespace Olivia.DataAccess
 
             return list;
         }
+
+        public void DeleteRecipeIngredients(int recipe_id)
+        {
+            string sql = @"delete from dbo.Recipe_Ingredient where Id_Recipe='" + recipe_id + "';";
+            SqlDataAccess.SaveData(sql, sql);
+        }
     }
 }
