@@ -1,107 +1,100 @@
 ﻿@model Olivia.Models.Recipe
-
 @{
-    ViewData["Title"] = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutMenuUser.cshtml";
 }
 
-<h2>Details</h2>
+@if (Model != null)
+{
+    <h1>@Model.Name</h1>
 
-<h4>Recipe</h4>
-<hr />
-<form asp-action="Edit">
-    <div class="row">
-        <div class="col-md-4">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" readonly />
-            </div>
-            <div class="form-group" hidden>
-                <label asp-for="Id_Recipe" class="control-label"></label>
-                <input asp-for="Id_Recipe" class="form-control" readonly />
-            </div>
-            <div class="form-group" hidden>
-                <label asp-for="Creator" class="control-label"></label>
-                <input asp-for="Creator" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <input asp-for="Type" type="text" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="Calories" class="control-label"></label>
-                <input asp-for="Calories" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="Fat" class="control-label"></label>
-                <input asp-for="Fat" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="Carbs" class="control-label"></label>
-                <input asp-for="Carbs" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="Protein" class="control-label"></label>
-                <input asp-for="Protein" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="Fiber" class="control-label"></label>
-                <input asp-for="Fiber" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="Sodium" class="control-label"></label>
-                <input asp-for="Sodium" class="form-control" readonly />
-            </div>
-            <hr />
-            <div>
-                @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-                <a asp-action="Index">Back to List</a>
-            </div>
+    <ul class="nav nav-tabs">
+        <li class="nav-item active">
+            <a class="nav-link" data-toggle="tab" href="#home">Descrição</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#ingredientes">Ingredientes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#instrucoes">Instruções</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#vals">Valores Nutricionais</a>
+        </li>
+    </ul>
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in active show" id="home">
+            <p>@Model.Description</p>
         </div>
-        <div class="col-md-4">
-            <h2>Instruções</h2>
-
-            <div class="form-group">
-                <table style="width:75%">
+        <div class="tab-pane fade show" id="ingredientes">
+            <table class="table">
+                <thead class="thead-light">
                     <tr>
-                        <th><label asp-for="Instructions[0].Designation" class="control-label"></label></th>
-                        <th><label asp-for="Instructions[0].Duration" class="control-label"></label></th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Quantidade</th>
                     </tr>
-                    @for (int i = 0; i < Model.Instructions.Count; i++)
-                    {
-                        <tr>
-                            <td><input asp-for="Instructions[i].Designation" class="form-control" placeholder="Step @(i+1) " readonly/></td>
-                            <td><input asp-for="Instructions[i].Duration" type="text" class="form-control" readonly/></td>
-                        </tr>
-
-                    }
-                </table>
-            </div>
-
-            <h2>Ingredientes</h2>
-            <div class="form-group">
-                <table style="width:75%">
+                </thead>
+                <tbody>
+                    @foreach (IngredientRecipe item in Model.Ingredients)
+    {
+                <tr>
+                    <th scope="row">@item.Name</th>
+                    <td>@item.Quantity @item.Unit</td>
+                </tr>
+}
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade show" id="instrucoes">
+            <ul class="list-group">
+                @foreach (Instruction item in Model.Instructions)
+                {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    @item.Designation
+                <span class="badge badge-primary badge-pill">@item.Duration</span>
+                </li>
+                }
+            </ul>
+        </div>
+        <div class="tab-pane fade show" id="vals">
+            <table class="table">
+                <thead class="thead-light">
                     <tr>
-                        <th><label asp-for="Ingredients[0].Name" class="form-control"></label></th>
-                        <th><label asp-for="Ingredients[0].Quantity" class="form-control"></label></th>
-                        <th><label asp-for="Ingredients[0].Unit" class="form-control"></label></th>
+                        <th scope="col">Valores Nutricionais</th>
+                        <th scope="col"></th>
                     </tr>
-                    @for (int i = 0; i < Model.Ingredients.Count; i++)
-                    {
-                        <tr>
-                            <td><input asp-for="Ingredients[i].Name" class="form-control" readonly></td>
-                            <td><input asp-for="Ingredients[i].Quantity" type="text" class="form-control" readonly></td>
-                            <td><input asp-for="Ingredients[i].Unit" class="form-control" readonly></td>
-                        </tr>
-                    }
-
-                </table>
-            </div>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Calorias</th>
+                        <td>@Model.Calories</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Gorduras</th>
+                        <td>@Model.Fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Carbohidratos</th>
+                        <td>@Model.Carbs</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Proteína</th>
+                        <td>@Model.Protein</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Fibras</th>
+                        <td>@Model.Fiber</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Sódio</th>
+                        <td>@Model.Sodium</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-</form>
+
+}
+else
+{
+    <p>Error, recipe not found</p>
+}
