@@ -1,78 +1,111 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Olivia.DataAccess;
-using Olivia.Controllers;
+using System.Collections.ObjectModel;
+using System.Data.SqlClient;
+using System.Data;
 using Olivia.Models;
 
 namespace Olivia.DataAccess
 {
-    public static class RecipeDAO
+    public class RecipeDAO : IDAO<Recipe>
     {
-        public static int CreateRecipe(string name, string description, int type, float calories, float fat, float carbs, float protein, float fiber, float sodium)
+        private Connection _connection;
+
+        public RecipeDAO()
         {
-            Recipe recipe = new Recipe
+            _connection = new Connection();
+        }
+
+        public Collection<Recipe> ListAll()
+        {
+            Collection<Recipe> receitas = new Collection<Recipe>();
+
+            using (SqlCommand command = _connection.Fetch().CreateCommand())
             {
-                Name = name,
-                Description = description,
-                Type = type,
-                Calories = calories,
-                Fat = fat,
-                Carbs = carbs,
-                Protein = protein,
-                Fiber = fiber,
-                Sodium = sodium
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT * FROM Receita";
 
-            };
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable tab = new DataTable();
+                    adapter.Fill(tab);
 
-            string sql = @"insert into dbo.Recipe  (Name, Description, Type, Calories, Fat, Carbs, Protein, Fiber, Sodium) 
-                                            values (@Name, @Description, @Type, @Calories, @Fat, @Carbs, @Protein, @Fiber, @Sodium);";
+                    foreach(DataRow row in tab.Rows)
+                    {
+                        Recipe r = new Recipe
+                        {
+                            Id = int.Parse(row["id_receita"].ToString()),
+                            Name = row["nome"].ToString(),
+                            Description = row["descricao"].ToString(),
+                            CreatorId = int.Parse(row["autor"].ToString()),
+                            Type = int.Parse(row["tipo"].ToString()),
+                            Calories = float.Parse(row["calorias"].ToString()),
+                            Protein = float.Parse(row["proteina"].ToString()),
+                            Fat = float.Parse(row["gordura"].ToString()),
+                            Carbs = float.Parse(row["carbohidratos"].ToString()),
+                            Fiber = float.Parse(row["fibra"].ToString()),
+                            Sodium = float.Parse(row["sodio"].ToString())
+                        };
+                        r.refreshInstructions();
+                        receitas.Add(r);
+                    }
 
-            return SqlDataAccess.SaveData(sql, recipe);
+                }
+            }
+            return receitas;
         }
 
-        public static int CreateRecipe(Recipe recipe)
+        public Recipe FindById(int id)
         {
-            string sql = @"insert into dbo.Recipe  (Name, Description, Type, Calories, Fat, Carbs, Protein, Fiber, Sodium, Active) 
-                                            values (@Name, @Description, @Type, @Calories, @Fat, @Carbs, @Protein, @Fiber, @Sodium, '1');";
-
-            return SqlDataAccess.SaveData(sql, recipe);
-        }
-
-        public static int EditRecipe(Recipe recipe)
-        {
-            string sql = @"update dbo.Recipe set Name=@Name, Description=@Description, Type=@Type, Calories=@Calories, 
-                                                    Fat=@Fat, Carbs=@Carbs, Protein=@Protein, Fiber=@Fiber, Sodium=@Sodium where Id=@Id;";
-
-            return SqlDataAccess.SaveData(sql, recipe);
-        }
-
-        public static List<Recipe> LoadRecipes()
-        {
-            string sql = @"select * from dbo.Recipe where Active='1';";
-
-            return SqlDataAccess.LoadData<Recipe>(sql);
-        }
-
-
-        public static Recipe getRecipe(int id)
-        {
-            var rec = new Recipe
+            using (SqlCommand command = _connection.Fetch().CreateCommand())
             {
-                Id = id
-            };
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT * FROM Receita Where id_receita=@key";
+                command.Parameters.Add("@key", SqlDbType.Int).Value = id;
 
-            string sql = @"select * from dbo.Recipe where Id=@Id and Active='1';";
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result = new DataTable();
+                    adapter.Fill(result);
 
-            return SqlDataAccess.getSingle<Recipe>(sql, rec);
+                    Recipe r = null;
+                    if (result.Rows.Count != 0) {
+
+                        DataRow row = result.Rows[0];
+                            r = new Recipe
+                            {
+                                Id = int.Parse(row["id_receita"].ToString()),
+                                Name = row["nome"].ToString(),
+                                Description = row["descricao"].ToString(),
+                                CreatorId = int.Parse(row["autor"].ToString()),
+                                Type = int.Parse(row["tipo"].ToString()),
+                                Calories = float.Parse(row["calorias"].ToString()),
+                                Protein = float.Parse(row["proteina"].ToString()),
+                                Fat = float.Parse(row["gordura"].ToString()),
+                                Carbs = float.Parse(row["carbohidratos"].ToString()),
+                                Fiber = float.Parse(row["fibra"].ToString()),
+                                Sodium = float.Parse(row["sodio"].ToString())
+                            };
+                        r.refreshInstructions();
+                    }
+
+                    return r;
+                }
+            }
         }
 
-        public static int DeleteRecipe(Recipe r)
+        public Recipe Insert(Recipe r)
         {
-            string sql = @"update dbo.Recipe set Active='0' where Id=@Id";
+            throw new NotImplementedException();
+        }
 
-            return SqlDataAccess.SaveData(sql, r);
+        public bool remove(Recipe r)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Update(Recipe obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }

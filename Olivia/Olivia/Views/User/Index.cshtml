@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model System.Collections.ObjectModel.Collection<Olivia.Models.Recipe>
+
+@{
+    Layout = "~/Views/Shared/_LayoutMenuUser.cshtml";
+}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Id Receita</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Descrição</th>
+            <th scope="col">Calorias</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Recipe item in Model)
+        {
+        <tr class="table-active">
+            <th scope="row"> @Html.ActionLink((@item.Id).ToString(), "Details", "Recipe", new { id = @item.Id }, null)</th>
+            <td>@item.Name</td>
+            <td>@item.Description</td>
+            <td>@item.Calories</td>
+        </tr>
+        }
+    </tbody>
+</table>
+

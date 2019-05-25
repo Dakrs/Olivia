@@ -5,8 +5,8 @@
 -- -----------------------------------------------------
 -- Schema Olivia
 -- -----------------------------------------------------
-DROP DATABASE [Olivia];
-GO
+--DROP DATABASE [Olivia];
+--GO
 
 CREATE DATABASE [Olivia];
 GO
@@ -63,7 +63,7 @@ CREATE TABLE [Historico] (
   [id_utilizador] INT NOT NULL,
   [id_receita] INT NOT NULL,
   [data] DATETIME NOT NULL,
-  PRIMARY KEY ([id_receita], [id_utilizador])
+  PRIMARY KEY ([id_receita], [id_utilizador]),
   CONSTRAINT [fk_id_utilizador]
     FOREIGN KEY ([id_utilizador])
     REFERENCES [Utilizador] ([id_utilizador])
@@ -90,7 +90,7 @@ CREATE TABLE [Avaliacao] (
   [id_utilizador] INT NOT NULL,
   [id_receita] INT NOT NULL,
   [avaliacao] INT NOT NULL,
-  PRIMARY KEY ([id_receita], [id_utilizador])
+  PRIMARY KEY ([id_receita], [id_utilizador]),
   CONSTRAINT [fk_id_utilizador_avaliacao]
     FOREIGN KEY ([id_utilizador])
     REFERENCES [Utilizador] ([id_utilizador])
@@ -199,8 +199,8 @@ GO
 -- Table `Olivia`.`Instrucao`
 -- -----------------------------------------------------
 CREATE TABLE [Instrucao] (
-  [designacao] VARCHAR(100) NULL,
-  [duracao] INT NULL,
+  [designacao] VARCHAR(100) NOT NULL,
+  [duracao] INT NOT NULL,
   [posicao] INT NOT NULL,
   [id_receita] INT NOT NULL,
   PRIMARY KEY ([id_receita], [posicao]),

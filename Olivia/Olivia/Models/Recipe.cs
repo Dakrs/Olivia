@@ -1,56 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Olivia.DataAccess;
 
-namespace Olivia.Controllers
+namespace Olivia.Models
 {
     public class Recipe
     {
-        
+
+        private Dictionary<Ingredient, Quantity> ingredients;
+        private List<Instruction> instructions;
+
         public int Id { get; set; }
-
-        [Display(Name="Recipe Name")]
-        [Required(ErrorMessage = "Name is necessary")]
         public string Name { get; set; }
-
-        [Display(Name = "Recipe Description")]
-        [Required(ErrorMessage = "Description is necessary")]
         public string Description { get; set; }
-
         public int CreatorId { get; set; }
-
-        [Display(Name = "Recipe Type Code Number")]
-        [Required(ErrorMessage = "Type is necessary")]
         public int Type { get; set; }
-
-        [Display(Name = "Recipe Calories")]
-        [Required(ErrorMessage = "Calories information is necessary")]
         public float Calories { get; set; }
-
-        [Display(Name = "Recipe Fat Amount")]
-        [Required(ErrorMessage = "Fat information is necessary")]
         public float Fat { get; set; }
-
-        [Display(Name = "Recipe Carbs Amount")]
-        [Required(ErrorMessage = "Carbs information is necessary")]
         public float Carbs { get; set; }
-
-        [Display(Name = "Recipe Protein Amount")]
-        [Required(ErrorMessage = "Protein information is necessary")]
         public float Protein { get; set; }
-
-        [Display(Name = "Recipe Fiber Amount")]
-        [Required(ErrorMessage = "Fiber information is necessary")]
         public float Fiber { get; set; }
-
-        [Display(Name = "Recipe Sodium Amount")]
-        [Required(ErrorMessage = "Sodium information is necessary")]
         public float Sodium { get; set; }
 
 
+        public List<Instruction> GetInstructions()
+        {
+            return this.instructions;
+        }
 
+        public Dictionary<Ingredient,Quantity> GetIngredients()
+        {
+            return this.ingredients;
+        }
 
+        public void refreshInstructions()
+        {
+            InstructionDAO aux = new InstructionDAO();
+            this.instructions = aux.InstructionsForRecipe(this.Id);
+
+            IngredientDAO aux2 = new IngredientDAO();
+            this.ingredients = aux2.IngredientsForRecipe(this.Id);
+        }
+    }
+
+    public class Quantity
+    {
+        public float Amount { get; set; }
+        public string Unity { get; set; }
     }
 }
