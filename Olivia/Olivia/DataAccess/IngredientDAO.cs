@@ -1,59 +1,73 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using Olivia.DataAccess;
+using Olivia.Controllers;
 using Olivia.Models;
 
 namespace Olivia.DataAccess
 {
     public class IngredientDAO
     {
-        private Connection _connection;
-
-        public IngredientDAO()
+        public int Insert(Ingredient ingredient)
         {
-            _connection = new Connection();
+
+            string sql = @"insert into dbo.Ingredient  (Name, Category) 
+                                            values (@Name, @Category);";
+
+            IngredientData data = new IngredientData(ingredient);
+
+            return SqlDataAccess.SaveData(sql, data);
         }
 
-        public Dictionary<Ingredient,Quantity> IngredientsForRecipe(int id)
+        public List<Ingredient> LoadIngredients()
         {
-            Dictionary<Ingredient, Quantity> result = new Dictionary<Ingredient, Quantity>();
+            string sql = @"select * from dbo.Ingredient;";
 
-            using (SqlCommand command = _connection.Fetch().CreateCommand())
+            return SqlDataAccess.LoadData<Ingredient>(sql);
+        }
+
+        public Ingredient FindById(int id)
+        {
+            string sql = @"select * from dbo.Ingredient where Id='" + id + "';";
+
+            return SqlDataAccess.LoadData<Ingredient>(sql).Single<Ingredient>();
+        }
+
+        public Ingredient FindByName(string name)
+        {
+            string sql = @"select top 1 * from dbo.Ingredient where Name='" + name + "';";
+
+            return SqlDataAccess.LoadData<Ingredient>(sql).Single<Ingredient>();
+        }
+
+        public RecipeIngredientData GetRecipeIngredient(int id_recipe, int id_ingredient)
+        {
+            string sql = @"select * from dbo.Recipe_Ingredient where Id_Recipe='" + id_recipe + "' and Id_Ingredient='" + id_ingredient + "';";
+
+            try
             {
-                command.CommandType = CommandType.Text;
-                command.CommandText = "Select * FROM Receita_Ingrediente AS R, Ingrediente AS I " +
-                	"WHERE R.id_receita = @idr AND R.id_ingrediente = I.id_ingrediente";
+                return SqlDataAccess.LoadData<RecipeIngredientData>(sql).Single<RecipeIngredientData>();
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+        }
 
-                command.Parameters.Add("@idr", SqlDbType.Int).Value = id;
+        public List<IngredientRecipe> GetIngredients(int id_recipe)
+        {
+            string sql = @"select * from dbo.Recipe_Ingredient where Id_Recipe='" + id_recipe + "';";
+            List<IngredientRecipe> list = SqlDataAccess.LoadData<IngredientRecipe>(sql);
 
-                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
-                {
-                    DataTable tab = new DataTable();
-                    adapter.Fill(tab);
-
-                    foreach (DataRow row in tab.Rows)
-                    {
-                        Quantity q = new Quantity
-                        {
-                            Amount = float.Parse(row["quantidade"].ToString()),
-                            Unity = row["unidade"].ToString()
-                        };
-                        Ingredient i = new Ingredient
-                        {
-                            Id = int.Parse(row["id_ingrediente"].ToString()),
-                            Name = row["nome"].ToString(),
-                            Category = row["categoria"].ToString()
-                        };
-
-                        result.Add(i, q);
-                    }
-                }
-
+            foreach(IngredientRecipe ing in list)
+            {
+                sql = @"select Name from dbo.Ingredient where Id_Ingredient='" + ing.Id_Ingredient + "';";
+                ing.Name = SqlDataAccess.LoadData<string>(sql).Single();
             }
 
-
-            return result;
+            return list;
         }
     }
 }

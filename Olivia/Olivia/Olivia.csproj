@@ -5,10 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.60.6" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="bootstrap" Version="4.3.1" />
     <PackageReference Include="Microsoft.AspNet.Razor" Version="3.2.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,9 +23,13 @@
     <Content Remove="Views\Shared\_NavBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\FormModel\" />
     <Folder Include="Views\User\" />
-    <Folder Include="DataAccess\" />
-    <Folder Include="Views\Recipe\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.Configuration">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Microsoft.VisualStudio.Configuration.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot\images\frontimage.jpg">

@@ -20,7 +20,7 @@
         @foreach (Recipe item in Model)
         {
         <tr class="table-active">
-            <th scope="row"> @Html.ActionLink((@item.Id).ToString(), "Details", "Recipe", new { id = @item.Id }, null)</th>
+            <th scope="row"> @Html.ActionLink((@item.Id_Recipe).ToString(), "Details", "Recipe", new { id = @item.Id_Recipe }, null)</th>
             <td>@item.Name</td>
             <td>@item.Description</td>
             <td>@item.Calories</td>

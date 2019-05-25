@@ -10,14 +10,13 @@ namespace Olivia.Models
 {
     public class Recipe
     {
-
-        private Dictionary<Ingredient, Quantity> ingredients;
-        private List<Instruction> instructions;
-
-        public int Id { get; set; }
+        public RecipeDAO RecipeDAO = new RecipeDAO();
+        public IngredientDAO IngredientDAO = new IngredientDAO();
+        public InstructionDAO InstructionDAO = new InstructionDAO();
+        public int Id_Recipe { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int CreatorId { get; set; }
+        public int Creator { get; set; }
         public int Type { get; set; }
         public float Calories { get; set; }
         public float Fat { get; set; }
@@ -25,31 +24,29 @@ namespace Olivia.Models
         public float Protein { get; set; }
         public float Fiber { get; set; }
         public float Sodium { get; set; }
+        public List<IngredientRecipe> Ingredients { get; set; } = Repeated(new IngredientRecipe(), 10);//new List<IngredientRecipe>();
+        public List<Instruction> Instructions { get; set; } = Repeated(new Instruction(), 10);//new List<Instruction>();
 
 
-        public List<Instruction> GetInstructions()
+        public static List<T> Repeated<T>(T value, int count)
         {
-            return this.instructions;
+            List<T> ret = new List<T>(count);
+            ret.AddRange(Enumerable.Repeat(value, count));
+            return ret;
         }
 
-        public Dictionary<Ingredient,Quantity> GetIngredients()
-        {
-            return this.ingredients;
-        }
 
-        public void refreshInstructions()
+        public InstructionData GetInstructionByPosition(int pos)
         {
-            InstructionDAO aux = new InstructionDAO();
-            this.instructions = aux.InstructionsForRecipe(this.Id);
-
-            IngredientDAO aux2 = new IngredientDAO();
-            this.ingredients = aux2.IngredientsForRecipe(this.Id);
+            return InstructionDAO.GetInstruction(Id_Recipe, pos);
         }
     }
 
-    public class Quantity
+    public class IngredientRecipe
     {
-        public float Amount { get; set; }
-        public string Unity { get; set; }
+        public string Id_Ingredient { get; set; }
+        public string Name { get; set; }
+        public float Quantity { get; set; }
+        public string Unit { get; set; }
     }
 }
