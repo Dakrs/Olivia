@@ -19,5 +19,26 @@ namespace Olivia.Controllers
             List<Recipe> recipes = dao.LoadRecipes();
             return View(recipes);
         }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult Register(CreateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Utilizador u = new Utilizador(-1, model.Username, Utilizador.HashPassword(model.Password), model.Email, 0, 0, model.Name);
+                UserDAO dAO = new UserDAO();
+
+                bool flag = dAO.Insert(u);
+
+                if (flag)
+                    return RedirectToAction("Index", "Home", new { area = "" });
+                else model.Username = "";
+            }
+            return View(model);
+        }
     }
 }
