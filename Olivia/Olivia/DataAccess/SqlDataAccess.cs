@@ -14,11 +14,11 @@ namespace Olivia.DataAccess
             return "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Olivia;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         }
 
-        public static List<T> LoadData<T>(string sql)
+        public static List<T> LoadData<T>(string sql, T data)
         {
             using (IDbConnection cnn = new SqlConnection(GetConnectionString()))
             {
-                return cnn.Query<T>(sql).ToList();
+                return cnn.Query<T>(sql, data).ToList();
             }
         }
 

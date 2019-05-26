@@ -1,0 +1,24 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Olivia</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="~/frontpage/assets/css/main.css" />
+</head>
+<body>
+    @RenderBody()
+    <script src="~/frontpage/assets/js/jquery.min.js"></script>
+    <script src="~/frontpage/assets/js/jquery.scrolly.min.js"></script>
+    <script src="~/frontpage/assets/js/jquery.scrollex.min.js"></script>
+    <script src="~/frontpage/assets/js/skel.min.js"></script>
+    <script src="~/frontpage/assets/js/util.js"></script>
+    <script src="~/frontpage/assets/js/main.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

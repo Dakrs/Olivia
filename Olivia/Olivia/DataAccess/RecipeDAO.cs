@@ -113,8 +113,8 @@ namespace Olivia.DataAccess
                     recipe.Instructions[i].Id_Recipe = recipe_id;
                     InstructionData ins = new InstructionData(recipe.Instructions[i]);
 
-                    sql = @"delete from dbo.Instruction where Id_Recipe='" + recipe_id + "' and Position='" + i + "';";
-                    SqlDataAccess.SaveData(sql, ins);
+                    sql = @"delete from dbo.Instruction where Id_Recipe=@Id_Recipe and Position=@Position;";
+                    SqlDataAccess.SaveData(sql, new Instruction { Id_Recipe = recipe_id, Position = i});
 
                     sql = @"insert into dbo.Instruction (Designation, Duration, Position, Id_Recipe)
                                                     values (@Designation, @Duration, @Position, @Id_Recipe);";
@@ -131,15 +131,15 @@ namespace Olivia.DataAccess
         {
             string sql = @"select * from dbo.Recipe where Active='1';";
 
-            return SqlDataAccess.LoadData<Recipe>(sql);
+            return SqlDataAccess.LoadData<Recipe>(sql, new Recipe());
         }
 
         public Recipe FindById(int id)
         {
-            string sql = @"select * from dbo.Recipe where Id_Recipe='" + id + "' and Active='1';";
+            string sql = @"select * from dbo.Recipe where Id_Recipe=@Id_Recipe and Active='1';";
             try
             {
-                Recipe r = SqlDataAccess.LoadData<Recipe>(sql).Single<Recipe>();
+                Recipe r = SqlDataAccess.LoadData<Recipe>(sql, new Recipe() { Id_Recipe = id}).Single<Recipe>();
                 r.Instructions = r.InstructionDAO.GetInstructions(r.Id_Recipe);
                 r.Ingredients = r.IngredientDAO.GetIngredients(r.Id_Recipe);
                 return r;
@@ -152,9 +152,9 @@ namespace Olivia.DataAccess
 
         public Recipe FindByName(string name)
         {
-            string sql = @"select * from dbo.Recipe where Name='" + name + "' and Active='1';";
+            string sql = @"select * from dbo.Recipe where Name=@Name and Active='1';";
 
-            return SqlDataAccess.LoadData<Recipe>(sql).First<Recipe>();
+            return SqlDataAccess.LoadData<Recipe>(sql, new Recipe() { Name = name}).First<Recipe>();
         }
 
         public void Delete(int id)
