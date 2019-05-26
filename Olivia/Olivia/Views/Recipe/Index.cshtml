@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Nothing.cshtml";
+    Layout = "~/Views/Shared/_LayoutMenuUser.cshtml";
 }
 
 <h2>Index</h2>
@@ -26,23 +26,24 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit/" + item.Id_Recipe, new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details/" + item.Id_Recipe, new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete/" + item.Id_Recipe, new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit/" + item.Id_Recipe, new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details/" + item.Id_Recipe, new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete/" + item.Id_Recipe, new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
