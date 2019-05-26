@@ -25,41 +25,27 @@ namespace Olivia.DataAccess
         {
             string sql = @"select * from dbo.Instruction;";
 
-            return SqlDataAccess.LoadData<Instruction>(sql);
-        }
-
-        public Instruction FindById(int id)
-        {
-            string sql = @"select * from dbo.Instruction where Id_Instruction='" + id + "';";
-
-            return SqlDataAccess.LoadData<Instruction>(sql).Single<Instruction>();
-        }
-
-        public Instruction FindByName(string name)
-        {
-            string sql = @"select * from dbo.Instruction where Name='" + name + "';";
-
-            return SqlDataAccess.LoadData<Instruction>(sql).Single<Instruction>();
+            return SqlDataAccess.LoadData<Instruction>(sql, new Instruction());
         }
 
         public InstructionData GetInstruction(int recipe_id, int pos)
         {
-            string sql = @"select * from dbo.Instruction where Id_Recipe='" + recipe_id + "' and Position='" + pos + "';";
+            string sql = @"select * from dbo.Instruction where Id_Recipe=@Id_Recipe and Position=@Position;";
 
-            return SqlDataAccess.LoadData<InstructionData>(sql).Single<InstructionData>();
+            return SqlDataAccess.LoadData<InstructionData>(sql, new InstructionData(new Instruction() { Id_Recipe = recipe_id, Position = pos})).Single<InstructionData>();
         }
 
         public List<Instruction> GetInstructions(int id_recipe)
         {
-            string sql = @"select * from dbo.Instruction where Id_Recipe='" + id_recipe + "';";
+            string sql = @"select * from dbo.Instruction where Id_Recipe=@Id_Recipe;";
 
-            return SqlDataAccess.LoadData<Instruction>(sql);
+            return SqlDataAccess.LoadData<Instruction>(sql, new Instruction() { Id_Recipe = id_recipe});
         }
 
         public void DeleteInstruction(int recipe_id, int position)
         {
-            string sql = @"delete from dbo.Instruction where Id_Recipe='" + recipe_id + "' and Position='" + position + "';";
-            SqlDataAccess.SaveData(sql, sql);
+            string sql = @"delete from dbo.Instruction where Id_Recipe=@Id_Recipe and Position=@Position;";
+            SqlDataAccess.SaveData(sql, new Instruction() { Id_Recipe = recipe_id, Position = position });
         }
     }
 }

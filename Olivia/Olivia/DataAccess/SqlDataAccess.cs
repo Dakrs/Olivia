@@ -15,11 +15,11 @@ namespace Olivia.DataAccess
             return "Server=localhost;DataBase=Olivia;User=sa;Password=uwontfindme!unlessucheat";
         }
 
-        public static List<T> LoadData<T>(string sql)
+        public static List<T> LoadData<T>(string sql, T data)
         {
             using (IDbConnection cnn = new SqlConnection(GetConnectionString()))
             {
-                return cnn.Query<T>(sql).ToList();
+                return cnn.Query<T>(sql, data).ToList();
             }
         }
 
