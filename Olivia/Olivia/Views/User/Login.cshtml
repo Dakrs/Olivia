@@ -1,0 +1,33 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Olivia.Models.LogInModel
+@{
+    Layout = "~/Views/Shared/_LayoutMainMenuSubs.cshtml";
+}
+
+<footer id="footer" style="max-height:100%">
+    <h2 style="font-size: 72px">Sign In</h2>
+    <div style="margin-left:40%">
+        @using (Html.BeginForm())
+    {
+        <div class="field" style="max-width:30%">
+            @Html.LabelFor(model => model.Username, null)
+            @Html.EditorFor(model => model.Username, null)
+            @Html.ValidationMessageFor(model => model.Username, "", null)
+        </div>
+        <div class="field" style="max-width:30%">
+            @Html.LabelFor(model => model.Password, null)
+            @Html.EditorFor(model => model.Password, null)
+            @Html.ValidationMessageFor(model => model.Password, "", null)
+        </div>
+        @Html.ValidationSummary(false)
+        <ul class="actions">
+            <li><input value="Login" class="button alt" type="submit"></li>
+        </ul>
+}
+    </div>
+    <div class="copyright">
+        &copy; Olivia
+    </div>
+</footer>

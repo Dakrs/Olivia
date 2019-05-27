@@ -2,6 +2,9 @@
 using Olivia.DataAccess;
 using Olivia.Models;
 using System.Collections.Generic;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,6 +13,7 @@ namespace Olivia.Controllers
     public class RecipeController : Controller
     {
         // GET: /<controller>/
+        [Authorize]
         public IActionResult Details(int id)
         {
 
@@ -19,7 +23,7 @@ namespace Olivia.Controllers
             return View(recipe);
         }
 
-
+        [Authorize]
         public IActionResult Create()
         {
 
@@ -32,6 +36,7 @@ namespace Olivia.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create(Recipe recipe)
         {
 
@@ -41,6 +46,7 @@ namespace Olivia.Controllers
             return RedirectToAction("Index", "Recipe");
         }
 
+        [Authorize]
         public IActionResult Edit(int id)
         {
 
@@ -49,11 +55,11 @@ namespace Olivia.Controllers
             Recipe recipe = dao.FindById(id);
 
             return View(recipe);
-            return RedirectToAction("Index", "Recipe");
         }
 
 
         [HttpPost]
+        [Authorize]
         public IActionResult Edit(Recipe recipe)
         {
 
@@ -63,7 +69,7 @@ namespace Olivia.Controllers
             return RedirectToAction("Index", "Recipe");
         }
 
-
+        [Authorize]
         public IActionResult Delete(int id)
         {
 
@@ -73,6 +79,7 @@ namespace Olivia.Controllers
             return RedirectToAction("Index", "Recipe");
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             RecipeDAO dao = new RecipeDAO();
