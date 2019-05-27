@@ -1,30 +1,19 @@
 ﻿<Properties StartupConfiguration="{9CD163DE-DE38-4428-984E-02AB4B96C4D7}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Olivia/Views/Shared/_Layout.cshtml">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Olivia/Controllers/UserController.cs">
     <Files>
-      <File FileName="Olivia/DataAccess/IngredientDAO.cs" Line="53" Column="14" />
-      <File FileName="Olivia/Models/Ingredient.cs" Line="7" Column="41" />
-      <File FileName="Olivia/Views/Recipe/Details.cshtml" Line="44" Column="57" />
-      <File FileName="Olivia/Views/Shared/_Layout.cshtml" Line="22" Column="57" />
-      <File FileName="Olivia/Views/Shared/_LayoutMenuUser.cshtml" Line="45" Column="50" />
-      <File FileName="Olivia/Views/User/Index.cshtml" Line="28" Column="10" />
-      <File FileName="Olivia/Views/Home/Index.cshtml" Line="8" Column="37" />
+      <File FileName="Olivia/Views/Shared/_LayoutTest.cshtml" Line="113" Column="93" />
+      <File FileName="Olivia/Views/User/Test.cshtml" Line="4" Column="1" />
+      <File FileName="Olivia/Views/Shared/_Layout.cshtml" Line="35" Column="47" />
+      <File FileName="Olivia/wwwroot/layout/index.html" Line="122" Column="1" />
+      <File FileName="Olivia/Controllers/UserController.cs" Line="78" Column="27" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Olivia" expanded="True">
             <Node name="Olivia" expanded="True">
-              <Node name="Controllers" expanded="True" />
-              <Node name="DataAccess" expanded="True" />
-              <Node name="Models" expanded="True" />
-              <Node name="Views" expanded="True">
-                <Node name="Home" expanded="True" />
-                <Node name="Shared" expanded="True">
-                  <Node name="_Layout.cshtml" selected="True" />
-                </Node>
-              </Node>
-              <Node name="wwwroot" expanded="True">
-                <Node name="images" expanded="True" />
+              <Node name="Controllers" expanded="True">
+                <Node name="UserController.cs" selected="True" />
               </Node>
             </Node>
           </Node>

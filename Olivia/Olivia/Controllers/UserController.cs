@@ -72,5 +72,10 @@ namespace Olivia.Controllers
             await HttpContext.SignOutAsync();
             return RedirectToAction("Index", "Home", new { area = "" });
         }
+
+        public IActionResult Test()
+        {
+            return View();
+        }
     }
 }
