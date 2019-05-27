@@ -7,6 +7,7 @@ namespace Olivia.Models
 {
     public class Utilizador
     {
+        public Utilizador() { }
         public Utilizador(int id,string u,string p,string e,int ty,int pre,string nome)
         {
             this.Id_utilizador = id;
@@ -68,5 +69,17 @@ namespace Olivia.Models
         [Required]
         [Display(Name = "Name")]
         public string Name { get; set; }
+    }
+
+    public class LogInModel
+    {
+        [Required]
+        [Display(Name = "Username")]
+        public string Username { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
     }
 }

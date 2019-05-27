@@ -2,9 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Session;
 using Olivia.Models;
 using Olivia.DataAccess;
 using System.Collections.Generic;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,6 +17,7 @@ namespace Olivia.Controllers
     public class UserController : Controller
     {
         // GET: /<controller>/
+        [Authorize]
         public IActionResult Index()
         {
             RecipeDAO dao = new RecipeDAO();
@@ -20,9 +25,30 @@ namespace Olivia.Controllers
             return View(recipes);
         }
 
-        public IActionResult Login()
+
+        public async Task<IActionResult> Login(LogInModel model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                UserDAO dAO = new UserDAO();
+                bool flag = dAO.LogIn(model.Username, model.Password);
+
+                if (flag)
+                {
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, model.Username)
+                    };
+                    ClaimsIdentity userIdentity = new ClaimsIdentity(claims, "login");
+                    ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+
+                    await HttpContext.SignInAsync(principal);
+                    return RedirectToAction("Index", "User", new { area = "" });
+                }
+                ModelState.AddModelError("", "Wrong username and password");
+            }
+
+            return View(model);
         }
 
         public IActionResult Register(CreateModel model)
@@ -39,6 +65,12 @@ namespace Olivia.Controllers
                 else model.Username = "";
             }
             return View(model);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
     }
 }

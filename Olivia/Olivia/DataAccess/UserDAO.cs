@@ -4,6 +4,8 @@ using Olivia.DataAccess;
 using System.Data.SqlClient;
 using System.Data;
 using System.Collections.Generic;
+using System.Text;
+
 
 namespace Olivia.DataAccess
 {
@@ -39,11 +41,21 @@ namespace Olivia.DataAccess
 
         public Utilizador FindByUsername(string user)
         {
+            /*
+            string sql = "select * from[User] where Username=@Username;";
+            Utilizador u = new Utilizador() { Username = user };
+
+            return SqlDataAccess.LoadData<Utilizador>(sql, u)[0];*/
+
+
             Connection con = new Connection();
             using (SqlCommand command = con.Fetch().CreateCommand())
             {
+
                 command.CommandType = CommandType.Text;
-                command.CommandText = "select * from [User] where Username='Dakrs'";
+                command.CommandText = "select * from[User] where Username=@Username;";
+                command.Parameters.Add("@Username", SqlDbType.VarChar);
+                command.Parameters["@Username"].Value = user;
 
                 using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                 {
@@ -67,10 +79,50 @@ namespace Olivia.DataAccess
 
                         con.Close();
                         return u;
+                                               
                     }
+
                 }
+    
             }
             return null;
+        
         }
+
+        public bool LogIn(string user,string password)
+        {
+            bool flag = false;
+
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "select count(*) AS 'Count' from[User] where Username=@Username AND Password=@Password";
+                command.Parameters.Add("@Username", SqlDbType.VarChar);
+                command.Parameters.Add("@Password", SqlDbType.VarChar);
+                command.Parameters["@Username"].Value = user;
+                command.Parameters["@Password"].Value = Utilizador.HashPassword(password);
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result = new DataTable();
+                    adapter.Fill(result);
+
+                    DataRow row = result.Rows[0];
+                    if (int.Parse(row["Count"].ToString()) > 0)
+                        flag = true;
+                    con.Close();
+
+                }
+
+            }
+
+
+
+            return flag;
+        }
+
+        
     }
 }
