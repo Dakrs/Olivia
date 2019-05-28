@@ -75,7 +75,9 @@ namespace Olivia.Controllers
 
         public IActionResult Test()
         {
-            return View();
+            RecipeDAO dao = new RecipeDAO();
+            List<Recipe> recipes = dao.LoadRecipes();
+            return View(recipes);
         }
     }
 }

@@ -1,3 +1,81 @@
-﻿@{
+﻿@model System.Collections.Generic.List<Olivia.Models.Recipe>
+@{
     Layout = "~/Views/Shared/_LayoutTest.cshtml";
 }
+    <div class="row">
+        @foreach (Recipe item in Model)
+        {
+            <div class="col-xl-3 col-lg-6">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-0">Recipe @item.Id_Recipe</h5>
+                                <span class="h2 font-weight-bold mb-0">@item.Name</span>
+                            </div>
+                            <div class="col-auto">
+                                <a href="/Recipe/Details/@item.Id_Recipe" class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                                    <i class="ni ni-active-40"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <p class="mt-3 mb-0 text-muted text-sm">
+                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
+                            <span class="text-nowrap">Since last month</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+        </div>
+    </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header border-0">
+                    <h3 class="mb-0 text-center">Recipes</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Recipe Id</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Calories</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Recipe item in Model)
+                            {
+                                <tr>
+                                    <th scope="row">
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <span class="mb-0 text-sm">@Html.ActionLink((@item.Id_Recipe).ToString(), "Details", "Recipe", new { id = @item.Id_Recipe }, null)</span>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <td>
+                                        @item.Name
+                                    </td>
+                                    <td>
+                                        @item.Description
+                                    </td>
+                                    <td>
+                                        @item.Calories
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

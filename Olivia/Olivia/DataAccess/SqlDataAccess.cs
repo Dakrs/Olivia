@@ -11,8 +11,8 @@ namespace Olivia.DataAccess
     {
         public static string GetConnectionString(string connectionName = "DefaultConnection")
         {
-            //return "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Olivia;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-            return "Server=localhost;DataBase=Olivia;User=sa;Password=uwontfindme!unlessucheat";
+            return "Server = DESKTOP-S2U35UH; Database = Olivia; Trusted_Connection = True; ";
+            //return "Server=localhost;DataBase=Olivia;User=sa;Password=uwontfindme!unlessucheat";
         }
 
         public static List<T> LoadData<T>(string sql, T data)

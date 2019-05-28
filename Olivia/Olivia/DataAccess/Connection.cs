@@ -9,7 +9,8 @@ namespace Olivia.DataAccess
 
         public Connection()
         {
-            _connection = new SqlConnection("Server=localhost;DataBase=Olivia;User=sa;Password=uwontfindme!unlessucheat");
+            //_connection = new SqlConnection("Server=localhost;DataBase=Olivia;User=sa;Password=uwontfindme!unlessucheat");
+            _connection = new SqlConnection("Server=DESKTOP-S2U35UH;Database=Olivia;Trusted_Connection=True;");
         }
 
         public void Close()
