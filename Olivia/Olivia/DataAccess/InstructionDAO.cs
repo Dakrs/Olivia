@@ -5,6 +5,8 @@ using System.Web;
 using Olivia.DataAccess;
 using Olivia.Controllers;
 using Olivia.Models;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Olivia.DataAccess
 {
@@ -12,40 +14,110 @@ namespace Olivia.DataAccess
     {
         public int Insert(Instruction instruction)
         {
+            int result = 0;
 
-            string sql = @"insert into dbo.Instruction  (Designation, Duration, Position, Id_Recipe) 
-                                            values (@Designation, @Duration , @Position , @Id_Recipe);";
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
 
-            InstructionData data = new InstructionData(instruction);
+                command.CommandType = CommandType.Text;
+                command.CommandText = "INSERT INTO [Instruction] VALUES (@Designation, @Duration , @Position , @Id_Recipe)";
+                command.Parameters.Add("@Designation", SqlDbType.VarChar).Value = instruction.Designation;
+                command.Parameters.Add("@Duration", SqlDbType.Int).Value = instruction.Duration;
+                command.Parameters.Add("@Position", SqlDbType.Int).Value = instruction.Position;
+                command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = instruction.Id_Recipe;
 
-            return SqlDataAccess.SaveData(sql, data);
-        }
+                result = command.ExecuteNonQuery();
+            }
+            con.Close();
 
-        public List<Instruction> LoadInstructions()
-        {
-            string sql = @"select * from dbo.Instruction;";
-
-            return SqlDataAccess.LoadData<Instruction>(sql, new Instruction());
+            return result;
         }
 
         public InstructionData GetInstruction(int recipe_id, int pos)
         {
-            string sql = @"select * from dbo.Instruction where Id_Recipe=@Id_Recipe and Position=@Position;";
+            InstructionData result = null;
 
-            return SqlDataAccess.LoadData<InstructionData>(sql, new InstructionData(new Instruction() { Id_Recipe = recipe_id, Position = pos})).Single<InstructionData>();
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+                command.CommandType = CommandType.Text;
+                command.CommandText = "Select * from [Instruction] WHERE Id_receita=@recep AND Position=@pos";
+
+                command.Parameters.Add("@recep", SqlDbType.Int).Value = recipe_id;
+                command.Parameters.Add("@pos", SqlDbType.Int).Value = pos;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable tab = new DataTable();
+                    adapter.Fill(tab);
+
+                    if (tab.Rows.Count > 0)
+                    {
+                        DataRow row = tab.Rows[0];
+                        result = new InstructionData
+                        {
+                            Id_Recipe = int.Parse(row["Id_Recipe"].ToString()),
+                            Position = int.Parse(row["Position"].ToString()),
+                            Designation = row["Designation"].ToString(),
+                            Duration = int.Parse(row["Duration"].ToString())
+                        };
+                    }
+                }
+
+            }
+            con.Close();
+
+            return result;
         }
 
         public List<Instruction> GetInstructions(int id_recipe)
         {
-            string sql = @"select * from dbo.Instruction where Id_Recipe=@Id_Recipe;";
+            List<Instruction> result = new List<Instruction>();
 
-            return SqlDataAccess.LoadData<Instruction>(sql, new Instruction() { Id_Recipe = id_recipe});
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT * FROM Instruction WHERE Id_recipe=@recep ORDER BY Position ASC";
+
+                command.Parameters.Add("@recep", SqlDbType.Int).Value = id_recipe;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable tab = new DataTable();
+                    adapter.Fill(tab);
+
+                    foreach (DataRow row in tab.Rows)
+                    {
+                        Instruction i = new Instruction
+                        {
+                            Designation = row["Designation"].ToString(),
+                            Duration = int.Parse(row["Duration"].ToString())
+                        };
+                        result.Add(i);
+                    }
+                }
+
+            }
+            con.Close();
+
+            return result;
         }
 
         public void DeleteInstruction(int recipe_id, int position)
         {
-            string sql = @"delete from dbo.Instruction where Id_Recipe=@Id_Recipe and Position=@Position;";
-            SqlDataAccess.SaveData(sql, new Instruction() { Id_Recipe = recipe_id, Position = position });
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "DELETE FROM [Instruction] WHERE  Postion=@Position AND Id_Recipe=@Id_Recipe)";
+                command.Parameters.Add("@Position", SqlDbType.Int).Value = position;
+                command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe_id;
+
+               command.ExecuteNonQuery();
+            }
         }
     }
 }

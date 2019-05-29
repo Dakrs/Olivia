@@ -16,15 +16,6 @@ namespace Olivia.Models
         public float Quantity { get; set; }
         public string Unit { get; set; }
 
-        public RecipeIngredientData(int recipe, int ingredient, float quantity, string unit)
-        {
-            Id_Recipe = recipe;
-            Id_Ingredient = ingredient;
-            Quantity = quantity;
-            Unit = unit;
-
-        }
-
     }
 
 

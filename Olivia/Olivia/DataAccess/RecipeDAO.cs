@@ -14,6 +14,7 @@ namespace Olivia.DataAccess
     {
         public void Insert(Recipe recipe)
         {
+            /**
             RecipeData data = new RecipeData(recipe);
 
             string sql = @"insert into dbo.Recipe  (Name, Description, Type, Calories, Fat, Carbs, Protein, Fiber, Sodium) 
@@ -56,12 +57,13 @@ namespace Olivia.DataAccess
                 sql = @"insert into dbo.Instruction (Designation, Duration, Position, Id_Recipe)
                                                     values (@Designation, @Duration, @Position, @Id_Recipe);";
                 SqlDataAccess.SaveData(sql, data3);
-            }
+            }*/
 
         }
 
         public void Edit(Recipe recipe)
         {
+        /**
             RecipeData data = new RecipeData(recipe);
 
             string sql = @"update dbo.Recipe set Name=@Name, Description=@Description, Type=@Type, Calories=@Calories, Fat=@Fat, Carbs=@Carbs, Protein=@Protein, Fiber=@Fiber, Sodium=@Sodium
@@ -122,49 +124,153 @@ namespace Olivia.DataAccess
                                                     values (@Designation, @Duration, @Position, @Id_Recipe);";
                     SqlDataAccess.SaveData(sql, ins);
 
-
                 }
             }
-
+            */
         }
 
 
         public List<Recipe> LoadRecipes()
         {
-            string sql = @"select * from dbo.Recipe where Active='1';";
+            List<Recipe> result = new List<Recipe>();
 
-            return SqlDataAccess.LoadData<Recipe>(sql, new Recipe());
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT * FROM [Recipe] WHERE Active=1";
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+
+                    foreach (DataRow row in result_querie.Rows)
+                    {
+                        Recipe r = new Recipe
+                        {
+                            Id_Recipe = int.Parse(row["Id_Recipe"].ToString()),
+                            Name = row["Name"].ToString(),
+                            Description = row["Description"].ToString(),
+                            Creator = int.Parse(row["Creator"].ToString()),
+                            Type = int.Parse(row["Type"].ToString()),
+                            Calories = float.Parse(row["Calories"].ToString()),
+                            Protein = float.Parse(row["Protein"].ToString()),
+                            Fat = float.Parse(row["Fat"].ToString()),
+                            Carbs = float.Parse(row["Carbs"].ToString()),
+                            Fiber = float.Parse(row["Fiber"].ToString()),
+                            Sodium = float.Parse(row["Sodium"].ToString())
+                        };
+
+                        result.Add(r);
+                    }
+                }
+            }
+
+            return result;
         }
 
         public Recipe FindById(int id)
         {
-            string sql = @"select * from dbo.Recipe where Id_Recipe=@Id_Recipe and Active='1';";
-            try
+            Recipe r = null;
+
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
             {
-                Recipe r = SqlDataAccess.LoadData<Recipe>(sql, new Recipe() { Id_Recipe = id}).Single<Recipe>();
-                r.Instructions = r.InstructionDAO.GetInstructions(r.Id_Recipe);
-                r.Ingredients = r.IngredientDAO.GetIngredients(r.Id_Recipe);
-                return r;
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT * FROM [Recipe] WHERE Id_Recipe=@id AND Active=1";
+                command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+
+                    if (result_querie.Rows.Count > 0)
+                    {
+                        DataRow row = result_querie.Rows[0];
+                        r = new Recipe
+                        {
+                            Id_Recipe = int.Parse(row["Id_Recipe"].ToString()),
+                            Name = row["Name"].ToString(),
+                            Description = row["Description"].ToString(),
+                            Creator = int.Parse(row["Creator"].ToString()),
+                            Type = int.Parse(row["Type"].ToString()),
+                            Calories = float.Parse(row["Calories"].ToString()),
+                            Protein = float.Parse(row["Protein"].ToString()),
+                            Fat = float.Parse(row["Fat"].ToString()),
+                            Carbs = float.Parse(row["Carbs"].ToString()),
+                            Fiber = float.Parse(row["Fiber"].ToString()),
+                            Sodium = float.Parse(row["Sodium"].ToString())
+                        };
+                        r.Instructions = r.InstructionDAO.GetInstructions(r.Id_Recipe);
+                        r.Ingredients = r.IngredientDAO.GetIngredients(r.Id_Recipe);
+                    }
+                }
             }
-            catch (Exception e)
-            {
-                return null;
-            }
+            con.Close();
+
+            return r;
         }
 
         public Recipe FindByName(string name)
         {
-            string sql = @"select * from dbo.Recipe where Name=@Name and Active='1';";
+            Recipe r = null;
 
-            return SqlDataAccess.LoadData<Recipe>(sql, new Recipe() { Name = name}).First<Recipe>();
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+                command.CommandType = CommandType.Text;
+                command.CommandText = "select * from [Recipe] where Name=@name AND Active=1";
+                command.Parameters.Add("@name", SqlDbType.VarChar);
+                command.Parameters["@name"].Value = name;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+
+                    if (result_querie.Rows.Count > 0)
+                    {
+                        DataRow row = result_querie.Rows[0];
+                        r = new Recipe
+                        {
+                            Id_Recipe = int.Parse(row["Id_Recipe"].ToString()),
+                            Name = row["Name"].ToString(),
+                            Description = row["Description"].ToString(),
+                            Creator = int.Parse(row["Creator"].ToString()),
+                            Type = int.Parse(row["Type"].ToString()),
+                            Calories = float.Parse(row["Calories"].ToString()),
+                            Protein = float.Parse(row["Protein"].ToString()),
+                            Fat = float.Parse(row["Fat"].ToString()),
+                            Carbs = float.Parse(row["Carbs"].ToString()),
+                            Fiber = float.Parse(row["Fiber"].ToString()),
+                            Sodium = float.Parse(row["Sodium"].ToString())
+                        };
+                        r.Instructions = r.InstructionDAO.GetInstructions(r.Id_Recipe);
+                        r.Ingredients = r.IngredientDAO.GetIngredients(r.Id_Recipe);
+                    }
+                }
+            }
+            con.Close();
+
+            return r;
         }
 
         public void Delete(int id)
         {
-            string sql = @"update dbo.Recipe set Active='0' where Id_Recipe='" + id + "';";
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
 
+                command.CommandType = CommandType.Text;
+                command.CommandText = "UPDATE [Recipe] SET Active=0 WHERE Id_Recipe=@rec";
+                command.Parameters.Add("@rec", SqlDbType.Int).Value = id;
 
-                SqlDataAccess.SaveData(sql, 1);         
+                command.ExecuteNonQuery();
+            }
+            con.Close();
 
         }
 
@@ -194,7 +300,6 @@ namespace Olivia.DataAccess
 
                     if (result.Rows.Count > 0)
                     {
-                        Console.WriteLine("exists a true");
                         exists = true;
                     }
                 }
@@ -210,8 +315,7 @@ namespace Olivia.DataAccess
                 command.Parameters.Add("@user", SqlDbType.Int).Value = idUser;
                 command.Parameters.Add("@rec", SqlDbType.Int).Value = idRecipe;
 
-                int i = command.ExecuteNonQuery();
-                Console.WriteLine(i);
+                command.ExecuteNonQuery();
             }
 
 
@@ -257,8 +361,35 @@ namespace Olivia.DataAccess
                     }
                 }
             }
+            con.Close();
 
             return result;
+        }
+
+
+        public float RecipeRating(int idRecipe)
+        {
+            float rating = 0;
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT AVG(Rating) AS AVG FROM [Rating] WHERE Rating.Id_Recipe = @rec";
+                command.Parameters.Add("@rec", SqlDbType.Int).Value = idRecipe;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+
+                    rating = float.Parse(result_querie.Rows[0].ToString());
+                }
+            }
+            con.Close();
+
+
+            return rating;
         }
     }
 }
