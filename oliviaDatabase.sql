@@ -206,9 +206,9 @@ CREATE TABLE [Instruction] (
   [Duration] INT NOT NULL,
   [Position] INT NOT NULL,
   [Id_Recipe] INT NOT NULL,
-  PRIMARY KEY ([Id_Recipe], [Position]),
+  PRIMARY KEY ([Id_Recipe_I], [Position]),
   CONSTRAINT [FK_Instruction_Recipe]
-    FOREIGN KEY ([Id_Recipe])
+    FOREIGN KEY ([Id_Recipe_I])
     REFERENCES [Recipe] ([Id_Recipe])
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
@@ -222,25 +222,25 @@ GO
 -- Table `Olivia`.`Favorite`
 -- -----------------------------------------------------
 CREATE TABLE [Favorite] (
-  [Id_User] INT NOT NULL,
-  [Id_Recipe] INT NOT NULL,
-  PRIMARY KEY ([Id_Recipe], [Id_User]),
+  [User_key] INT NOT NULL,
+  [Recipe_key] INT NOT NULL,
+  PRIMARY KEY ([User_key], [Recipe_key]),
   CONSTRAINT [FK_Favorite_User1]
-    FOREIGN KEY ([Id_User])
+    FOREIGN KEY ([User_key])
     REFERENCES [User] ([Id_User])
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT [FK_Favorite_User2]
-    FOREIGN KEY ([Id_Recipe])
+  CONSTRAINT [FK_Favorite_Rec2]
+    FOREIGN KEY ([Recipe_key])
     REFERENCES [Recipe] ([Id_Recipe])
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 GO
 
-CREATE INDEX [FK_Favorite_User1_Idx] ON [Favorite] ([Id_User] ASC);
+CREATE INDEX [FK_Favorite_User1_Idx] ON [Favorite] ([User_key] ASC);
 GO
 
-CREATE INDEX [FK_Favorite_User2_Idx] ON [Favorite] ([Id_Recipe] ASC);
+CREATE INDEX [FK_Favorite_Rec2_Idx] ON [Favorite] ([Recipe_key] ASC);
 GO
 
 

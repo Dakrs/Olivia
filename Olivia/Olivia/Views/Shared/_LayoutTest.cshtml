@@ -1,15 +1,17 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string name = @User.Identity.Name;
+    string id = @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Sid)?.Value;
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
-    <meta name="author" content="Creative Tim">
     <title>Olivia</title>
     <link href="~/layout/assets/img/brand/favicon.png" rel="icon" type="image/png">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <link href="~/layout/assets/vendor/nucleo/css/nucleo.css" rel="stylesheet">
-    <link href="~/layout/assets/vendor/fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="~/layout/assets/vendor/@{}fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
     <link type="text/css" href="~/layout/assets/css/argon.css?v=1.0.0" rel="stylesheet">
 </head>
 <body>
@@ -36,28 +38,28 @@
                 <!-- Navigation -->
                 <ul class="navbar-nav text-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="">
-                            <i class="ni ni-tv-2 text-primary"></i> Dashboard
+                        <a class="nav-link" href="/User">
+                            <i class="ni ni-tv-2 text-default"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/User/Details/@id">
+                            <i class="ni ni-single-02 text-default"></i> User profile
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="">
-                            <i class="ni ni-single-02 text-primary"></i> User profile
+                            <i class="ni ni-atom text-default"></i> Menu
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="">
-                            <i class="ni ni-atom text-primary"></i> Menu
+                            <i class="ni ni-calendar-grid-58 textdefault"></i> History
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
-                            <i class="ni ni-calendar-grid-58 text-primary"></i> History
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="">
-                            <i class="ni ni-button-power text-primary"></i> Log out
+                        <a class="nav-link" href="/User/Logout">
+                            <i class="ni ni-button-power text-default"></i> Log out
                         </a>
                     </li>
                 </ul>
@@ -90,10 +92,10 @@
                         <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="media align-items-center">
                                 <span class="avatar avatar-sm rounded-circle">
-                                    <img alt="Image placeholder" src="~/layout/assets/img/81.jpg">
+                                    <img alt="Image placeholder" src="https://cdn2.iconfinder.com/data/icons/web-development-17/64/aspnet_asp_net_web_browser_development_language-2-512.png">
                                 </span>
                                 <div class="media-body ml-2 d-none d-lg-block">
-                                    <span class="mb-0 text-sm  font-weight-bold">Helena Martins</span>
+                                    <span class="mb-0 text-sm  font-weight-bold">@name</span>
                                 </div>
                             </div>
                         </a>
@@ -105,15 +107,12 @@
                                 <i class="ni ni-single-02"></i>
                                 <span>My profile</span>
                             </a>
+                        </div>
                     </li>
                 </ul>
             </div>
         </nav>
         <!-- Header -->
-        <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 500px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
-            <span class="mask bg-gradient-default opacity-5"></span>
-            <div class="container-fluid">
-                <div class="header-body">
                     @RenderBody()
 
                     <script src="~/layout/assets/vendor/jquery/dist/jquery.min.js"></script>

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using System.Linq;
+using System;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,6 +21,9 @@ namespace Olivia.Controllers
 
             RecipeDAO dao = new RecipeDAO();
             Recipe recipe = dao.FindById(id);
+
+            if (recipe == null)
+                return RedirectToAction("Index","User");
 
             return View(recipe);
         }
@@ -87,6 +92,24 @@ namespace Olivia.Controllers
             List<Recipe> Recipes = dao.LoadRecipes();
 
             return View(Recipes);
+        }
+
+        [Authorize]
+        public IActionResult Favorite(int id)
+        {
+            string idUser = "";
+
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
+            idUser = claim.Value;
+
+            int aux = int.Parse(idUser);
+            if (aux > 0)
+            {
+                RecipeDAO dAO = new RecipeDAO();
+                dAO.AddToFavourite(aux, id);
+            }
+
+            return RedirectToAction("Details","Recipe", new {ID = id });
         }
 
 

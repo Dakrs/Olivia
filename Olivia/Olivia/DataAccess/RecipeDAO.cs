@@ -5,6 +5,8 @@ using System.Web;
 using Olivia.DataAccess;
 using Olivia.Controllers;
 using Olivia.Models;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Olivia.DataAccess
 {
@@ -164,6 +166,99 @@ namespace Olivia.DataAccess
 
                 SqlDataAccess.SaveData(sql, 1);         
 
+        }
+
+        public void AddToFavourite(int idUser,int idRecipe)
+        {   
+
+            Recipe flag = FindById(idRecipe);
+            if (flag == null)
+            {
+                return;
+            }
+            bool exists = false;
+
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "select User_Key FROM [Favorite] WHERE User_Key=@user AND Recipe_key=@rec";
+                command.Parameters.Add("@user", SqlDbType.Int).Value = idUser;
+                command.Parameters.Add("@rec", SqlDbType.Int).Value = idRecipe;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result = new DataTable();
+                    adapter.Fill(result);
+
+                    if (result.Rows.Count > 0)
+                    {
+                        Console.WriteLine("exists a true");
+                        exists = true;
+                    }
+                }
+
+            }
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                if (exists)
+                    command.CommandText = "DELETE FROM [Favorite] WHERE User_Key=@user AND Recipe_key=@rec";
+                else command.CommandText = "INSERT INTO [Favorite] VALUES(@user,@rec)";
+                command.Parameters.Add("@user", SqlDbType.Int).Value = idUser;
+                command.Parameters.Add("@rec", SqlDbType.Int).Value = idRecipe;
+
+                int i = command.ExecuteNonQuery();
+                Console.WriteLine(i);
+            }
+
+
+
+            con.Close();
+        }
+
+        public List<Recipe> getFavorites(int idUser)
+        {
+            List<Recipe> result = new List<Recipe>();
+
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT * FROM [Recipe] AS R, [Favorite] AS F WHERE F.Id_User = @user AND R.Active = 1 AND R.Id_Recipe = F.Id_Recipe";
+                command.Parameters.Add("@user", SqlDbType.Int).Value = idUser;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+
+                    foreach(DataRow row in result_querie.Rows)
+                    {
+                        Recipe r = new Recipe
+                        {
+                            Id_Recipe = int.Parse(row["Id_Recipe"].ToString()),
+                            Name = row["Name"].ToString(),
+                            Description = row["Description"].ToString(),
+                            Creator = int.Parse(row["Creator"].ToString()),
+                            Type = int.Parse(row["Type"].ToString()),
+                            Calories = float.Parse(row["Calories"].ToString()),
+                            Protein = float.Parse(row["Protein"].ToString()),
+                            Fat = float.Parse(row["Fat"].ToString()),
+                            Carbs = float.Parse(row["Carbs"].ToString()),
+                            Fiber = float.Parse(row["Fiber"].ToString()),
+                            Sodium = float.Parse(row["Sodium"].ToString())
+                        };
+
+                        result.Add(r);
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

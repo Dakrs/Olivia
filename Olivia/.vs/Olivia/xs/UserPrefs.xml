@@ -1,19 +1,32 @@
 ﻿<Properties StartupConfiguration="{9CD163DE-DE38-4428-984E-02AB4B96C4D7}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Olivia/Controllers/UserController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Olivia/DataAccess/RecipeDAO.cs">
     <Files>
-      <File FileName="Olivia/Views/Shared/_LayoutTest.cshtml" Line="113" Column="93" />
-      <File FileName="Olivia/Views/User/Test.cshtml" Line="4" Column="1" />
-      <File FileName="Olivia/Views/Shared/_Layout.cshtml" Line="35" Column="47" />
-      <File FileName="Olivia/wwwroot/layout/index.html" Line="122" Column="1" />
-      <File FileName="Olivia/Controllers/UserController.cs" Line="78" Column="27" />
+      <File FileName="Olivia/Views/Recipe/Details.cshtml" Line="204" Column="14" />
+      <File FileName="Olivia/Controllers/RecipeController.cs" Line="104" Column="39" />
+      <File FileName="Olivia/Controllers/UserController.cs" Line="74" Column="1" />
+      <File FileName="Olivia/DataAccess/RecipeDAO.cs" Line="180" Column="54" />
+      <File FileName="Olivia/Views/Shared/_LayoutTest.cshtml" Line="98" Column="87" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Olivia" expanded="True">
             <Node name="Olivia" expanded="True">
-              <Node name="Controllers" expanded="True">
-                <Node name="UserController.cs" selected="True" />
+              <Node name="Controllers" expanded="True" />
+              <Node name="DataAccess" expanded="True">
+                <Node name="RecipeDAO.cs" selected="True" />
+              </Node>
+              <Node name="Models" expanded="True" />
+              <Node name="Views" expanded="True">
+                <Node name="Recipe" expanded="True" />
+                <Node name="Shared" expanded="True" />
+              </Node>
+              <Node name="wwwroot" expanded="True">
+                <Node name="layout" expanded="True">
+                  <Node name="assets" expanded="True">
+                    <Node name="img" expanded="True" />
+                  </Node>
+                </Node>
               </Node>
             </Node>
           </Node>

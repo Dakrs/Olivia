@@ -41,13 +41,6 @@ namespace Olivia.DataAccess
 
         public Utilizador FindByUsername(string user)
         {
-            /*
-            string sql = "select * from[User] where Username=@Username;";
-            Utilizador u = new Utilizador() { Username = user };
-
-            return SqlDataAccess.LoadData<Utilizador>(sql, u)[0];*/
-
-
             Connection con = new Connection();
             using (SqlCommand command = con.Fetch().CreateCommand())
             {
@@ -89,16 +82,16 @@ namespace Olivia.DataAccess
         
         }
 
-        public bool LogIn(string user,string password)
+        public int LogIn(string user,string password)
         {
-            bool flag = false;
+            int id = -1;
 
             Connection con = new Connection();
             using (SqlCommand command = con.Fetch().CreateCommand())
             {
 
                 command.CommandType = CommandType.Text;
-                command.CommandText = "select count(*) AS 'Count' from[User] where Username=@Username AND Password=@Password";
+                command.CommandText = "select Id_User from[User] where Username=@Username AND Password=@Password";
                 command.Parameters.Add("@Username", SqlDbType.VarChar);
                 command.Parameters.Add("@Password", SqlDbType.VarChar);
                 command.Parameters["@Username"].Value = user;
@@ -109,9 +102,14 @@ namespace Olivia.DataAccess
                     DataTable result = new DataTable();
                     adapter.Fill(result);
 
-                    DataRow row = result.Rows[0];
-                    if (int.Parse(row["Count"].ToString()) > 0)
-                        flag = true;
+                    if (result.Rows.Count > 0)
+                    {
+
+                        DataRow row = result.Rows[0];
+                        id = int.Parse(row["Id_User"].ToString());
+
+                    }
+
                     con.Close();
 
                 }
@@ -120,7 +118,7 @@ namespace Olivia.DataAccess
 
 
 
-            return flag;
+            return id;
         }
 
         

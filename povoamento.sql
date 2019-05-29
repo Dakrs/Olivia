@@ -86,8 +86,8 @@ INSERT INTO [dbo].[Rating]
 GO
 
 INSERT INTO [dbo].[Favorite]
-           ([Id_User]
-           ,[Id_Recipe])
+           ([User_key]
+           ,[Recipe_key])
      VALUES
            (1,1),
            (1,2),

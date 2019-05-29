@@ -1,100 +1,209 @@
 ﻿@model Olivia.Models.Recipe
 @{
-    Layout = "~/Views/Shared/_LayoutMenuUser.cshtml";
+    Layout = "~/Views/Shared/_LayoutTest.cshtml";
 }
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
+    <h1 class="display-1 opacity-9" style="color:white; margin-left:5%">@Model.Name</h1>
+</div>
+<div class="container-fluid mt--7">
+    <div class="nav-wrapper" style="margin-top:15%">
+        <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link mb-sm-3 mb-md-0 active" id="tabs-icons-text-1-tab" data-toggle="tab" href="#tabs-icons-text-1" role="tab" aria-controls="tabs-icons-text-1" aria-selected="true"><i class="ni ni-badge mr-2" style="height:20px"> Description</i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-2-tab" data-toggle="tab" href="#tabs-icons-text-2" role="tab" aria-controls="tabs-icons-text-2" aria-selected="false"><i class="ni ni-cart mr-2" style="height:20px"> Ingredients</i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-3-tab" data-toggle="tab" href="#tabs-icons-text-3" role="tab" aria-controls="tabs-icons-text-3" aria-selected="false"><i class="ni ni-book-bookmark mr-2" style="height:20px"> Instructions</i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-4-tab" data-toggle="tab" href="#tabs-icons-text-4" role="tab" aria-controls="tabs-icons-text-4" aria-selected="false"><i class="ni ni-chart-pie-35 mr-2" style="height:20px"> Nutricional Values</i></a>
+            </li>
+        </ul>
+    </div>
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel" aria-labelledby="tabs-icons-text-1-tab">
+                    <p class="description">@Model.Description</p>
+                </div>
+                <div class="tab-pane fade" id="tabs-icons-text-2" role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card shadow">
+                                <div class="table-responsive">
+                                    <table class="table align-items-center table-flush">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Quantity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (IngredientRecipe item in Model.Ingredients)
+                                            {
+                                                <tr>
+                                                    <th scope="row">
+                                                        <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                                <span class="mb-0 text-sm">@item.Name</span>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <td>
+                                                        @item.Quantity @item.Unit
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-@if (Model != null)
-{
-    <h1>@Model.Name</h1>
+                <div class="tab-pane fade" id="tabs-icons-text-3" role="tabpanel" aria-labelledby="tabs-icons-text-3-tab">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card shadow">
+                                <div class="table-responsive">
+                                    <table class="table align-items-center table-flush">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col">Intruction</th>
+                                                <th scope="col">Duration</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (Instruction item in Model.Instructions)
+                                            {
+                                                <tr>
+                                                    <th scope="row">
+                                                        <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                                <span class="mb-0 text-sm">@item.Designation</span>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <td>
+                                                        @item.Duration
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="tabs-icons-text-4" role="tabpanel" aria-labelledby="tabs-icons-text-4-tab">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card shadow">
+                                <div class="table-responsive">
+                                    <table class="table align-items-center table-flush">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col">Nutricional Values</th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">
+                                                    <div class="media align-items-center">
+                                                        <div class="media-body">
+                                                            <span class="mb-0 text-sm">Calories</span>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td>
+                                                    @Model.Calories
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">
+                                                    <div class="media align-items-center">
+                                                        <div class="media-body">
+                                                            <span class="mb-0 text-sm">Fat</span>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td>
+                                                    @Model.Fat
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">
+                                                    <div class="media align-items-center">
+                                                        <div class="media-body">
+                                                            <span class="mb-0 text-sm">Carbohydrates</span>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td>
+                                                    @Model.Carbs
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">
+                                                    <div class="media align-items-center">
+                                                        <div class="media-body">
+                                                            <span class="mb-0 text-sm">Protein</span>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td>
+                                                    @Model.Protein
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">
+                                                    <div class="media align-items-center">
+                                                        <div class="media-body">
+                                                            <span class="mb-0 text-sm">Fiber</span>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td>
+                                                    @Model.Fiber
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">
+                                                    <div class="media align-items-center">
+                                                        <div class="media-body">
+                                                            <span class="mb-0 text-sm">Sodium</span>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td>
+                                                    @Model.Sodium
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <ul class="nav nav-tabs">
-        <li class="nav-item active">
-            <a class="nav-link" data-toggle="tab" href="#home">Descrição</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#ingredientes">Ingredientes</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#instrucoes">Instruções</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#vals">Valores Nutricionais</a>
-        </li>
-    </ul>
-    <div id="myTabContent" class="tab-content">
-        <div class="tab-pane fade in active show" id="home">
-            <p>@Model.Description</p>
-        </div>
-        <div class="tab-pane fade show" id="ingredientes">
-            <table class="table">
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Quantidade</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (IngredientRecipe item in Model.Ingredients)
-    {
-                <tr>
-                    <th scope="row">@item.Name</th>
-                    <td>@item.Quantity @item.Unit</td>
-                </tr>
-}
-                </tbody>
-            </table>
-        </div>
-        <div class="tab-pane fade show" id="instrucoes">
-            <ul class="list-group">
-                @foreach (Instruction item in Model.Instructions)
-                {
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    @item.Designation
-                <span class="badge badge-primary badge-pill">@item.Duration</span>
-                </li>
-                }
-            </ul>
-        </div>
-        <div class="tab-pane fade show" id="vals">
-            <table class="table">
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col">Valores Nutricionais</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">Calorias</th>
-                        <td>@Model.Calories</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Gorduras</th>
-                        <td>@Model.Fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Carbohidratos</th>
-                        <td>@Model.Carbs</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Proteína</th>
-                        <td>@Model.Protein</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Fibras</th>
-                        <td>@Model.Fiber</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Sódio</th>
-                        <td>@Model.Sodium</td>
-                    </tr>
-                </tbody>
-            </table>
+            </div>
         </div>
     </div>
 
-}
-else
-{
-    <p>Error, recipe not found</p>
-}
+
+    <a href="#" class="btn btn-icon btn-warning bg-gradient-warning" role="button" aria-pressed="true" style="margin-top:3%">
+        <span class="btn-inner--icon"><i class="ni ni-button-play"></i></span>
+    </a>
+
+    <a href="/Recipe/Favorite/@Model.Id_Recipe" class="btn btn-icon btn-success bg-gradient-success" role="button" aria-pressed="true" style="margin-top:3%">
+        <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
+    </a>
+
+</div>
+
