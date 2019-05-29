@@ -228,7 +228,7 @@ namespace Olivia.DataAccess
             {
 
                 command.CommandType = CommandType.Text;
-                command.CommandText = "SELECT * FROM [Recipe] AS R, [Favorite] AS F WHERE F.Id_User = @user AND R.Active = 1 AND R.Id_Recipe = F.Id_Recipe";
+                command.CommandText = "SELECT * FROM [Recipe] AS R, [Favorite] AS F WHERE F.User_key = @user AND R.Active = 1 AND R.Id_Recipe = F.User_key";
                 command.Parameters.Add("@user", SqlDbType.Int).Value = idUser;
 
                 using (SqlDataAdapter adapter = new SqlDataAdapter(command))
