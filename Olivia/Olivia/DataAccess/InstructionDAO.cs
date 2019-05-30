@@ -34,9 +34,9 @@ namespace Olivia.DataAccess
             return result;
         }
 
-        public InstructionData GetInstruction(int recipe_id, int pos)
+        public Instruction GetInstruction(int recipe_id, int pos)
         {
-            InstructionData result = null;
+            Instruction result = null;
 
             Connection con = new Connection();
             using (SqlCommand command = con.Fetch().CreateCommand())
@@ -55,7 +55,7 @@ namespace Olivia.DataAccess
                     if (tab.Rows.Count > 0)
                     {
                         DataRow row = tab.Rows[0];
-                        result = new InstructionData
+                        result = new Instruction
                         {
                             Id_Recipe = int.Parse(row["Id_Recipe"].ToString()),
                             Position = int.Parse(row["Position"].ToString()),

@@ -24,7 +24,7 @@ namespace Olivia.Models
         public float Protein { get; set; }
         public float Fiber { get; set; }
         public float Sodium { get; set; }
-        public List<IngredientRecipe> Ingredients { get; set; } = Repeated(new IngredientRecipe(), 10);//new List<IngredientRecipe>();
+        public List<Ingredient> Ingredients { get; set; } = Repeated(new Ingredient(), 10);//new List<IngredientRecipe>();
         public List<Instruction> Instructions { get; set; } = Repeated(new Instruction(), 10);//new List<Instruction>();
 
 
@@ -36,7 +36,7 @@ namespace Olivia.Models
         }
 
 
-        public InstructionData GetInstructionByPosition(int pos)
+        public Instruction GetInstructionByPosition(int pos)
         {
             return InstructionDAO.GetInstruction(Id_Recipe, pos);
         }
@@ -52,14 +52,5 @@ namespace Olivia.Models
             InstructionDAO.DeleteInstruction(Id_Recipe, position);
         }
 
-    }
-
-    public class IngredientRecipe
-    {
-        public int Id_Recipe { get; set; }
-        public int Id_Ingredient { get; set; }
-        public string Name { get; set; }
-        public float Quantity { get; set; }
-        public string Unit { get; set; }
     }
 }

@@ -21,9 +21,9 @@ namespace Olivia.DataAccess
             {
 
                 command.CommandType = CommandType.Text;
-                command.CommandText = "INSERT INTO [Ingredient] VALUES (@Name, @Category)";
+                command.CommandText = "INSERT INTO [Ingredient] (Name, Category) VALUES (@Name, @Category)";
                 command.Parameters.Add("@Name", SqlDbType.VarChar).Value = ingredient.Name;
-                command.Parameters.Add("@Category", SqlDbType.VarChar).Value = ingredient.Category;
+                command.Parameters.Add("@Category", SqlDbType.VarChar).Value = "";//ingredient.Category;
 
 
                 result = command.ExecuteNonQuery();
@@ -102,22 +102,47 @@ namespace Olivia.DataAccess
 
         public Ingredient FindByName(string name)
         {
-            string sql = @"select top 1 * from dbo.Ingredient where Name=@Name;";
+            Ingredient i = null;
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
 
-            return SqlDataAccess.LoadData<Ingredient>(sql, new Ingredient() { Name = name}).Single<Ingredient>();
+                command.CommandType = CommandType.Text;
+                command.CommandText = "select top 1 * from dbo.Ingredient where Name=@Name;";
+                command.Parameters.Add("@Name", SqlDbType.VarChar).Value = name;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+
+                    if (result_querie.Rows.Count > 0)
+                    {
+                        DataRow row = result_querie.Rows[0];
+                        i = new Ingredient
+                        {
+                            Id_Ingredient = int.Parse(row["Id_Ingredient"].ToString()),
+                            Name = row["Name"].ToString(),
+                            Category = row["Category"].ToString()
+                        };
+                    }
+                }
+            }
+            con.Close();
+            return i;
         }
 
-        public RecipeIngredientData GetRecipeIngredient(int id_recipe, int id_ingredient)
+        public Ingredient GetRecipeIngredient(int id_recipe, int id_ingredient)
         {
-            RecipeIngredientData result = null;
+            Ingredient result = null;
 
             Connection con = new Connection();
             using (SqlCommand command = con.Fetch().CreateCommand())
             {
 
                 command.CommandType = CommandType.Text;
-                command.CommandText = "SELECT * FROM [Recipe_Ingredient] WHERE Id_Ingredient=@id AND Id_Recipe=@Id_Recipe";
-                command.Parameters.Add("@id", SqlDbType.Int).Value = id_ingredient;
+                command.CommandText = "SELECT * FROM [Recipe_Ingredient] WHERE Id_Ingredient=@Id_Ingredient AND Id_Recipe=@Id_Recipe";
+                command.Parameters.Add("@Id_Ingredient", SqlDbType.Int).Value = id_ingredient;
                 command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = id_recipe;
 
                 using (SqlDataAdapter adapter = new SqlDataAdapter(command))
@@ -128,7 +153,7 @@ namespace Olivia.DataAccess
                     if (result_querie.Rows.Count > 0)
                     {
                         DataRow row = result_querie.Rows[0];
-                        result = new RecipeIngredientData
+                        result = new Ingredient
                         {
                             Id_Recipe = int.Parse(row["Id_Recipe"].ToString()),
                             Id_Ingredient = int.Parse(row["Id_Ingredient"].ToString()),
@@ -142,9 +167,9 @@ namespace Olivia.DataAccess
             return result;
         }
 
-        public List<IngredientRecipe> GetIngredients(int id_recipe)
+        public List<Ingredient> GetIngredients(int id_recipe)
         {
-            List<IngredientRecipe> list = new List<IngredientRecipe>();
+            List<Ingredient> list = new List<Ingredient>();
 
 
             Connection con = new Connection();
@@ -162,7 +187,7 @@ namespace Olivia.DataAccess
 
                     foreach(DataRow row in result_querie.Rows)
                     {
-                        IngredientRecipe r = new IngredientRecipe
+                        Ingredient r = new Ingredient
                         {
                             Id_Recipe = int.Parse(row["Id_Recipe"].ToString()),
                             Id_Ingredient = int.Parse(row["Id_Ingredient"].ToString()),
@@ -181,8 +206,18 @@ namespace Olivia.DataAccess
 
         public void DeleteRecipeIngredients(int recipe_id)
         {
-            string sql = @"delete from dbo.Recipe_Ingredient where Id_Recipe='" + recipe_id + "';";
-            SqlDataAccess.SaveData(sql, sql);
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "delete FROM Recipe_Ingredient where R.Id_Recipe=@Id_Recipe;";
+                command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe_id;
+                command.ExecuteNonQuery();
+                
+            }
+
+            con.Close();
         }
     }
 }
