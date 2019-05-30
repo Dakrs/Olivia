@@ -44,8 +44,10 @@ namespace Olivia.Controllers
         [Authorize]
         public IActionResult Create(Recipe recipe)
         {
-
             RecipeDAO dao = new RecipeDAO();
+
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
+            recipe.Creator = int.Parse(claim.Value);
 
             dao.Insert(recipe);
             return RedirectToAction("Index", "Recipe");

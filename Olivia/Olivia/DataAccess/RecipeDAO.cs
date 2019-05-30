@@ -14,15 +14,32 @@ namespace Olivia.DataAccess
     {
         public void Insert(Recipe recipe)
         {
-            /**
-            RecipeData data = new RecipeData(recipe);
 
-            string sql = @"insert into dbo.Recipe  (Name, Description, Type, Calories, Fat, Carbs, Protein, Fiber, Sodium) 
-                                            values (@Name, @Description, @Type, @Calories, @Fat, @Carbs, @Protein, @Fiber, @Sodium);";
-            SqlDataAccess.SaveData(sql, data);
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+                command.CommandType = CommandType.Text;
+                command.CommandText = "insert into dbo.Recipe  (Name, Description, Creator, Type, Calories, Fat, Carbs, Protein, Fiber, Sodium)" + 
+                                            "values(@Name, @Description, @Creator, @Type, @Calories, @Fat, @Carbs, @Protein, @Fiber, @Sodium); ";
+
+                command.Parameters.Add("@Name", SqlDbType.VarChar).Value = recipe.Name;
+                command.Parameters.Add("@Description", SqlDbType.Text).Value = recipe.Description;
+                command.Parameters.Add("@Creator", SqlDbType.Int).Value = recipe.Creator;
+                command.Parameters.Add("@Type", SqlDbType.Int).Value = recipe.Type;
+                command.Parameters.Add("@Calories", SqlDbType.Float).Value = recipe.Calories;
+                command.Parameters.Add("@Fat", SqlDbType.Float).Value = recipe.Fat;
+                command.Parameters.Add("@Carbs", SqlDbType.Float).Value = recipe.Carbs;
+                command.Parameters.Add("@Protein", SqlDbType.Float).Value = recipe.Protein;
+                command.Parameters.Add("@Fiber", SqlDbType.Float).Value = recipe.Fiber;
+                command.Parameters.Add("@Sodium", SqlDbType.Float).Value = recipe.Sodium;
+
+
+                command.ExecuteNonQuery();
+
+            }
 
             int recipe_id = FindByName(recipe.Name).Id_Recipe;
-            foreach (IngredientRecipe ing in recipe.Ingredients)
+            foreach (Ingredient ing in recipe.Ingredients)
             {
                 if (ing.Name == null)
                     continue;
@@ -38,12 +55,21 @@ namespace Olivia.DataAccess
                     current = current.IngredientDAO.FindByName(ing.Name);
                 }
 
-                RecipeIngredientData data2 = new RecipeIngredientData(recipe_id, current.Id_Ingredient, ing.Quantity , ing.Unit);
-                
+                using (SqlCommand command = con.Fetch().CreateCommand())
+                {
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = "insert into dbo.Recipe_Ingredient (Id_Recipe, Id_Ingredient, Quantity, Unit)" +
+                                                             "values (@Id_Recipe, @Id_Ingredient, @Quantity, @Unit);";
 
-                sql = @"insert into dbo.Recipe_Ingredient (Id_Recipe, Id_Ingredient, Quantity, Unit)
-                                                            values (@Id_Recipe, @Id_Ingredient, @Quantity, @Unit);";
-                SqlDataAccess.SaveData(sql, data2);
+                    command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe_id;
+                    command.Parameters.Add("@Id_Ingredient", SqlDbType.Int).Value = current.Id_Ingredient;
+                    command.Parameters.Add("@Quantity", SqlDbType.Float).Value = ing.Quantity;
+                    command.Parameters.Add("@Unit", SqlDbType.VarChar).Value = ing.Unit;
+
+
+                    command.ExecuteNonQuery();
+
+                }
             }
 
             for (int i = 0; i < recipe.Instructions.Count ; i++)
@@ -53,29 +79,60 @@ namespace Olivia.DataAccess
 
                 recipe.Instructions[i].Position = i;
                 recipe.Instructions[i].Id_Recipe = recipe_id;
-                InstructionData data3 = new InstructionData(recipe.Instructions[i]);
-                sql = @"insert into dbo.Instruction (Designation, Duration, Position, Id_Recipe)
-                                                    values (@Designation, @Duration, @Position, @Id_Recipe);";
-                SqlDataAccess.SaveData(sql, data3);
-            }*/
+
+                using (SqlCommand command = con.Fetch().CreateCommand())
+                {
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = "insert into dbo.Instruction (Designation, Duration, Position, Id_Recipe)" +
+                                                    "values(@Designation, @Duration, @Position, @Id_Recipe);";
+
+                    command.Parameters.Add("@Designation", SqlDbType.VarChar).Value = recipe.Instructions[i].Designation;
+                    command.Parameters.Add("@Duration", SqlDbType.Int).Value = recipe.Instructions[i].Duration;
+                    command.Parameters.Add("@Position", SqlDbType.Int).Value = recipe.Instructions[i].Position;
+                    command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe.Instructions[i].Id_Recipe;
+
+
+                    command.ExecuteNonQuery();
+
+                }
+            }
+            con.Close();
 
         }
 
         public void Edit(Recipe recipe)
         {
-        /**
-            RecipeData data = new RecipeData(recipe);
 
-            string sql = @"update dbo.Recipe set Name=@Name, Description=@Description, Type=@Type, Calories=@Calories, Fat=@Fat, Carbs=@Carbs, Protein=@Protein, Fiber=@Fiber, Sodium=@Sodium
-                                            where Id_Recipe='" + recipe.Id_Recipe + "';";
-            SqlDataAccess.SaveData(sql, data);
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+                command.CommandType = CommandType.Text;
+                command.CommandText = "update dbo.Recipe set Name=@Name, Description=@Description, Creator=@Creator, Type=@Type, Calories=@Calories, Fat=@Fat, Carbs=@Carbs, Protein=@Protein, Fiber=@Fiber, Sodium=@Sodium" +
+                                                "where Id_Recipe=@Id_Recipe;";
 
-            int recipe_id = recipe.Id_Recipe;
+                command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe.Id_Recipe;
+                command.Parameters.Add("@Name", SqlDbType.VarChar).Value = recipe.Name;
+                command.Parameters.Add("@Description", SqlDbType.Text).Value = recipe.Description;
+                command.Parameters.Add("@Creator", SqlDbType.Int).Value = recipe.Creator;
+                command.Parameters.Add("@Type", SqlDbType.Int).Value = recipe.Type;
+                command.Parameters.Add("@Calories", SqlDbType.Float).Value = recipe.Calories;
+                command.Parameters.Add("@Fat", SqlDbType.Float).Value = recipe.Fat;
+                command.Parameters.Add("@Carbs", SqlDbType.Float).Value = recipe.Carbs;
+                command.Parameters.Add("@Protein", SqlDbType.Float).Value = recipe.Protein;
+                command.Parameters.Add("@Fiber", SqlDbType.Float).Value = recipe.Fiber;
+                command.Parameters.Add("@Sodium", SqlDbType.Float).Value = recipe.Sodium;
+
+
+                command.ExecuteNonQuery();
+
+            }
+
             recipe.DeleteIngredients();
-            foreach (IngredientRecipe ing in recipe.Ingredients)
+            foreach (Ingredient ing in recipe.Ingredients)
             {
                 if (ing.Name == null)
                     continue;
+
                 Ingredient current = new Ingredient();
                 try
                 {
@@ -88,12 +145,20 @@ namespace Olivia.DataAccess
                     current = current.IngredientDAO.FindByName(ing.Name);
                 }
 
-                RecipeIngredientData data2 = new RecipeIngredientData(recipe_id, current.Id_Ingredient, ing.Quantity, ing.Unit);
+                using (SqlCommand command = con.Fetch().CreateCommand())
+                {
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = "insert into dbo.Recipe_Ingredient (Id_Recipe, Id_Ingredient, Quantity, Unit)" +
+                                                                "values(@Id_Recipe, @Id_Ingredient, @Quantity, @Unit);";
+
+                    command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe.Id_Recipe;
+                    command.Parameters.Add("@Id_Ingredient", SqlDbType.Int).Value = current.Id_Ingredient;
+                    command.Parameters.Add("@Quantity", SqlDbType.Float).Value = current.Quantity;
+                    command.Parameters.Add("@Unit", SqlDbType.VarChar).Value = current.Unit;
+                    command.ExecuteNonQuery();
+                }
 
 
-                sql = @"insert into dbo.Recipe_Ingredient (Id_Recipe, Id_Ingredient, Quantity, Unit)
-                                                            values (@Id_Recipe, @Id_Ingredient, @Quantity, @Unit);";
-                SqlDataAccess.SaveData(sql, data2);
             }
 
             for (int i = 0; i < recipe.Instructions.Count; i++)
@@ -105,28 +170,50 @@ namespace Olivia.DataAccess
                 }
                 try
                 {
-                    InstructionData ins = recipe.GetInstructionByPosition(i);
+                    Instruction ins = recipe.GetInstructionByPosition(i);
                     ins.Designation = recipe.Instructions[i].Designation;
                     ins.Duration = recipe.Instructions[i].Duration;
 
-                    sql = @"update dbo.Instruction set Designation=@Designation, Duration=@Duration where Id_Recipe=@Id_Recipe and Position=@Position;";
-                    SqlDataAccess.SaveData(sql, ins);
+                    using (SqlCommand command = con.Fetch().CreateCommand())
+                    {
+                        command.CommandType = CommandType.Text;
+                        command.CommandText = "update dbo.Instruction set Designation=@Designation, Duration=@Duration where Id_Recipe=@Id_Recipe and Position=@Position;";
+
+                        command.Parameters.Add("@Designation", SqlDbType.VarChar).Value = ins.Designation;
+                        command.Parameters.Add("@Duration", SqlDbType.Int).Value = ins.Duration;
+                        command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = ins.Id_Recipe;
+                        command.Parameters.Add("@Position", SqlDbType.Int).Value = ins.Position;
+                        command.ExecuteNonQuery();
+                    }
                 } catch (Exception e)
                 {
                     recipe.Instructions[i].Position = i;
-                    recipe.Instructions[i].Id_Recipe = recipe_id;
-                    InstructionData ins = new InstructionData(recipe.Instructions[i]);
+                    recipe.Instructions[i].Id_Recipe = recipe.Id_Recipe;
+                    using (SqlCommand command = con.Fetch().CreateCommand())
+                    {
+                        command.CommandType = CommandType.Text;
+                        command.CommandText = "delete from dbo.Instruction where Id_Recipe=@Id_Recipe and Position=@Position;";
 
-                    sql = @"delete from dbo.Instruction where Id_Recipe=@Id_Recipe and Position=@Position;";
-                    SqlDataAccess.SaveData(sql, new Instruction { Id_Recipe = recipe_id, Position = i});
+                        command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe.Instructions[i].Id_Recipe;
+                        command.Parameters.Add("@Position", SqlDbType.Int).Value = recipe.Instructions[i].Position;
+                        command.ExecuteNonQuery();
+                    }
 
-                    sql = @"insert into dbo.Instruction (Designation, Duration, Position, Id_Recipe)
-                                                    values (@Designation, @Duration, @Position, @Id_Recipe);";
-                    SqlDataAccess.SaveData(sql, ins);
+                    using (SqlCommand command = con.Fetch().CreateCommand())
+                    {
+                        command.CommandType = CommandType.Text;
+                        command.CommandText = "insert into dbo.Instruction (Designation, Duration, Position, Id_Recipe)" +
+                                                    "values(@Designation, @Duration, @Position, @Id_Recipe); ";
+
+                        command.Parameters.Add("@Designation", SqlDbType.VarChar).Value = recipe.Instructions[i].Designation;
+                        command.Parameters.Add("@Duration", SqlDbType.Int).Value = recipe.Instructions[i].Duration;
+                        command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe.Instructions[i].Id_Recipe;
+                        command.Parameters.Add("@Position", SqlDbType.Int).Value = recipe.Instructions[i].Position;
+                        command.ExecuteNonQuery();
+                    }
 
                 }
             }
-            */
         }
 
 
