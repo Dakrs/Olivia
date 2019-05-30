@@ -1,0 +1,90 @@
+﻿@model Olivia.Models.Recipe
+@{
+    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+}
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
+    <h1 class="display-1 opacity-9" style="color:white; margin-left:5%">@Model.Name</h1>
+</div>
+<div class="container-fluid mt--7">
+    <div class="card mb-3" style="max-width: 100%;margin-top:5%">
+        <div class="row no-gutters">
+            <div class="col-md-6">
+                <div id="myMap" style="height:405px"></div>
+            </div>
+            <div class="col-md-6">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card shadow">
+                                <div class="table-responsive">
+                                    <table class="table align-items-center table-flush">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Quantity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (IngredientRecipe item in Model.Ingredients)
+                                            {
+                                                <tr>
+                                                    <th scope="row">
+                                                        <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                                <span class="mb-0 text-sm">@item.Name</span>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <td>
+                                                        @item.Quantity @item.Unit
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type='text/javascript'>
+    var map;
+    var sdsDataSourceUrl = 'https://spatial.virtualearth.net/REST/v1/data/c2ae584bbccc4916a0acf75d1e6947b4/NavteqEU/NavteqPOIs';
+
+    function GetMap() {
+        map = new Microsoft.Maps.Map('#myMap', {
+            credentials: 'AoMa7WQOdDFXfYpN6bY-LHTdPq8UE_KzYDPx3Y689KIxZ-v9u0UC5mygV0_6OQ1p',
+        });
+
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var loc = new Microsoft.Maps.Location(
+                position.coords.latitude,
+                position.coords.longitude);
+            var pin = new Microsoft.Maps.Pushpin(loc, {color: 'orange'});
+            map.entities.push(pin);
+            map.setView({ center: loc, zoom: 15 });
+        });
+        Microsoft.Maps.loadModule('Microsoft.Maps.SpatialDataService', function () {
+            findByPropperty();
+        });
+    }
+    function findByPropperty() {
+        //Remove any existing data from the map.
+        map.entities.clear();
+
+        //Create a query to get nearby data.
+        var queryOptions = {
+            queryUrl: sdsDataSourceUrl,
+            filter: new Microsoft.Maps.SpatialDataService.Filter('EntityTypeID', 'eq', 5400)
+        };
+        Microsoft.Maps.SpatialDataService.QueryAPIManager.search(queryOptions, map, function (data) {
+            //Add results to the map.
+            map.entities.push(data);
+        });
+    }
+</script>
+<script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap' async defer></script>

@@ -204,10 +204,10 @@
             <div class="modal-content bg-gradient-danger">
 
                 <div class="modal-header">
-                    <h6 class="modal-title" id="modal-title-notification">Check if you have all the ingredients required</h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
+                    <div class="col-12 modal-title text-center">
+                        <i class="ni ni-bell-55 ni-3x"></i>
+                        <h4 class="heading mt-4">Verify if you have all the ingredients listed bellow</h4>
+                    </div>
                 </div>
 
                 <div class="modal-body">
@@ -233,8 +233,23 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-white">Ok, Got it</button>
-                    <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Close</button>
+                    <div class="row" style="width:100%">
+                        <div class="col">
+                            <a href="" class="btn btn-white" role="button" aria-pressed="true">
+                                Ok, Got it
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a href="/Cook/Shopping/@Model.Id_Recipe" class="btn btn-white ml-auto" role="button" aria-pressed="true">
+                                Go Shopping
+                            </a>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span>×</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -244,5 +259,6 @@
     <a href="/Recipe/Favorite/@Model.Id_Recipe" class="btn btn-icon btn-oliviay bg-gradient-oliviay" role="button" aria-pressed="true" style="margin-top:3%">
         <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
     </a>
+</div>
 
 
