@@ -20,7 +20,7 @@ GO
 CREATE TABLE [User] (
   [Id_User] INT IdENTITY(1,1) NOT NULL,
   [Username] VARCHAR(100) NOT NULL,
-  [Password] VARCHAR(45) NOT NULL,
+  [Password] VARCHAR(100) NOT NULL,
   [Email] VARCHAR(45) NOT NULL,
   [Type] SMALLINT NOT NULL,
   [Preference] INT NOT NULL,
@@ -36,8 +36,8 @@ GO
 -- -----------------------------------------------------
 CREATE TABLE [Recipe] (
   [Id_Recipe] INT IdENTITY(1,1) NOT NULL,
-  [Name] VARCHAR(45) NOT NULL,
-  [Description] VARCHAR(100) NOT NULL,
+  [Name] VARCHAR(100) NOT NULL,
+  [Description] TEXT NOT NULL,
   [Creator] INT NULL,
   [Type] INT NOT NULL,
   [Calories] FLOAT NOT NULL,
@@ -202,13 +202,13 @@ GO
 -- Table `Olivia`.`Instruction`
 -- -----------------------------------------------------
 CREATE TABLE [Instruction] (
-  [Designation] VARCHAR(100) NOT NULL,
+  [Designation] TEXT NOT NULL,
   [Duration] INT NOT NULL,
   [Position] INT NOT NULL,
   [Id_Recipe] INT NOT NULL,
-  PRIMARY KEY ([Id_Recipe_I], [Position]),
+  PRIMARY KEY ([Id_Recipe], [Position]),
   CONSTRAINT [FK_Instruction_Recipe]
-    FOREIGN KEY ([Id_Recipe_I])
+    FOREIGN KEY ([Id_Recipe])
     REFERENCES [Recipe] ([Id_Recipe])
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);

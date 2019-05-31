@@ -9,9 +9,9 @@
     <div class="card mb-3" style="max-width: 100%;margin-top:5%">
         <div class="row no-gutters">
             <div class="col-md-6">
-                <div id="myMap" style="height:405px"></div>
+                <div id="myMap" style="max-height:100%"></div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" style="min-height:405px;">
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
@@ -25,7 +25,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (IngredientRecipe item in Model.Ingredients)
+                                            @foreach (Ingredient item in Model.Ingredients)
                                             {
                                                 <tr>
                                                     <th scope="row">
