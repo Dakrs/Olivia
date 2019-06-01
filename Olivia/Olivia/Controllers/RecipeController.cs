@@ -29,6 +29,26 @@ namespace Olivia.Controllers
         }
 
         [Authorize]
+        public IActionResult Random()
+        {
+
+            RecipeDAO dao = new RecipeDAO();
+            
+            List<Recipe> recipe = dao.LoadRecipes();
+
+            int RandomNumber(int min, int max)
+            {
+                Random random = new Random();
+                return random.Next(min, max);
+            }
+
+            int numero = RandomNumber(0, recipe.Count);
+
+
+            return View(dao.FindById(recipe.ElementAt(numero).Id_Recipe) );
+        }
+
+        [Authorize]
         public IActionResult Create()
         {
 
