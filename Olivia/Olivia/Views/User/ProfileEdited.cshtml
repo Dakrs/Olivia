@@ -1,0 +1,52 @@
+﻿@model Olivia.Models.Utilizador
+@{
+    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+}
+
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
+    <h1 class="display-1 opacity-9" style="color:white; margin-left:5%">Your Profile</h1>
+</div>
+
+<div class="card card-pricing bg-gradient-danger border-0 text-center mb-4" style="margin-right:10%;margin-left:10%;margin-top:1%">
+    <div class="card-header bg-transparent">
+        <h4 class="text-uppercase ls-1 text-white py-3 mb-0">Profile Edited - Preview</h4>
+    </div>
+    <div class="container-fluid mt--7">
+        <div class="nav-wrapper" style="margin-top: 13%">
+            <div class="card card-profile">
+                <img src="/layout/assets/img/perfil.png" alt="Image placeholder" class="card-img-top">
+                <div class="row justify-content-center">
+                    <div class="col-lg-3 order-lg-2">
+                        <div class="card-profile-image">
+                            <a href="#">
+                                <img src="/layout/assets/img/pepe.jpg" class="rounded-circle">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+                </div>
+                    <div class="text-center", style="margin-top:10% ">
+                        <h5 class="h3">
+                            Username: <span class="font-weight-light">@ViewBag.User.Username</span>
+                        </h5>
+                        <h5 class="h3">
+                            Email: <span class="font-weight-light">@ViewBag.User.Email</span>
+                        </h5>
+                        <div class="h5 font-weight-300">
+                            <i class="ni location_pin mr-2"></i>@ViewBag.User.Nome
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+        <div class="card-body px-lg-7">
+            <a href="/User/Profile"><button type="button" class="btn btn-primary mb-3"> Confirm </button></a>
+       
+        </div>
+            <div class="card-footer bg-transparent">
+                <a href="/User/EditProfile" class=" text-white">Cancel</a>
+            </div>
+        </div>

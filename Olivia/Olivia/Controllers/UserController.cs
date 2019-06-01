@@ -96,7 +96,7 @@ namespace Olivia.Controllers
             return RedirectToAction("Index", "Home", new { area = "" });
         }
 
-
+        [Authorize]
         public IActionResult Profile()
         {
             var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Name);
@@ -115,6 +115,7 @@ namespace Olivia.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult EditProfile()
         {
             var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Name);
@@ -127,6 +128,16 @@ namespace Olivia.Controllers
 
         }
 
+        public ActionResult ProfileEdited(int uid, string uname,string uemail)
+        {
+            UserDAO dao = new UserDAO();
+            dao.UpdateProfile(uid, uname, uemail);
+            Utilizador user = dao.FindByUsername("yolo");
+            ViewBag.User = user;
+           
+
+            return View();
+        }
 
 
     }
