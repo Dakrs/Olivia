@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 
 namespace Olivia.DataAccess
@@ -21,7 +22,7 @@ namespace Olivia.DataAccess
                 using (SqlCommand command = con.Fetch().CreateCommand())
                 {
                     command.CommandType = CommandType.Text;
-                    command.CommandText = "insert into [User] Values(@username,@password,@email,@type,@prefe,@name,0)";
+                    command.CommandText = "insert into [User] Values(@username,@password,@email,@type,@prefe,@name,1)";
 
                     command.Parameters.Add("@username", SqlDbType.Text).Value = u.Username;
                     command.Parameters.Add("@password", SqlDbType.Text).Value = u.Password;
@@ -136,9 +137,42 @@ namespace Olivia.DataAccess
                 command.ExecuteNonQuery();
             }
             con.Close();
+        }
 
+        public Dictionary<DateTime,Recipe> userHistory(int idUser)
+        {
+            Dictionary<DateTime, Recipe> result = new Dictionary<DateTime, Recipe>();
+            Dictionary<DateTime, int> dic_id_recipe = new Dictionary<DateTime, int>();
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
 
-        
+                command.CommandType = CommandType.Text;
+                command.CommandText = "select * from[History] where Id_User=@user";
+                command.Parameters.Add("@user", SqlDbType.Int).Value=idUser;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_query = new DataTable();
+                    adapter.Fill(result_query);
+
+                    foreach(DataRow row in result_query.Rows)
+                    {
+                        DateTime value = (DateTime)row["Date"];
+                        int idrecipe = int.Parse(row["Id_Recipe"].ToString());
+
+                        dic_id_recipe.Add(value, idrecipe);
+                    }
+                }
+            }
+            RecipeDAO dao = new RecipeDAO();
+            foreach(KeyValuePair<DateTime, int> pair in dic_id_recipe)
+            {
+                result.Add(pair.Key, dao.FindById(pair.Value));
+            }
+            con.Close();
+
+            return result;
         }
 
         

@@ -53,5 +53,18 @@ namespace Olivia.Models
             InstructionDAO.DeleteInstruction(Id_Recipe, position);
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            Recipe objAsPart = obj as Recipe;
+            if (objAsPart == null) return false;
+            else return Equals(objAsPart);
+        }
+
+        public bool Equals(Recipe other)
+        {
+            if (other == null) return false;
+            return (this.Id_Recipe.Equals(other.Id_Recipe));
+        }
     }
 }
