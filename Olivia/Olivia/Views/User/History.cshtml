@@ -1,0 +1,49 @@
+﻿@model System.Collections.Generic.List<KeyValuePair<DateTime,Olivia.Models.Recipe>>
+@{
+    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+}
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
+    <h1 class="display-1 opacity-9" style="color:white; margin-left:5%">History</h1>
+</div>
+<div class="container-fluid mt--7">
+    <div class="row" style="margin-top:20px">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header border-0">
+                    <h3 class="mb-0 text-center">Recipes</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Recipe Id</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (KeyValuePair<DateTime, Recipe> item in Model)
+                            {
+                                <tr>
+                                    <th scope="row">
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <span class="mb-0 text-sm">@Html.ActionLink((@item.Value.Id_Recipe).ToString(), "Details", "Recipe", new { id = @item.Value.Id_Recipe }, new { @class = "text-default" })</span>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <td>
+                                        @item.Value.Name
+                                    </td>
+                                    <td>
+                                        @item.Key.ToShortDateString()
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
