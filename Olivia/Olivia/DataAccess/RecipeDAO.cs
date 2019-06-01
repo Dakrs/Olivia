@@ -39,7 +39,7 @@ namespace Olivia.DataAccess
             }
 
             int recipe_id = FindByName(recipe.Name).Id_Recipe;
-            foreach (Ingredient ing in recipe.Ingredients)
+            foreach (RecipeIngredient ing in recipe.Ingredients)
             {
                 if (ing.Name == null)
                     continue;
@@ -128,7 +128,7 @@ namespace Olivia.DataAccess
             }
 
             recipe.DeleteIngredients();
-            foreach (Ingredient ing in recipe.Ingredients)
+            foreach (RecipeIngredient ing in recipe.Ingredients)
             {
                 if (ing.Name == null)
                     continue;
@@ -153,8 +153,8 @@ namespace Olivia.DataAccess
 
                     command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe.Id_Recipe;
                     command.Parameters.Add("@Id_Ingredient", SqlDbType.Int).Value = current.Id_Ingredient;
-                    command.Parameters.Add("@Quantity", SqlDbType.Float).Value = current.Quantity;
-                    command.Parameters.Add("@Unit", SqlDbType.VarChar).Value = current.Unit;
+                    command.Parameters.Add("@Quantity", SqlDbType.Float).Value = ing.Quantity;
+                    command.Parameters.Add("@Unit", SqlDbType.VarChar).Value = ing.Unit;
                     command.ExecuteNonQuery();
                 }
 
@@ -570,6 +570,66 @@ namespace Olivia.DataAccess
 
 
             return rating;
+        }
+
+        public void AddRating(int idUser, int idRecipe, int value)
+        {
+
+            bool flag = false;
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT * FROM [Rating] WHERE Rating.Id_Recipe =@rec AND Rating.Id_User=@user";
+                command.Parameters.Add("@rec", SqlDbType.Int).Value = idRecipe;
+                command.Parameters.Add("@user", SqlDbType.Int).Value = idRecipe;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+
+                    if (result_querie.Rows.Count > 0)
+                        flag = true;
+                }
+            }
+
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                if (flag)
+                    command.CommandText = "UPDATE [Rating] SET Rating.Rating=@rate WHERE Rating.Id_Recipe =@rec AND Rating.Id_User=@user";
+                else command.CommandText = "INSERT INTO [Rating] VALUES(@user,@rec,@rate)";
+                command.Parameters.Add("@rec", SqlDbType.Int).Value = idRecipe;
+                command.Parameters.Add("@user", SqlDbType.Int).Value = idUser;
+                command.Parameters.Add("@rate", SqlDbType.Int).Value = value;
+
+                command.ExecuteNonQuery();
+            }
+
+            con.Close();
+        }
+
+        public void AddHistory(int idUser,int idRecipe)
+        {
+            DateTime date = DateTime.Now;
+            string date_sql_format = date.ToString("yyyy-MM-dd HH:mm:ss.fff");
+
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+                command.CommandType = CommandType.Text;
+                command.CommandText = "INSERT INTO [History] VALUES(@user,@rec,GETDATE())";
+                command.Parameters.Add("@rec", SqlDbType.Int).Value = idRecipe;
+                command.Parameters.Add("@user", SqlDbType.Int).Value = idUser;
+                //command.Parameters.Add("@date", SqlDbType.Date).Value = date_sql_format;
+
+                command.ExecuteNonQuery();
+            }
+
+            con.Close();
         }
     }
 }

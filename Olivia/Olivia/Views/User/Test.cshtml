@@ -1,80 +1,103 @@
-﻿@model System.Collections.Generic.List<Olivia.Models.Recipe>
-@{
-    Layout = "~/Views/Shared/_LayoutTest.cshtml";
-}
-    <div class="row">
-        @foreach (Recipe item in Model)
-        {
-            <div class="col-xl-3 col-lg-6">
-                <div class="card card-stats mb-4 mb-xl-0">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <h5 class="card-title text-uppercase text-muted mb-0">Recipe @item.Id_Recipe</h5>
-                                <span class="h2 font-weight-bold mb-0">
-                                    <a href="/Recipe/Details/@item.Id_Recipe" style="color:#32325D">
-                                        @item.Name
-                                    </a>
-                                </span>
-                            </div>
-                        </div>
-                        <p class="mt-3 mb-0 text-muted text-sm">
-                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                            <span class="text-nowrap">Since last month</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
+﻿
+<div id="warning">
+    <h1 style="font-weight:500;">Speech Recognition Speech SDK not found (microsoft.cognitiveservices.speech.sdk.bundle.js missing).</h1>
+</div>
 
+<div id="content" style="display:none">
+    <table width="100%">
+        <tr>
+            <td></td>
+            <td><h1 style="font-weight:500;">Microsoft Cognitive Services Speech SDK JavaScript Quickstart</h1></td>
+        </tr>
+        
+        <tr>
+            <td></td>
+            <td><button id="startRecognizeOnceAsyncButton">Start recognition</button></td>
+        </tr>
+        <tr>
+            <td align="right" valign="top">Results</td>
+            <td><textarea id="phraseDiv" style="display: inline-block;width:500px;height:200px"></textarea></td>
+        </tr>
+    </table>
+</div>
+
+<!-- Speech SDK reference sdk. -->
+<script src="~/js/microsoft.cognitiveservices.speech.sdk.bundle.js"></script>
+
+<!-- Speech SDK USAGE -->
+<script>
+    // status fields and start button in UI
+    var phraseDiv;
+    var startRecognizeOnceAsyncButton;
+
+    // subscription key and region for speech services.
+    var authorizationToken;
+    var SpeechSDK;
+    var recognizer;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        startRecognizeOnceAsyncButton = document.getElementById("startRecognizeOnceAsyncButton");
+        phraseDiv = document.getElementById("phraseDiv");
+
+        startRecognizeOnceAsyncButton.addEventListener("click", function () {
+            startRecognizeOnceAsyncButton.disabled = true;
+            phraseDiv.innerHTML = "";
+
+            // if we got an authorization token, use the token. Otherwise use the provided subscription key
+            var speechConfig;
+            if (authorizationToken) {
+                speechConfig = SpeechSDK.SpeechConfig.fromAuthorizationToken("ec079ac7489c4b7ebe4f3b24c91b41f0", "westus");
+            } else {
+                speechConfig = SpeechSDK.SpeechConfig.fromSubscription("ec079ac7489c4b7ebe4f3b24c91b41f0", "westus");
+            }
+
+            speechConfig.speechRecognitionLanguage = "pt-PT";
+            var audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+            recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
+
+            recognizer.recognizeOnceAsync(
+                function (result) {
+                    startRecognizeOnceAsyncButton.disabled = false;
+                    var locationFinal;
+                    var frase = String(result.text);
+                    phraseDiv.innerHTML += frase;
+                    var currentLocation = window.location.href;
+                    if (frase.includes("menu")) {
+                        locationFinal = currentLocation.substr(0, currentLocation.length - 5);
+                        window.location.href = locationFinal;
+                    } else if (frase.includes("desligar")) {
+                        locationFinal = currentLocation.substr(0, currentLocation.length - 5);
+                        locationFinal = locationFinal.concat("/Logout")
+                        window.location.href = locationFinal;
+                    }
+                    phraseDiv.innerHTML += result.text;
+                        
+
+                    window.console.log(result);
+                    recognizer.close();
+                    recognizer = undefined;
+                },
+                function (err) {
+                    startRecognizeOnceAsyncButton.disabled = false;
+                    phraseDiv.innerHTML += err;
+                    window.console.log(err);
+
+                    recognizer.close();
+                    recognizer = undefined;
+                });
+        });
+
+        if (!!window.SpeechSDK) {
+            SpeechSDK = window.SpeechSDK;
+            startRecognizeOnceAsyncButton.disabled = false;
+
+            document.getElementById('content').style.display = 'block';
+            document.getElementById('warning').style.display = 'none';
+
+            // in case we have a function for getting an authorization token, call it.
+            if (typeof RequestAuthorizationToken === "function") {
+                RequestAuthorizationToken();
+            }
         }
-    </div>
-        </div>
-    </div>
-</div>
-<!-- Page content -->
-<div class="container-fluid mt--7">
-    <div class="row">
-        <div class="col">
-            <div class="card shadow">
-                <div class="card-header border-0">
-                    <h3 class="mb-0 text-center">Recipes</h3>
-                </div>
-                <div class="table-responsive">
-                    <table class="table align-items-center table-flush">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col">Recipe Id</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Calories</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (Recipe item in Model)
-                            {
-                                <tr>
-                                    <th scope="row">
-                                        <div class="media align-items-center">
-                                            <div class="media-body">
-                                                <span class="mb-0 text-sm">@Html.ActionLink((@item.Id_Recipe).ToString(), "Details", "Recipe", new { id = @item.Id_Recipe }, new  {@class= "text-default"})</span>
-                                            </div>
-                                        </div>
-                                    </th>
-                                    <td>
-                                        @item.Name
-                                    </td>
-                                    <td>
-                                        @item.Description
-                                    </td>
-                                    <td>
-                                        @item.Calories
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    });
+</script>

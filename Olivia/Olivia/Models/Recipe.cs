@@ -24,7 +24,7 @@ namespace Olivia.Models
         public float Protein { get; set; }
         public float Fiber { get; set; }
         public float Sodium { get; set; }
-        public List<Ingredient> Ingredients { get; set; } = Repeated(new Ingredient(), 10);//new List<IngredientRecipe>();
+        public List<RecipeIngredient> Ingredients { get; set; } = Repeated(new RecipeIngredient(), 10);//new List<IngredientRecipe>();
         public List<Instruction> Instructions { get; set; } = Repeated(new Instruction(), 10);//new List<Instruction>();
 
 
