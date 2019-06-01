@@ -243,6 +243,22 @@ GO
 CREATE INDEX [FK_Favorite_Rec2_Idx] ON [Favorite] ([Recipe_key] ASC);
 GO
 
+-- -----------------------------------------------------
+-- Table `Olivia`.`Warning`
+-- -----------------------------------------------------
+CREATE TABLE [Warning] (
+  [Id_Recipe] INT NOT NULL,
+  [Id_Warning] INT NOT NULL,
+  [Warning] TEXT NOT NULL,
+  PRIMARY KEY ([Id_Recipe], [Id_Warning]),
+  CONSTRAINT [FK_IdRecipe]
+    FOREIGN KEY ([Id_Recipe])
+    REFERENCES [Recipe] ([Id_Recipe])
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+GO
+
+
 
 /* SET SQL_MODE=@OLD_SQL_MODE; */
 /* SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS; */
@@ -633,3 +649,24 @@ insert into Instruction (Designation, Position, Id_Recipe) values
     ('Ao mesmo tempo coza as batitinhas em água temperada com sal',10,8),
     ('Passadas os 25 minutos, retire a folha de alumínio e aumente o forno para os 200ºC',11,8),
     ('FINALIZAÇÃO: Escorra as batatas, disponha-as à volta das codernizes e leve o tabuleiro de novo ao forno durante mais 10 minutos',12,8);
+
+insert into Warning (Id_Recipe, Id_Warning, Warning) values
+    (1,1,'TESOURO NUTRICIONAL: Fonte de fósforo, cálcio, vitamina B2 e ácido fólico. Rico em B12.'),
+    (2,1,'TESOURO NUTRICIONAL: Rico em potássio e vitaminas B1, B12, K e ácido fólico. Excelente fonte de vitamina B6, vitamina C, betacaroteno e niacina.'),
+    (2,2,'CONSERVAÇÃO: Congele o frango dentro de um saco de plástico transparente, com uma etiqueta, por um período máximo de 15 dias. Na etiqueta deve constar a data de congelação e a data limite de consumo. Para descongelar coloque o frango na última prateleeira do frigorífico.'),
+    (2,3,'NOTA: Se comprar o frango inteiro, reserve a parte não utilizada e congele para utilizar numa próxima receita.'),
+    (4,1,'TESOURO NUTRICIONAL: Rico em magnésio e vitaminca C.'),
+    (4,2,'SUGESTÃO SAUDÁVEL: Acabe a refeição com fruta da época. Por exemplo, um punhado de amoras.'),
+    (4,3,'SUGESTÃO VEGAN: Substitua o queijo de cabra por tofu. Junte-lhe 2 colheres de sopa de molha de soja, a raspa da casca e o sumo de limão e um pouco de pimentão doce. Misture bem e deixe marinar. Junte ao preparado na altura de servir.'),
+    (5,1,'TESOURO NUTRICIONAL: Fonte de vitamina C.'),
+    (5,2,'SUGESTÃO SAUDÁVEL: Pode substituir o gelado de iogurte com frutos silvestres, por gelado light de morango, reduzindo desta forma a quantidade de gordura e de açúcar.'),
+    (5,3,'SUGESTÃO: Pode substituir as framboesas por morangos picados'),
+    (6,1,'TESOURO NUTRICIONAL: Rico em potássio, fósfero, ferro, zinco e ácido fólico. Excelente fonte de vitamnia B12.'),
+    (6,2,'GLOSSÁRIO GASTRONÓMICO: Marinar - mergulhar alimentos crus, normalmente carne ou peixe, num líquido composto por vinho, azeite, alho, ervas ou especiarias durante algumas horas. Não só dá sabor aos alimentos como os torna mais tenros.'),
+    (7,1,'TESOURO NUTRICIONAL: Fonte de ácido fólico, magnésio, fósforo e vitaminas B2, B12, E, retinol, biotina e ácido fólico. Rico em vitamina K.'),
+    (7,2,'GLOSSÁRIO GASTRONÓMICO: Pelar - tirar a pele a frutos ou vegetais.'),
+    (8,1,'TESOURO NUTRICIONAL: Excelente fonte de potássio, vitamina B6, B1 e niacina.'),
+    (8,2,'GLOSSÁRIO GASTRONÓMICO: Salter - cozinhar rapidamente em gordura bem quente.');
+
+
+select * from [Warning];
