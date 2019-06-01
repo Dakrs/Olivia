@@ -18,6 +18,7 @@ namespace Olivia.Models
         public string Description { get; set; }
         public int Creator { get; set; }
         public int Type { get; set; }
+        public int Duration { get; set; }
         public float Calories { get; set; }
         public float Fat { get; set; }
         public float Carbs { get; set; }

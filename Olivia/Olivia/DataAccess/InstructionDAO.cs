@@ -21,9 +21,8 @@ namespace Olivia.DataAccess
             {
 
                 command.CommandType = CommandType.Text;
-                command.CommandText = "INSERT INTO [Instruction] VALUES (@Designation, @Duration , @Position , @Id_Recipe)";
+                command.CommandText = "INSERT INTO [Instruction] VALUES (@Designation, @Position , @Id_Recipe)";
                 command.Parameters.Add("@Designation", SqlDbType.VarChar).Value = instruction.Designation;
-                command.Parameters.Add("@Duration", SqlDbType.Int).Value = instruction.Duration;
                 command.Parameters.Add("@Position", SqlDbType.Int).Value = instruction.Position;
                 command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = instruction.Id_Recipe;
 
@@ -60,7 +59,6 @@ namespace Olivia.DataAccess
                             Id_Recipe = int.Parse(row["Id_Recipe"].ToString()),
                             Position = int.Parse(row["Position"].ToString()),
                             Designation = row["Designation"].ToString(),
-                            Duration = int.Parse(row["Duration"].ToString())
                         };
                     }
                 }
@@ -93,7 +91,6 @@ namespace Olivia.DataAccess
                         Instruction i = new Instruction
                         {
                             Designation = row["Designation"].ToString(),
-                            Duration = int.Parse(row["Duration"].ToString())
                         };
                         result.Add(i);
                     }
