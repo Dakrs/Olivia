@@ -1,6 +1,7 @@
 ﻿@model Olivia.Models.Recipe
 @{
     Layout = "~/Views/Shared/_LayoutTest.cshtml";
+    TempData["Id"] = Model.Id_Recipe;
 }
 <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
     <h1 class="display-1 opacity-9" style="color:white; margin-left:5%">@Model.Name</h1>
@@ -196,10 +197,10 @@
         </div>
     </div>
 
-    <button type="button" class="btn btn-icon btn-olivia bg-gradient-olivia" data-toggle="modal" data-target="#modal-notification" style="margin-top:3%">
+    <button type="button" class="btn btn-icon btn-olivia bg-gradient-olivia" data-toggle="modal" data-target="#RecipeStartCheck" style="margin-top:3%">
         <span class="btn-inner--icon"><i class="ni ni-button-play"></i></span>
     </button>
-    <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+    <div class="modal fade" id="RecipeStartCheck" tabindex="-1" role="dialog" aria-labelledby="RecipeStartCheck" aria-hidden="true">
         <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
             <div class="modal-content bg-gradient-danger">
 
@@ -235,7 +236,7 @@
                 <div class="modal-footer">
                     <div class="row" style="width:100%">
                         <div class="col">
-                            <a href="" class="btn btn-white" role="button" aria-pressed="true">
+                            <a href="/Cook" class="btn btn-white" role="button" aria-pressed="true">
                                 Ok, Got it
                             </a>
                         </div>
