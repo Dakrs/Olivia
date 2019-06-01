@@ -38,7 +38,7 @@ CREATE TABLE [Recipe] (
   [Id_Recipe] INT IdENTITY(1,1) NOT NULL,
   [Name] VARCHAR(100) NOT NULL,
   [Description] TEXT NOT NULL,
-  [Creator] INT NULL,
+  [Creator] INT NOT NULL,
   [Type] INT NOT NULL,
   [Calories] FLOAT NOT NULL,
   [Fat] FLOAT NOT NULL,
