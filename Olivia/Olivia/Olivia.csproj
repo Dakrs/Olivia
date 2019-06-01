@@ -30,6 +30,7 @@
     <Folder Include="Views\FormModel\" />
     <Folder Include="Views\User\" />
     <Folder Include="Views\User\UserLogin\" />
+    <Folder Include="Views\Cook\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.Configuration">
@@ -37,12 +38,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Remove="wwwroot\layout\assets\img\img1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Update="wwwroot\images\frontimage.jpg">
       <IncludeInPackage>true</IncludeInPackage>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="wwwroot\layout\assets\css\argon.css" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\layout\.DS_Store" />
@@ -56,7 +57,6 @@
     <None Include="wwwroot\layout\icons.html" />
     <None Include="wwwroot\layout\index.html" />
     <None Include="wwwroot\layout\package.json" />
-    <None Include="wwwroot\layout\assets\css\argon.css" />
     <None Include="wwwroot\layout\assets\css\argon.min.css" />
     <None Include="wwwroot\layout\assets\fonts\nucleo\nucleo-icons.eot" />
     <None Include="wwwroot\layout\assets\fonts\nucleo\nucleo-icons.svg" />
@@ -1975,5 +1975,7 @@
     <None Include="wwwroot\layout\examples\register.html" />
     <None Include="wwwroot\layout\examples\tables.html" />
     <None Include="wwwroot\layout\wallpaperLoggedin.jpg" />
+    <None Include="wwwroot\layout\assets\css\argon.css" />
+    <None Include="wwwroot\layout\assets\img\img1.jpg" />
   </ItemGroup>
 </Project>

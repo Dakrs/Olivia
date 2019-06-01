@@ -65,7 +65,7 @@ CREATE TABLE [History] (
   [Id_User] INT NOT NULL,
   [Id_Recipe] INT NOT NULL,
   [Date] DATETIME NOT NULL,
-  PRIMARY KEY ([Id_Recipe], [Id_User]),
+  PRIMARY KEY ([Id_Recipe], [Id_User],[Date]),
   CONSTRAINT [FK_Id_User]
     FOREIGN KEY ([Id_User])
     REFERENCES [User] ([Id_User])

@@ -132,9 +132,9 @@ namespace Olivia.DataAccess
             return i;
         }
 
-        public Ingredient GetRecipeIngredient(int id_recipe, int id_ingredient)
+        public RecipeIngredient GetRecipeIngredient(int id_recipe, int id_ingredient)
         {
-            Ingredient result = null;
+            RecipeIngredient result = null;
 
             Connection con = new Connection();
             using (SqlCommand command = con.Fetch().CreateCommand())
@@ -153,9 +153,8 @@ namespace Olivia.DataAccess
                     if (result_querie.Rows.Count > 0)
                     {
                         DataRow row = result_querie.Rows[0];
-                        result = new Ingredient
+                        result = new RecipeIngredient
                         {
-                            Id_Recipe = int.Parse(row["Id_Recipe"].ToString()),
                             Id_Ingredient = int.Parse(row["Id_Ingredient"].ToString()),
                             Quantity = float.Parse(row["Quantity"].ToString()),
                             Unit = row["Unit"].ToString()
@@ -167,9 +166,9 @@ namespace Olivia.DataAccess
             return result;
         }
 
-        public List<Ingredient> GetIngredients(int id_recipe)
+        public List<RecipeIngredient> GetIngredients(int id_recipe)
         {
-            List<Ingredient> list = new List<Ingredient>();
+            List<RecipeIngredient> list = new List<RecipeIngredient>();
 
 
             Connection con = new Connection();
@@ -187,9 +186,8 @@ namespace Olivia.DataAccess
 
                     foreach(DataRow row in result_querie.Rows)
                     {
-                        Ingredient r = new Ingredient
+                        RecipeIngredient r = new RecipeIngredient
                         {
-                            Id_Recipe = int.Parse(row["Id_Recipe"].ToString()),
                             Id_Ingredient = int.Parse(row["Id_Ingredient"].ToString()),
                             Name = row["Name"].ToString(),
                             Quantity = float.Parse(row["Quantity"].ToString()),
