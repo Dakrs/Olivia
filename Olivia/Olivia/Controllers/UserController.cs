@@ -23,6 +23,32 @@ namespace Olivia.Controllers
         {
             RecipeDAO dao = new RecipeDAO();
             List<Recipe> recipes = dao.LoadRecipes();
+
+            /**
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
+            int id_user = int.Parse(claim.Value);
+
+            List<Recipe> favorites = dao.getFavorites(id_user);
+
+            foreach(Recipe t in favorites)
+            {
+                recipes.Remove(t);
+            }
+
+            int number_fav = favorites.Count;
+            int taking;
+
+            if (number_fav > 10)
+                taking = 0;
+            else
+            {
+                taking = 10 - number_fav;
+            }*/
+
+
+            //Dictionary<int, float> rating = dao.allRatings();
+            //ViewBag.Ratings = rating;
+
             return View(recipes);
         }
 

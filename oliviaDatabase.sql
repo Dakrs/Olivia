@@ -40,6 +40,7 @@ CREATE TABLE [Recipe] (
   [Description] TEXT NOT NULL,
   [Creator] INT NOT NULL,
   [Type] INT NOT NULL,
+  [Duration] INT NOT NULL,
   [Calories] FLOAT NOT NULL,
   [Fat] FLOAT NOT NULL,
   [Carbs] FLOAT NOT NULL,
@@ -203,7 +204,6 @@ GO
 -- -----------------------------------------------------
 CREATE TABLE [Instruction] (
   [Designation] TEXT NOT NULL,
-  [Duration] INT NOT NULL,
   [Position] INT NOT NULL,
   [Id_Recipe] INT NOT NULL,
   PRIMARY KEY ([Id_Recipe], [Position]),

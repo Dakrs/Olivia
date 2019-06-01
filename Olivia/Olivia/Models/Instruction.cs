@@ -6,7 +6,6 @@ namespace Olivia.Models
         public int Id_Recipe { get; set; }
         public int Position { get; set; }
         public string Designation { get; set; }
-        public int Duration { get; set; }
     
         public Instruction() { }
 
@@ -15,7 +14,6 @@ namespace Olivia.Models
             Id_Recipe = ins.Id_Recipe;
             Position = ins.Position;
             Designation = ins.Designation;
-            Duration = ins.Duration;
         }
     }
 

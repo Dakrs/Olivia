@@ -20,7 +20,7 @@ namespace Olivia.DataAccess
             {
                 command.CommandType = CommandType.Text;
                 command.CommandText = "insert into dbo.Recipe  (Name, Description, Creator, Type, Calories, Fat, Carbs, Protein, Fiber, Sodium)" + 
-                                            "values(@Name, @Description, @Creator, @Type, @Calories, @Fat, @Carbs, @Protein, @Fiber, @Sodium); ";
+                                            "values(@Name, @Description, @Creator, @Type,@Duration ,@Calories, @Fat, @Carbs, @Protein, @Fiber, @Sodium); ";
 
                 command.Parameters.Add("@Name", SqlDbType.VarChar).Value = recipe.Name;
                 command.Parameters.Add("@Description", SqlDbType.Text).Value = recipe.Description;
@@ -32,6 +32,7 @@ namespace Olivia.DataAccess
                 command.Parameters.Add("@Protein", SqlDbType.Float).Value = recipe.Protein;
                 command.Parameters.Add("@Fiber", SqlDbType.Float).Value = recipe.Fiber;
                 command.Parameters.Add("@Sodium", SqlDbType.Float).Value = recipe.Sodium;
+                command.Parameters.Add("@Duration", SqlDbType.Int).Value = recipe.Duration;
 
 
                 command.ExecuteNonQuery();
@@ -83,11 +84,10 @@ namespace Olivia.DataAccess
                 using (SqlCommand command = con.Fetch().CreateCommand())
                 {
                     command.CommandType = CommandType.Text;
-                    command.CommandText = "insert into dbo.Instruction (Designation, Duration, Position, Id_Recipe)" +
-                                                    "values(@Designation, @Duration, @Position, @Id_Recipe);";
+                    command.CommandText = "insert into dbo.Instruction (Designation, Position, Id_Recipe)" +
+                                                    "values(@Designation, @Position, @Id_Recipe);";
 
                     command.Parameters.Add("@Designation", SqlDbType.VarChar).Value = recipe.Instructions[i].Designation;
-                    command.Parameters.Add("@Duration", SqlDbType.Int).Value = recipe.Instructions[i].Duration;
                     command.Parameters.Add("@Position", SqlDbType.Int).Value = recipe.Instructions[i].Position;
                     command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe.Instructions[i].Id_Recipe;
 
@@ -107,7 +107,7 @@ namespace Olivia.DataAccess
             using (SqlCommand command = con.Fetch().CreateCommand())
             {
                 command.CommandType = CommandType.Text;
-                command.CommandText = "update dbo.Recipe set Name=@Name, Description=@Description, Creator=@Creator, Type=@Type, Calories=@Calories, Fat=@Fat, Carbs=@Carbs, Protein=@Protein, Fiber=@Fiber, Sodium=@Sodium" +
+                command.CommandText = "update dbo.Recipe set Name=@Name, Description=@Description, Creator=@Creator, Type=@Type,Duration=@Duration ,Calories=@Calories, Fat=@Fat, Carbs=@Carbs, Protein=@Protein, Fiber=@Fiber, Sodium=@Sodium" +
                                                 "where Id_Recipe=@Id_Recipe;";
 
                 command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe.Id_Recipe;
@@ -121,6 +121,7 @@ namespace Olivia.DataAccess
                 command.Parameters.Add("@Protein", SqlDbType.Float).Value = recipe.Protein;
                 command.Parameters.Add("@Fiber", SqlDbType.Float).Value = recipe.Fiber;
                 command.Parameters.Add("@Sodium", SqlDbType.Float).Value = recipe.Sodium;
+                command.Parameters.Add("@Duration", SqlDbType.Int).Value = recipe.Duration;
 
 
                 command.ExecuteNonQuery();
@@ -172,15 +173,13 @@ namespace Olivia.DataAccess
                 {
                     Instruction ins = recipe.GetInstructionByPosition(i);
                     ins.Designation = recipe.Instructions[i].Designation;
-                    ins.Duration = recipe.Instructions[i].Duration;
 
                     using (SqlCommand command = con.Fetch().CreateCommand())
                     {
                         command.CommandType = CommandType.Text;
-                        command.CommandText = "update dbo.Instruction set Designation=@Designation, Duration=@Duration where Id_Recipe=@Id_Recipe and Position=@Position;";
+                        command.CommandText = "update dbo.Instruction set Designation=@Designation where Id_Recipe=@Id_Recipe and Position=@Position;";
 
                         command.Parameters.Add("@Designation", SqlDbType.VarChar).Value = ins.Designation;
-                        command.Parameters.Add("@Duration", SqlDbType.Int).Value = ins.Duration;
                         command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = ins.Id_Recipe;
                         command.Parameters.Add("@Position", SqlDbType.Int).Value = ins.Position;
                         command.ExecuteNonQuery();
@@ -202,11 +201,10 @@ namespace Olivia.DataAccess
                     using (SqlCommand command = con.Fetch().CreateCommand())
                     {
                         command.CommandType = CommandType.Text;
-                        command.CommandText = "insert into dbo.Instruction (Designation, Duration, Position, Id_Recipe)" +
-                                                    "values(@Designation, @Duration, @Position, @Id_Recipe); ";
+                        command.CommandText = "insert into dbo.Instruction (Designation, Position, Id_Recipe)" +
+                                                    "values(@Designation, @Position, @Id_Recipe); ";
 
                         command.Parameters.Add("@Designation", SqlDbType.VarChar).Value = recipe.Instructions[i].Designation;
-                        command.Parameters.Add("@Duration", SqlDbType.Int).Value = recipe.Instructions[i].Duration;
                         command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe.Instructions[i].Id_Recipe;
                         command.Parameters.Add("@Position", SqlDbType.Int).Value = recipe.Instructions[i].Position;
                         command.ExecuteNonQuery();
@@ -247,7 +245,8 @@ namespace Olivia.DataAccess
                             Fat = float.Parse(row["Fat"].ToString()),
                             Carbs = float.Parse(row["Carbs"].ToString()),
                             Fiber = float.Parse(row["Fiber"].ToString()),
-                            Sodium = float.Parse(row["Sodium"].ToString())
+                            Sodium = float.Parse(row["Sodium"].ToString()),
+                            Duration = int.Parse(row["Duration"].ToString())
                         };
 
                         result.Add(r);
@@ -289,7 +288,8 @@ namespace Olivia.DataAccess
                             Fat = float.Parse(row["Fat"].ToString()),
                             Carbs = float.Parse(row["Carbs"].ToString()),
                             Fiber = float.Parse(row["Fiber"].ToString()),
-                            Sodium = float.Parse(row["Sodium"].ToString())
+                            Sodium = float.Parse(row["Sodium"].ToString()),
+                            Duration = int.Parse(row["Duration"].ToString())
                         };
                         r.Instructions = r.InstructionDAO.GetInstructions(r.Id_Recipe);
                         r.Ingredients = r.IngredientDAO.GetIngredients(r.Id_Recipe);
@@ -426,7 +426,8 @@ namespace Olivia.DataAccess
                             Fat = float.Parse(row["Fat"].ToString()),
                             Carbs = float.Parse(row["Carbs"].ToString()),
                             Fiber = float.Parse(row["Fiber"].ToString()),
-                            Sodium = float.Parse(row["Sodium"].ToString())
+                            Sodium = float.Parse(row["Sodium"].ToString()),
+                            Duration = int.Parse(row["Duration"].ToString())
                         };
                         r.Instructions = r.InstructionDAO.GetInstructions(r.Id_Recipe);
                         r.Ingredients = r.IngredientDAO.GetIngredients(r.Id_Recipe);
@@ -534,7 +535,8 @@ namespace Olivia.DataAccess
                             Fat = float.Parse(row["Fat"].ToString()),
                             Carbs = float.Parse(row["Carbs"].ToString()),
                             Fiber = float.Parse(row["Fiber"].ToString()),
-                            Sodium = float.Parse(row["Sodium"].ToString())
+                            Sodium = float.Parse(row["Sodium"].ToString()),
+                            Duration = int.Parse(row["Duration"].ToString())
                         };
 
                         result.Add(r);
@@ -583,7 +585,7 @@ namespace Olivia.DataAccess
                 command.CommandType = CommandType.Text;
                 command.CommandText = "SELECT * FROM [Rating] WHERE Rating.Id_Recipe =@rec AND Rating.Id_User=@user";
                 command.Parameters.Add("@rec", SqlDbType.Int).Value = idRecipe;
-                command.Parameters.Add("@user", SqlDbType.Int).Value = idRecipe;
+                command.Parameters.Add("@user", SqlDbType.Int).Value = idUser;
 
                 using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                 {
@@ -594,7 +596,7 @@ namespace Olivia.DataAccess
                         flag = true;
                 }
             }
-
+            Console.WriteLine(flag);
             using (SqlCommand command = con.Fetch().CreateCommand())
             {
 
@@ -630,6 +632,39 @@ namespace Olivia.DataAccess
             }
 
             con.Close();
+        }
+
+        public Dictionary<int,float> allRatings()
+        {
+            Dictionary<int, float> result = new Dictionary<int, float>();
+
+            Connection con = new Connection();
+
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+                command.CommandType = CommandType.Text;
+                command.CommandText = "Select Recipe.Id_Recipe,AVG(cast (Rating as FLOAT)) AS AVERAGE FROM [Rating] RIGHT JOIN [Recipe] ON Rating.Id_Recipe = Recipe.Id_Recipe GROUP By Recipe.Id_Recipe;";
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+
+                    foreach(DataRow row in result_querie.Rows)
+                    {
+                        int id_recipe = int.Parse(row["Id_Recipe"].ToString());
+                        float rate = 0.0f;
+                        if (row["AVERAGE"] != null)
+                        {
+                            rate = float.Parse(row["AVERAGE"].ToString());
+                        }
+                        result.Add(id_recipe, rate);
+                    }
+                }
+            }
+            con.Close();
+
+            return result;
         }
     }
 }
