@@ -653,11 +653,12 @@ namespace Olivia.DataAccess
                     foreach(DataRow row in result_querie.Rows)
                     {
                         int id_recipe = int.Parse(row["Id_Recipe"].ToString());
-                        float rate = 0.0f;
-                        if (row["AVERAGE"] != null)
-                        {
-                            rate = float.Parse(row["AVERAGE"].ToString());
-                        }
+                        float rate;
+                        bool flag = float.TryParse(row["AVERAGE"].ToString(),out rate);
+
+                        if (flag == false)
+                            rate = 0.0f;
+
                         result.Add(id_recipe, rate);
                     }
                 }
