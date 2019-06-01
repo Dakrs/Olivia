@@ -294,7 +294,7 @@
                                 }if (frase.includes("ver perfil")) {
                                     locationFinal = locationFinal.concat("/User/Profile ")
                                     window.location.href = locationFinal;
-                                } if (frase.includes("começar receita")) {
+                                } if (frase.includes("começar receita") || frase.includes("começar a receita")) {
                                     var onRecipe = urlAtual[0].match(/.*\/Recipe/gi);
                                     if (onRecipe != null && onRecipe != undefined) {
                                         locationFinal = locationFinal.concat("/Cook")
