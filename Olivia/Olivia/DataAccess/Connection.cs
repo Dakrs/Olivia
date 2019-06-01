@@ -10,8 +10,8 @@ namespace Olivia.DataAccess
         public Connection()
         {
             //_connection = new SqlConnection("Server=localhost;DataBase=Olivia;User=sa;Password=uwontfindme!unlessucheat");
-            _connection = new SqlConnection("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Olivia;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
-            //_connection = new SqlConnection("Server=DESKTOP-S2U35UH;Database=Olivia;Trusted_Connection=True;");
+            //_connection = new SqlConnection("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Olivia;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            _connection = new SqlConnection("Server=DESKTOP-0G0EQH4;Database=Olivia;Trusted_Connection=True;");
         }
 
         public void Close()
