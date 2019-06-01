@@ -254,7 +254,7 @@ INSERT into [User] VALUES
 
 SET IDENTITY_INSERT Recipe on;
 
-insert into Recipe (Id_Recipe, Name, Description, Creator, Type, Calories, Fat, Carbs, Protein, Fiber, Sodium, Duration)
+insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, Carbs, Protein, Fiber, Sodium, Duration)
     values (  1,
                 'Bolo de Requeijão com Chocolate',
                 'Sobremesa deliciosa e de rápida confeção. Ideal para os apreciadores de chocolate e queijo fresco. Os frutos vermelhos enriquecem ainda mais o seu saber.',
@@ -307,31 +307,31 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type, Calories, Fat, 
                 0,
                 45
         ),
-        ( 5,
+        ( 6,
            'Gelado merengado',
            'Um saborosa sobremesa especialmente dedicada às quentes tardes de verão. Além do seu sabor é ainda uma fonte rica de vitamina C.',
            1,
            2,
-           13,
            162,
            3,
            30,
            3,
            5,
-           0
+           0,
+           13
          ),
-         ( 6,
+         ( 5,
             'Caril de peru com coco e maçã',
             'Uma combinação exótica de sabores rica em potássio, fósforo, ferro e zinco. Uma fonte excelente de vitamina B12 de rápida preparação e confecção',
             1,
             1,
-            60,
             468,
             8,
             50,
             25,
             4,
-            0),
+            0,
+            60),
         ( 7,
            'Camembert com Avelãs e Mel',
            'Uma entrada, três paladares. De extrema rápida confeção, ideal para um estilo de vida sofisticado e acelerado.',

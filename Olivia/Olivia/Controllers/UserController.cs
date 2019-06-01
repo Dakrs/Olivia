@@ -35,6 +35,25 @@ namespace Olivia.Controllers
                 cardRecipes.Add(dao.FindById(pairs.Key));
             }
 
+            List<Recipe> aux = dao.LoadRecipes();
+            foreach(Recipe t in cardRecipes)
+            {
+                bool flag = aux.Remove(t);
+                Console.WriteLine(flag);
+            }
+
+            Random rnd = new Random();
+            for(int i = 0; i < 2; i++)
+            {
+                if (aux.Count > 0)
+                {
+                    int rand = rnd.Next(aux.Count);
+                    Recipe t = aux[rand];
+                    cardRecipes.Add(t);
+                    aux.Remove(t);
+                }
+            }
+
             ViewBag.Ratings = rating;
             ViewBag.CardRecipe = cardRecipes;
 
