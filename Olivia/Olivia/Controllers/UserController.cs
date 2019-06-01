@@ -76,5 +76,38 @@ namespace Olivia.Controllers
             return RedirectToAction("Index", "Home", new { area = "" });
         }
 
+
+        public IActionResult Profile()
+        {
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Name);
+            string username = claim.Value;
+            UserDAO dao = new UserDAO();
+            Utilizador user = dao.FindByUsername(username);
+            RecipeDAO rdao = new RecipeDAO();
+            int nReceipts = rdao.NumberReceipts(user.Id_utilizador);
+            int rated = rdao.NumberRated(user.Id_utilizador);
+            int favourites = rdao.NumberFavourites(user.Id_utilizador);
+            ViewBag.User = user;
+            ViewBag.NReceipts = nReceipts;
+            ViewBag.Rated = rated;
+            ViewBag.Favourites = favourites;
+
+            return View();
+        }
+
+        public IActionResult EditProfile()
+        {
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Name);
+            string username = claim.Value;
+            UserDAO dao = new UserDAO();
+            Utilizador user = dao.FindByUsername(username);
+            ViewBag.User = user;
+
+            return View();
+
+        }
+
+
+
     }
 }

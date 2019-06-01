@@ -300,6 +300,99 @@ namespace Olivia.DataAccess
 
             return r;
         }
+                  
+            public int NumberReceipts(int idUser)
+            {
+
+                int nRecepits = 0;
+                Connection con = new Connection();
+                using (SqlCommand command = con.Fetch().CreateCommand())
+                {
+
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = "SELECT COUNT(*) AS CREATED FROM [Recipe] WHERE Creator=@autor";
+                    command.Parameters.Add("@autor", SqlDbType.Int).Value = idUser;
+
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        DataTable result_querie = new DataTable();
+                        adapter.Fill(result_querie);
+                        if (result_querie.Rows.Count > 0)
+                        {
+                       
+                            DataRow row = result_querie.Rows[0];
+                            nRecepits = int.Parse(row["CREATED"].ToString());
+                        }
+                        else nRecepits = -1;
+
+                    }
+                }
+                con.Close();
+
+                return nRecepits;
+            }
+
+        public int NumberRated(int idUser)
+        {
+
+            int nRecepits = 0;
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT COUNT(*) AS RATED FROM [Rating] WHERE Id_User=@id;";
+                command.Parameters.Add("@id", SqlDbType.Int).Value = idUser;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+                    if (result_querie.Rows.Count > 0)
+                    {
+
+                        DataRow row = result_querie.Rows[0];
+                        nRecepits = int.Parse(row["RATED"].ToString());
+                    }
+                    else nRecepits = -1;
+
+                }
+            }
+            con.Close();
+
+            return nRecepits;
+        }
+
+        public int NumberFavourites(int idUser)
+        {
+
+            int nRecepits = 0;
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT COUNT(*) AS FAVOURITES FROM [Favorite] WHERE User_key=@autor;";
+                command.Parameters.Add("@autor", SqlDbType.Int).Value = idUser;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+                    if (result_querie.Rows.Count > 0)
+                    {
+
+                        DataRow row = result_querie.Rows[0];
+                        nRecepits = int.Parse(row["FAVOURITES"].ToString());
+                    }
+                    else nRecepits = -1;
+
+                }
+            }
+            con.Close();
+
+            return nRecepits;
+        }
 
         public Recipe FindByName(string name)
         {

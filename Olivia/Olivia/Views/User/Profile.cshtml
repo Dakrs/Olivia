@@ -1,0 +1,66 @@
+﻿@model Olivia.Models.Utilizador
+@{
+    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+}
+
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
+    <h1 class="display-1 opacity-9" style="color:white; margin-left:5%">Your Profile</h1>
+</div>
+
+
+<div class="container-fluid mt--7">
+    <div class="nav-wrapper" style="margin-top: 3%">
+         <div class="card card-profile">
+    <img src="/layout/assets/img/perfil.png" alt="Image placeholder"  class="card-img-top">
+    <div class="row justify-content-center">
+        <div class="col-lg-3 order-lg-2">
+            <div class="card-profile-image">
+                <a href="#">
+                    <img src="/layout/assets/img/pepe.jpg" class="rounded-circle">
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+        <div class="d-flex justify-content-between">
+            <a href="/User/EditProfile" class="btn btn-sm btn-default float-right">Edit Profile</a>
+        </div>
+    </div>
+    <div class="card-body pt-15">
+        <div class="row">
+            <div class="col">
+                <div class="card-profile-stats d-flex justify-content-center">
+                    <div>
+                        <span class="heading">@ViewBag.NReceipts</span>
+                        <span class="description">Created</span>
+                    </div>
+                    <div>
+                        <span class="heading">@ViewBag.Favourites</span>
+                        <span class="description">Favourites</span>
+                    </div>
+                    <div>
+                        <span class="heading">@ViewBag.Rated</span>
+                        <span class="description">Rated</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <h5 class="h3">
+                Username: <span class="font-weight-light">@ViewBag.User.Username</span>
+            </h5>
+            <h5 class="h3">
+                Email: <span class="font-weight-light">@ViewBag.User.Email</span>
+            </h5>
+            <div class="h5 font-weight-300">
+                <i class="ni location_pin mr-2"></i>@ViewBag.User.Nome
+            </div>
+
+
+        </div>
+    </div>
+</div>
+</div>
+    </div>
+</div>
+

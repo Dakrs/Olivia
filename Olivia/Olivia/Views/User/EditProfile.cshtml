@@ -1,0 +1,29 @@
+﻿@model Olivia.Models.Utilizador
+@{
+    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+}
+
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
+    <h1 class="display-1 opacity-9" style="color:white; margin-left:5%">Your Profile</h1>
+</div>
+
+
+<div class="container-fluid mt--7">
+    <div class="nav-wrapper" style="margin-top: 10%">
+        <form>
+            <div class="form-group">
+                <label for="example-text-input" class="form-control-label">Text</label>
+                <input class="form-control" type="Name" value="@ViewBag.User.Nome" id="example-text-input">
+            </div>
+            <div class="form-group">
+                <label for="example-search-input" class="form-control-label">Search</label>
+                <input class="form-control" type="E-Mail:" value="@ViewBag.User.Email" id="example-search-input">
+            </div>
+        </form>
+       </div>
+    </div>
+
+
+
+
+
