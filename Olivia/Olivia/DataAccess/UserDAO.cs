@@ -21,7 +21,7 @@ namespace Olivia.DataAccess
                 using (SqlCommand command = con.Fetch().CreateCommand())
                 {
                     command.CommandType = CommandType.Text;
-                    command.CommandText = "insert into [User] Values(@username,@password,@email,@type,@prefe,@name,0)";
+                    command.CommandText = "insert into [User] Values(@username,@password,@email,@type,@prefe,@name,1)";
 
                     command.Parameters.Add("@username", SqlDbType.Text).Value = u.Username;
                     command.Parameters.Add("@password", SqlDbType.Text).Value = u.Password;

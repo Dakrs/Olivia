@@ -1,12 +1,14 @@
 ﻿@model System.Collections.Generic.List<Olivia.Models.Recipe>
 @{
     Layout = "~/Views/Shared/_LayoutTest.cshtml";
+    Dictionary<int, float> ratings = ViewBag.Ratings;
+    List<Recipe> cards = ViewBag.CardRecipe;
 }
 <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 500px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
     <div class="container-fluid">
         <div class="header-body">
             <div class="row">
-                @foreach (Recipe item in Model)
+                @foreach (Recipe item in cards)
                 {
                     <div class="col-xl-3 col-lg-6">
                         <div class="card card-stats mb-4 mb-xl-0">
@@ -22,8 +24,14 @@
                                     </div>
                                 </div>
                                 <p class="mt-3 mb-0 text-muted text-sm">
-                                    <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                                    <span class="text-nowrap">Since last month</span>
+                                    @if (ratings.GetValueOrDefault(item.Id_Recipe) > 2.5)
+                                    {
+                                        <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> @ratings.GetValueOrDefault(item.Id_Recipe)</span>
+                                    }
+                                    else{
+                                        <span class="text-danger mr-2"><i class="fa fa-arrow-down"></i> @ratings.GetValueOrDefault(item.Id_Recipe)</span>
+                                    }
+                                    <span class="text-nowrap">Stars</span>
                                 </p>
                             </div>
                         </div>
@@ -48,7 +56,8 @@
                             <tr>
                                 <th scope="col">Recipe Id</th>
                                 <th scope="col">Name</th>
-                                <th scope="col">Description</th>
+                                <th scope="col">Duration</th>
+                                <th scope="col">Categorie</th>
                                 <th scope="col">Calories</th>
                             </tr>
                         </thead>
@@ -67,7 +76,25 @@
                                         @item.Name
                                     </td>
                                     <td>
-                                        @item.Description
+                                        @item.Duration <i class="ni ni-time-alarm text-default"></i>
+                                    </td>
+                                    <td>
+                                        @if (item.Type == 1)
+                                        {
+                                            <b>Main Dish</b>
+                                        }
+                                        else if (item.Type == 2)
+                                        {
+                                            <b>Dessert</b>
+                                        }
+                                        else if (item.Type == 3)
+                                        {
+                                            <b>Appetizer</b>
+                                        }
+                                        else
+                                        {
+                                            <b>Vegetarian</b>
+                                        }
                                     </td>
                                     <td>
                                         @item.Calories

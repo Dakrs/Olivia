@@ -24,30 +24,19 @@ namespace Olivia.Controllers
             RecipeDAO dao = new RecipeDAO();
             List<Recipe> recipes = dao.LoadRecipes();
 
-            /**
-            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
-            int id_user = int.Parse(claim.Value);
+            Dictionary<int, float> rating = dao.allRatings();
+            List<KeyValuePair<int, float>> sortingDic = rating.ToList();
 
-            List<Recipe> favorites = dao.getFavorites(id_user);
+            sortingDic.Sort((pair1, pair2) => pair2.Value.CompareTo(pair1.Value));
 
-            foreach(Recipe t in favorites)
+            List<Recipe> cardRecipes = new List<Recipe>();
+            foreach(KeyValuePair<int, float> pairs in sortingDic.Take(2))
             {
-                recipes.Remove(t);
+                cardRecipes.Add(dao.FindById(pairs.Key));
             }
 
-            int number_fav = favorites.Count;
-            int taking;
-
-            if (number_fav > 10)
-                taking = 0;
-            else
-            {
-                taking = 10 - number_fav;
-            }*/
-
-
-            //Dictionary<int, float> rating = dao.allRatings();
-            //ViewBag.Ratings = rating;
+            ViewBag.Ratings = rating;
+            ViewBag.CardRecipe = cardRecipes;
 
             return View(recipes);
         }
