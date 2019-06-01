@@ -121,6 +121,26 @@ namespace Olivia.DataAccess
             return id;
         }
 
+        public void UpdateProfile(int id, string name, string email) {
+
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "Update[User] set Name = @user, Email = @email where Id_User = @id ;";
+                command.Parameters.Add("@user", SqlDbType.VarChar).Value = name;
+                command.Parameters.Add("@email", SqlDbType.VarChar).Value = email;
+                command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+
+                command.ExecuteNonQuery();
+            }
+            con.Close();
+
+
+        
+        }
+
         
     }
 }
