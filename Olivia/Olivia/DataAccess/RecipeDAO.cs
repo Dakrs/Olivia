@@ -39,7 +39,7 @@ namespace Olivia.DataAccess
             }
 
             int recipe_id = FindByName(recipe.Name).Id_Recipe;
-            foreach (Ingredient ing in recipe.Ingredients)
+            foreach (RecipeIngredient ing in recipe.Ingredients)
             {
                 if (ing.Name == null)
                     continue;
@@ -128,7 +128,7 @@ namespace Olivia.DataAccess
             }
 
             recipe.DeleteIngredients();
-            foreach (Ingredient ing in recipe.Ingredients)
+            foreach (RecipeIngredient ing in recipe.Ingredients)
             {
                 if (ing.Name == null)
                     continue;
@@ -153,8 +153,8 @@ namespace Olivia.DataAccess
 
                     command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe.Id_Recipe;
                     command.Parameters.Add("@Id_Ingredient", SqlDbType.Int).Value = current.Id_Ingredient;
-                    command.Parameters.Add("@Quantity", SqlDbType.Float).Value = current.Quantity;
-                    command.Parameters.Add("@Unit", SqlDbType.VarChar).Value = current.Unit;
+                    command.Parameters.Add("@Quantity", SqlDbType.Float).Value = ing.Quantity;
+                    command.Parameters.Add("@Unit", SqlDbType.VarChar).Value = ing.Unit;
                     command.ExecuteNonQuery();
                 }
 

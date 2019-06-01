@@ -20,13 +20,20 @@
     <Compile Remove="Controllers\Logininfo.cs" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 6cd47db8f4d199946c41d4bf86c3513ace984a1d
 
 
 
 
 
+<<<<<<< HEAD
     
 
+=======
+>>>>>>> 6cd47db8f4d199946c41d4bf86c3513ace984a1d
 
 
 

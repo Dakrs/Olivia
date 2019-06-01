@@ -42,7 +42,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (Ingredient item in Model.Ingredients)
+                                            @foreach (RecipeIngredient item in Model.Ingredients)
                                             {
                                                 <tr>
                                                     <th scope="row">
@@ -221,7 +221,7 @@
                             </div>
                         </div>
 
-                        @foreach(Ingredient item in Model.Ingredients){
+                        @foreach(RecipeIngredient item in Model.Ingredients){
                             <div class="row" style="margin-left:5%">
                                 <div class="col">
                                     @item.Name
