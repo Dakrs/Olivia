@@ -24,6 +24,9 @@ namespace Olivia.DataAccess
                     DataTable result_querie = new DataTable();
                     adapter.Fill(result_querie);
 
+                    if (result_querie.Rows.Count == 0)
+                        return null;
+
                     DataRow row = result_querie.Rows[0];
                     int idMenu;
                     bool flag = int.TryParse(row["Menu"].ToString(), out idMenu);
