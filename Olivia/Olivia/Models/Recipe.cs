@@ -27,8 +27,7 @@ namespace Olivia.Models
         public float Sodium { get; set; }
         public List<RecipeIngredient> Ingredients { get; set; } = Repeated(new RecipeIngredient(), 10);//new List<IngredientRecipe>();
         public List<Instruction> Instructions { get; set; } = Repeated(new Instruction(), 10);//new List<Instruction>();
-
-
+        public List<string> Warnings { get; set; }
         public static List<T> Repeated<T>(T value, int count)
         {
             List<T> ret = new List<T>(count);

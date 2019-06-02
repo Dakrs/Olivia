@@ -1,0 +1,136 @@
+﻿@model Olivia.Models.Utilizador
+@{
+    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+    List<Recipe> favoritos = ViewBag.Favoritos;
+}
+
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
+    <div id="textContainer" style="margin-left:3%">
+        <p>
+            <h1 style="font-size:54px;" class="retroshadow"> Favorites </h1>
+        </p>
+    </div>
+</div>
+
+<!-- Arial Black;Verdana -->
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text Outline</title>
+    <style>
+
+        #textContainer p {
+            font-family: Verdana;
+            font-size: 50px;
+            font-weight: bold;
+            color: #E6E8E6;
+            margin: 0;
+        }
+
+        #textContainer .outline {
+            -webkit-text-stroke-width: 2px;
+            -webkit-text-stroke-color: #000000;
+        }
+
+        #textContainer .strokeme {
+            color: white;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+
+        #textContainer .deepshadow {
+            color: #e0dfdc;
+            letter-spacing: .1em;
+            text-shadow: 0 -1px 0 #fff, 0 1px 0 #2e2e2e, 0 2px 0 #2c2c2c, 0 3px 0 #2a2a2a, 0 4px 0 #282828, 0 5px 0 #262626, 0 6px 0 #242424, 0 7px 0 #222, 0 8px 0 #202020, 0 9px 0 #1e1e1e, 0 10px 0 #1c1c1c, 0 11px 0 #1a1a1a, 0 12px 0 #181818, 0 22px 30px rgba(0, 0, 0, 0.9);
+        }
+
+        #textContainer .retroshadow {
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: #000000;
+            color: #FFFFFF;
+            letter-spacing: .05em;
+            text-shadow: 4px 4px 0px #29960E, 7px 7px 0px rgba(0, 0, 0, 0.5);
+        }
+
+        #textContainer .hit-the-floor {
+            color: #fff;
+            font-size: 12em;
+            font-weight: bold;
+            font-family: Helvetica;
+            text-shadow: 0 1px 0 #ccc, 0 2px 0 #cb0035, 0 3px 0 #bbb, 0 4px 0 #cb0035, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15);
+        }
+
+
+    </style>
+</head>
+
+
+<div class="container-fluid mt--7">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header border-0">
+                    <h3 class="mb-0 text-center">Recipes</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Recipe Id</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Duration</th>
+                                <th scope="col">Categorie</th>
+                                <th scope="col">Calories</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Recipe item in favoritos)
+                            {
+                                <tr>
+                                    <th scope="row">
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <span class="mb-0 text-sm">@Html.ActionLink((@item.Id_Recipe).ToString(), "Details", "Recipe", new { id = @item.Id_Recipe }, new { @class = "text-default" })</span>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <td>
+                                        @item.Name
+                                    </td>
+                                    <td>
+                                        @item.Duration <i class="ni ni-time-alarm text-default"></i>
+                                    </td>
+                                    <td>
+                                        @if (item.Type == 1)
+                                        {
+                                            <b>Main Dish</b>
+                                        }
+                                        else if (item.Type == 2)
+                                        {
+                                            <b>Dessert</b>
+                                        }
+                                        else if (item.Type == 3)
+                                        {
+                                            <b>Appetizer</b>
+                                        }
+                                        else
+                                        {
+                                            <b>Vegetarian</b>
+                                        }
+                                    </td>
+                                    <td>
+                                        @item.Calories
+                                    </td>
+                                    <td>
+                                        <a href="/Recipe/Favorite/@item.Id_Recipe" class="btn btn-icon btn-oliviay bg-gradient-oliviay btn-sm" role="button" aria-pressed="true" style="margin-top:3%">
+                                            <span class="btn-inner--icon"><i class="fa fa-trash"></i></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
