@@ -1,11 +1,9 @@
 ﻿@model Olivia.Models.Recipe
 @using System.Text.RegularExpressions;
 @{
-
     Layout = "~/Views/Shared/_LayoutTest.cshtml";
     TempData["Id"] = Model.Id_Recipe;
     Boolean boolean = ViewBag.boolean;
-
 }
 <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
     <h1 class="display-1 opacity-9" style="color:white; margin-left:5%">@Model.Name</h1>
@@ -269,9 +267,6 @@
         </a>
     }
 
-    <a href="/Recipe/Favorite/@Model.Id_Recipe" class="btn btn-icon btn-oliviay bg-gradient-oliviay" role="button" aria-pressed="true" style="margin-top:3%">
-        <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
-    </a>
 
     <div class="card-deck" style="margin-top:3%;margin-bottom:3%" >
         @foreach (string warning in Model.Warnings)
@@ -289,4 +284,3 @@
 
 </div>
 
-<img src="data:image/png;base64,@Model.GetImage()"/>
