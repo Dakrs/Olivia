@@ -139,6 +139,41 @@ namespace Olivia.DataAccess
             con.Close();
         }
 
+        public int CalculatePontos(int idUser) {
+            Connection con = new Connection();
+            int pontos = 0;
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "select SUM(Rating) AS Pontos from[Rating] inner join[Recipe] on Rating.Id_Recipe = Recipe.Id_Recipe where Creator = @id;";
+                command.Parameters.Add("@id", SqlDbType.VarChar).Value = idUser;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result = new DataTable();
+                    adapter.Fill(result);
+
+
+                    if (result.Rows.Count > 0)
+                    {
+
+                        DataRow row = result.Rows[0];
+                        pontos = int.Parse(row["Pontos"].ToString());
+
+
+                        con.Close();
+
+
+                    }
+
+                }
+
+            }
+            return pontos;
+
+        }
+
         public Dictionary<DateTime,Recipe> userHistory(int idUser)
         {
             Dictionary<DateTime, Recipe> result = new Dictionary<DateTime, Recipe>();

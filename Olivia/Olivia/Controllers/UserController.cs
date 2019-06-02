@@ -125,7 +125,7 @@ namespace Olivia.Controllers
             RecipeDAO rdao = new RecipeDAO();
             int nReceipts = rdao.NumberReceipts(user.Id_utilizador);
             int rated = rdao.NumberRated(user.Id_utilizador);
-            int favourites = rdao.NumberFavourites(user.Id_utilizador);
+            int favourites = dao.CalculatePontos(user.Id_utilizador);
             ViewBag.User = user;
             ViewBag.NReceipts = nReceipts;
             ViewBag.Rated = rated;

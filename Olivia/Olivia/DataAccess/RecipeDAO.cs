@@ -19,8 +19,8 @@ namespace Olivia.DataAccess
             using (SqlCommand command = con.Fetch().CreateCommand())
             {
                 command.CommandType = CommandType.Text;
-                command.CommandText = "insert into dbo.Recipe  (Name, Description, Creator, Type, Calories, Fat, Carbs, Protein, Fiber, Sodium)" + 
-                                            "values(@Name, @Description, @Creator, @Type,@Duration ,@Calories, @Fat, @Carbs, @Protein, @Fiber, @Sodium); ";
+                command.CommandText = "insert into dbo.Recipe  (Name, Description, Creator, Type, Duration, Calories, Fat, Carbs, Protein, Fiber, Sodium) " + 
+                                            "values(@Name, @Description, @Creator, @Type, @Duration ,@Calories, @Fat, @Carbs, @Protein, @Fiber, @Sodium); ";
 
                 command.Parameters.Add("@Name", SqlDbType.VarChar).Value = recipe.Name;
                 command.Parameters.Add("@Description", SqlDbType.Text).Value = recipe.Description;
@@ -55,7 +55,12 @@ namespace Olivia.DataAccess
                     current.IngredientDAO.Insert(current);
                     current = current.IngredientDAO.FindByName(ing.Name);
                 }
-
+                if (current == null) {
+                    current = new Ingredient();
+                    current.Name = ing.Name;
+                    current.IngredientDAO.Insert(current);
+                    current = current.IngredientDAO.FindByName(ing.Name);
+                }
                 using (SqlCommand command = con.Fetch().CreateCommand())
                 {
                     command.CommandType = CommandType.Text;

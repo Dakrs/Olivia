@@ -68,7 +68,13 @@ namespace Olivia.Controllers
 
             var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
             recipe.Creator = int.Parse(claim.Value);
-
+            string s = "kapa";
+            List<string> warnings = new List<string>
+            {
+                s
+            };
+            recipe.Warnings = warnings;
+            recipe.Duration = 5;
             dao.Insert(recipe);
             return RedirectToAction("Index", "Recipe");
         }
