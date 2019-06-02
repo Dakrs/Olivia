@@ -55,7 +55,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="/User/History">
                             <i class="ni ni-calendar-grid-58 text-default"></i> History
                         </a>
                     </li>
@@ -124,7 +124,11 @@
         <script src="~/layout/assets/vendor/chart.js/dist/Chart.min.js"></script>
         <script src="~/layout/assets/vendor/chart.js/dist/Chart.extension.js"></script>
         <script src="~/layout/assets/js/argon.js?v=1.0.0"></script>
-
+        <script> // to utf-8
+            function encode_utf8( s ){
+                 return unescape( encodeURIComponent( s ) );
+            }( '\u4e0a\u6d77' )
+        </script>
 
         <!-- Speech SDK reference sdk. -->
         <script src="~/js/microsoft.cognitiveservices.speech.sdk.bundle.js"></script>
@@ -193,6 +197,39 @@
               window.speechSynthesis.speak(speech);
             }
 
+
+
+
+        </script>
+        <script>
+            var speechConfig;
+            speechConfig = SpeechSDK.SpeechConfig.fromSubscription("3aadf2f2ea99425199b47ed54bc4081f", "westus");
+
+        speechConfig.speechRecognitionLanguage = "pt-PT";
+        var audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+        recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
+
+
+                    //  The event recognizing signals that an intermediate recognition result is received.
+            recognizer.recognizing = function (s, e) {
+                var texto = e.result.text;
+                if (texto.includes("olívia") || texto.includes("ok"))
+                    document.getElementById("startRecognizeOnceAsyncButton").click();
+               console.log('recognizing text', e.result.text);
+               };
+
+                    //  The event recognized signals that a final recognition result is received.
+            recognizer.recognized = function (s, e) {
+                if (texto.includes("olívia") )
+                    document.getElementById("startRecognizeOnceAsyncButton").click();
+                        console.log('recognized text', e.result.text);
+            };
+            
+            var currentLocation = window.location.href;
+            var urlAtual = currentLocation.match(/.*\/Cook/gi);
+            //var res = urlAtual[0];
+            if (urlAtual == null) 
+                recognizer.startContinuousRecognitionAsync();
         </script>
         <!-- Speech SDK USAGE -->
         <script>
@@ -205,6 +242,11 @@
             var SpeechSDK;
             var recognizer;
 
+           
+            
+
+            
+
             document.addEventListener("DOMContentLoaded", function () {
                 
                 startRecognizeOnceAsyncButton = document.getElementById("startRecognizeOnceAsyncButton");
@@ -213,6 +255,8 @@
                 startRecognizeOnceAsyncButton.addEventListener("click", function () {
                     startRecognizeOnceAsyncButton.disabled = true;
                     phraseDiv.innerHTML = "";
+                            readOutLoud("Sim Senhor Engenheiro");
+
 
                     // if we got an authorization token, use the token. Otherwise use the provided subscription key
                     var speechConfig;
@@ -232,10 +276,10 @@
                             var locationFinal;
                             var frase = String(result.text);
                             var currentLocation = window.location.href;
-                            var aux = currentLocation.match(/.*\/(User|Recipe)/gi);
-                            var res = aux[0];
+                            var urlAtual = currentLocation.match(/.*\/(User|Recipe|Cook)/gi);
+                            var res = urlAtual[0];
                             if (res != null && res != undefined) {
-                                aux = res.match(/e$/gi);
+                                var aux = res.match(/e$/gi);
                                 if (aux != null)
                                     locationFinal = res.substr(0, res.length - 7);
                                 else
@@ -244,28 +288,44 @@
                                 if (frase.includes("menu")) {
                                     locationFinal = locationFinal.concat("/User")
                                     window.location.href = locationFinal;
+                                }if (frase.includes("editar perfil")) {
+                                    locationFinal = locationFinal.concat("/User/EditProfile")
+                                    window.location.href = locationFinal;
+                                }if (frase.includes("ver perfil")) {
+                                    locationFinal = locationFinal.concat("/User/Profile ")
+                                    window.location.href = locationFinal;
+                                } if (frase.includes("começar receita") || frase.includes("começar a receita")) {
+                                    var onRecipe = urlAtual[0].match(/.*\/Recipe/gi);
+                                    if (onRecipe != null && onRecipe != undefined) {
+                                        locationFinal = locationFinal.concat("/Cook")
+                                        window.location.href = locationFinal;
+                                    }
                                 }
                                 else if (frase.includes("desligar")) {
                                     readOutLoud("A sair");
                                     locationFinal = locationFinal.concat("/User/Logout")
-                                    window.location.href = locationFinal;
-                                } else if (frase.includes("olívia")) {
-                                    readOutLoud("Sim Senhor Engenheiro");
-                                } else if (frase.includes("tenho fome")) {
-                                    readOutLoud("Olha fode-te entao, estas gordo");
-                                } else if (frase.includes("boa")) {
-                                    readOutLoud("Anda ca que o pai utra-te a mifra com compota de colhao");
-                                }
-                                }else if (frase.includes("auto-avaliação")) {
+                                    setTimeout(function () {
+                                        window.location.href = locationFinal;
+                                    }, 1000);
+                                    //window.location.href = locationFinal;
+                                } else if (frase.includes("auto-avaliação")) {
                                     readOutLoud("É para o 20");
+                                } else if (frase.includes("tenho fome")) {
+                                    locationFinal = locationFinal.concat("/Recipe/Random")
+                                    readOutLoud("A escolher receita");
+                                    setTimeout(function () {
+                                        window.location.href = locationFinal;
+                                    }, 2000);
+                                    //window.location.href = locationFinal;
                                 }
-
+                            }
                             phraseDiv.innerHTML += result.text;
-
 
                             window.console.log(result);
                             recognizer.close();
+                            recognizer.startContinuousRecognitionAsync();
                             recognizer = undefined;
+
                         },
                         function (err) {
                             startRecognizeOnceAsyncButton.disabled = false;
@@ -273,6 +333,7 @@
                             window.console.log(err);
 
                             recognizer.close();
+                            recognizer.startContinuousRecognitionAsync();
                             recognizer = undefined;
                         });
                 });

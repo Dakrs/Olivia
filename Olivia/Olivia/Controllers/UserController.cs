@@ -160,6 +160,20 @@ namespace Olivia.Controllers
             return View();
         }
 
+        [Authorize]
+        public IActionResult History()
+        {
+            UserDAO dao = new UserDAO();
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
+
+            int idUser = int.Parse(claim.Value);
+
+            List<KeyValuePair<DateTime, Recipe>> list = dao.userHistory(idUser).ToList();
+            list.Sort((pair1, pair2) => pair2.Key.CompareTo(pair1.Key));
+
+            return View(list);
+        }
+
 
         public IActionResult Favorites(){
 
