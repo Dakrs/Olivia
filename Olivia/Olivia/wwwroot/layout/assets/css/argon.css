@@ -3130,7 +3130,21 @@ fieldset:disabled a.btn
 {
     box-shadow: none, 0 0 0 0 rgba(17, 205, 239, .5);
 }
+.textContainer{
+    font-family: Verdana;
+    font-size: 50px;
+    font-weight: bold;
+    color: #E6E8E6;
+    margin: 0;
+}
 
+.retroshadow {
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #FFFFFF;
+    color: #FFFFFF;
+    letter-spacing: .05em;
+    text-shadow: 4px 4px 0px #cb0035, 7px 7px 0px rgba(0, 0, 0, 0.7);
+}
 .btn-oliviay
 {
     color: #fff;
