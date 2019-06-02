@@ -1,1 +1,127 @@
-﻿
+﻿@model Olivia.Models.Recipe
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+}
+
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
+    <div id="textContainer" style="margin-left:3%">
+        <p>
+            <h1 style="font-size:54px;" class="retroshadow"> Create Recipe </h1>
+        </p>
+    </div>
+</div>
+
+<div class="container-fluid mt--7">
+    <div class="nav-wrapper" style="margin-top: 10%">
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Type" class="control-label"></label>
+                    <select class="form-control" asp-for="Type">
+                        <option value="1"> Main dish </option>
+                        <option value="2"> Desert</option>
+                        <option value="3"> Appetizer</option>
+                        <option value="4"> Vegeterian</option>
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Calories" class="control-label"></label>
+                    <input asp-for="Calories" class="form-control" />
+                    <span asp-validation-for="Calories" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Fat" class="control-label"></label>
+                    <input asp-for="Fat" class="form-control" />
+                    <span asp-validation-for="Fat" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Carbs" class="control-label"></label>
+                    <input asp-for="Carbs" class="form-control" />
+                    <span asp-validation-for="Carbs" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Protein" class="control-label"></label>
+                    <input asp-for="Protein" class="form-control" />
+                    <span asp-validation-for="Protein" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Fiber" class="control-label"></label>
+                    <input asp-for="Fiber" class="form-control" />
+                    <span asp-validation-for="Fiber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Sodium" class="control-label"></label>
+                    <input asp-for="Sodium" class="form-control" />
+                    <span asp-validation-for="Sodium" class="text-danger"></span>
+                </div>
+        </div>
+        <div class="col-md-4">
+            <h2>Instructions</h2>
+
+            <div class="form-group">
+                <table style="width:75%">
+                    <tr>
+                        <th><label asp-for="Instructions[0].Designation" class="control-label"></label></th>
+                    </tr>
+                    @for (int i = 0; i < 10; i++)
+                    {
+                        <tr>
+                            <td><input asp-for="Instructions[i].Designation" class="form-control" placeholder="Step @(i+1) " /></td>
+                        </tr>
+                        <span asp-validation-for="Instructions[i].Designation" class="text-danger"></span>
+
+                    }
+                </table>
+            </div>
+
+            <h2>Ingredients</h2>
+            <div class="form-group">
+                <table style="width:75%">
+                    <tr>
+                        <th><label asp-for="Ingredients[0].Name" class="form-control"></label></th>
+                        <th><label asp-for="Ingredients[0].Quantity" class="form-control"></label></th>
+                        <th><label asp-for="Ingredients[0].Unit" class="form-control"></label></th>
+                    </tr>
+                    @for (int i = 0; i < 10; i++)
+                    {
+                        <tr>
+                            <td><input asp-for="Ingredients[i].Name" class="form-control"></td>
+                            <td><input asp-for="Ingredients[i].Quantity" class="form-control"></td>
+                            <td><input asp-for="Ingredients[i].Unit" class="form-control"></td>
+                        </tr>
+                        <span asp-validation-for="Ingredients[i].Name" class="text-danger"></span>
+                        <span asp-validation-for="Ingredients[i].Quantity" class="text-danger"></span>
+                        <span asp-validation-for="Ingredients[i].Unit" class="text-danger"></span>
+                    }
+
+                </table>
+            </div>
+            <hr />
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-olivia bg-gradient-olivia" />
+            </div>
+        </div>
+        </form>
+    </div>
+
+    <div>
+        <a href="#"> Back to List</a>
+    </div>
+</div>
+
+

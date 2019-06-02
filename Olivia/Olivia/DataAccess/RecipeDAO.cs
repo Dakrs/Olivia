@@ -19,8 +19,8 @@ namespace Olivia.DataAccess
             using (SqlCommand command = con.Fetch().CreateCommand())
             {
                 command.CommandType = CommandType.Text;
-                command.CommandText = "insert into dbo.Recipe  (Name, Description, Creator, Type, Duration, Calories, Fat, Carbs, Protein, Fiber, Sodium)" + 
-                                            "values(@Name, @Description, @Creator, @Type,@Duration ,@Calories, @Fat, @Carbs, @Protein, @Fiber, @Sodium); ";
+                command.CommandText = "insert into dbo.Recipe  (Name, Description, Creator, Type, Duration, Calories, Fat, Carbs, Protein, Fiber, Sodium) " +
+                                            "values(@Name, @Description, @Creator, @Type, @Duration ,@Calories, @Fat, @Carbs, @Protein, @Fiber, @Sodium); ";
 
                 command.Parameters.Add("@Name", SqlDbType.VarChar).Value = recipe.Name;
                 command.Parameters.Add("@Description", SqlDbType.Text).Value = recipe.Description;
@@ -55,7 +55,12 @@ namespace Olivia.DataAccess
                     current.IngredientDAO.Insert(current);
                     current = current.IngredientDAO.FindByName(ing.Name);
                 }
-
+                if (current == null) {
+                    current = new Ingredient();
+                    current.Name = ing.Name;
+                    current.IngredientDAO.Insert(current);
+                    current = current.IngredientDAO.FindByName(ing.Name);
+                }
                 using (SqlCommand command = con.Fetch().CreateCommand())
                 {
                     command.CommandType = CommandType.Text;
@@ -71,7 +76,7 @@ namespace Olivia.DataAccess
                     command.ExecuteNonQuery();
 
                 }
-                
+
             }
 
             for (int i = 0; i < recipe.Instructions.Count ; i++)
@@ -321,7 +326,7 @@ namespace Olivia.DataAccess
                         adapter.Fill(result_querie);
                         if (result_querie.Rows.Count > 0)
                         {
-                       
+
                             DataRow row = result_querie.Rows[0];
                             nRecepits = int.Parse(row["CREATED"].ToString());
                         }
@@ -459,7 +464,7 @@ namespace Olivia.DataAccess
         }
 
         public void AddToFavourite(int idUser,int idRecipe)
-        {   
+        {
 
             Recipe flag = FindById(idRecipe);
             if (flag == null)
@@ -742,6 +747,47 @@ namespace Olivia.DataAccess
                 }
             }
             con.Close();
+            return result;
+        }
+
+        public List<Recipe> LoadRecipeByType(int type)
+        {
+            List<Recipe> result = new List<Recipe>();
+
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT * FROM [Recipe] WHERE Active=1 AND Type=@type";
+                command.Parameters.Add("@type", SqlDbType.Int).Value = type;
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+
+                    foreach (DataRow row in result_querie.Rows)
+                    {
+                        Recipe r = new Recipe
+                        {
+                            Id_Recipe = int.Parse(row["Id_Recipe"].ToString()),
+                            Name = row["Name"].ToString(),
+                            Description = row["Description"].ToString(),
+                            Creator = int.Parse(row["Creator"].ToString()),
+                            Type = int.Parse(row["Type"].ToString()),
+                            Calories = float.Parse(row["Calories"].ToString()),
+                            Protein = float.Parse(row["Protein"].ToString()),
+                            Fat = float.Parse(row["Fat"].ToString()),
+                            Carbs = float.Parse(row["Carbs"].ToString()),
+                            Fiber = float.Parse(row["Fiber"].ToString()),
+                            Sodium = float.Parse(row["Sodium"].ToString()),
+                            Duration = int.Parse(row["Duration"].ToString())
+                        };
+
+                        result.Add(r);
+                    }
+                }
+            }
             return result;
         }
 

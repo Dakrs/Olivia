@@ -49,7 +49,7 @@ namespace Olivia.Controllers
         {
 
             RecipeDAO dao = new RecipeDAO();
-            
+
             List<Recipe> recipe = dao.LoadRecipes();
 
             int RandomNumber(int min, int max)
@@ -85,6 +85,15 @@ namespace Olivia.Controllers
             var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
             recipe.Creator = int.Parse(claim.Value);
 
+            string s = "kapa";
+            List<string> warnings = new List<string>
+            {
+                s
+            };
+            recipe.Warnings = warnings;
+            recipe.Duration = 5;
+
+
             int id = dao.Insert(recipe);
 
             if (file != null)
@@ -96,6 +105,7 @@ namespace Olivia.Controllers
                     dao.InsertImage(id, b);
                 }
             }
+
 
             return RedirectToAction("Index", "Recipe");
         }
@@ -203,5 +213,5 @@ namespace Olivia.Controllers
 
 
 
-    
+
 }
