@@ -25,12 +25,12 @@ namespace Olivia.Controllers
             MenuDAO dao = new MenuDAO();
             Menu m = dao.getLastestMenu(idUser);
             if (m == null) // falta verificar a data
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Create", "Menu");
 
             DateTime date = m.StartingDate.AddDays(6);
 
             if (date.Date.CompareTo(DateTime.Now.Date) == -1)
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Create", "Menu");
 
             return View(m.OrderedRecipes());
         }
@@ -69,7 +69,7 @@ namespace Olivia.Controllers
             }
 
             DateTime parsedDate = DateTime.Parse(date);
-            return View();
+            return RedirectToAction("Index", "Menu");
         }
     }
 }
