@@ -65,5 +65,10 @@ namespace Olivia.Models
             if (other == null) return false;
             return (this.Id_Recipe.Equals(other.Id_Recipe));
         }
+
+        public byte[] GetImage()
+        {
+            return RecipeDAO.GetRecipeImage(Id_Recipe);
+        }
     }
 }

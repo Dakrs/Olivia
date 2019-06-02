@@ -12,14 +12,14 @@ namespace Olivia.DataAccess
 {
     public class RecipeDAO
     {
-        public void Insert(Recipe recipe)
+        public int Insert(Recipe recipe)
         {
 
             Connection con = new Connection();
             using (SqlCommand command = con.Fetch().CreateCommand())
             {
                 command.CommandType = CommandType.Text;
-                command.CommandText = "insert into dbo.Recipe  (Name, Description, Creator, Type, Calories, Fat, Carbs, Protein, Fiber, Sodium)" + 
+                command.CommandText = "insert into dbo.Recipe  (Name, Description, Creator, Type, Duration, Calories, Fat, Carbs, Protein, Fiber, Sodium)" + 
                                             "values(@Name, @Description, @Creator, @Type,@Duration ,@Calories, @Fat, @Carbs, @Protein, @Fiber, @Sodium); ";
 
                 command.Parameters.Add("@Name", SqlDbType.VarChar).Value = recipe.Name;
@@ -71,6 +71,7 @@ namespace Olivia.DataAccess
                     command.ExecuteNonQuery();
 
                 }
+                
             }
 
             for (int i = 0; i < recipe.Instructions.Count ; i++)
@@ -97,7 +98,7 @@ namespace Olivia.DataAccess
                 }
             }
             con.Close();
-
+            return recipe_id;
         }
 
         public void Edit(Recipe recipe)
@@ -108,7 +109,7 @@ namespace Olivia.DataAccess
             {
                 command.CommandType = CommandType.Text;
                 command.CommandText = "update dbo.Recipe set Name=@Name, Description=@Description, Creator=@Creator, Type=@Type,Duration=@Duration ,Calories=@Calories, Fat=@Fat, Carbs=@Carbs, Protein=@Protein, Fiber=@Fiber, Sodium=@Sodium" +
-                                                "where Id_Recipe=@Id_Recipe;";
+                                                " where Id_Recipe=@Id_Recipe;";
 
                 command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe.Id_Recipe;
                 command.Parameters.Add("@Name", SqlDbType.VarChar).Value = recipe.Name;
@@ -150,7 +151,7 @@ namespace Olivia.DataAccess
                 {
                     command.CommandType = CommandType.Text;
                     command.CommandText = "insert into dbo.Recipe_Ingredient (Id_Recipe, Id_Ingredient, Quantity, Unit)" +
-                                                                "values(@Id_Recipe, @Id_Ingredient, @Quantity, @Unit);";
+                                                                " values (@Id_Recipe, @Id_Ingredient, @Quantity, @Unit);";
 
                     command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe.Id_Recipe;
                     command.Parameters.Add("@Id_Ingredient", SqlDbType.Int).Value = current.Id_Ingredient;
@@ -202,7 +203,7 @@ namespace Olivia.DataAccess
                     {
                         command.CommandType = CommandType.Text;
                         command.CommandText = "insert into dbo.Instruction (Designation, Position, Id_Recipe)" +
-                                                    "values(@Designation, @Position, @Id_Recipe); ";
+                                                    " values(@Designation, @Position, @Id_Recipe); ";
 
                         command.Parameters.Add("@Designation", SqlDbType.VarChar).Value = recipe.Instructions[i].Designation;
                         command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe.Instructions[i].Id_Recipe;
@@ -742,6 +743,64 @@ namespace Olivia.DataAccess
             }
             con.Close();
             return result;
+        }
+
+        public void InsertImage(int id_recipe, byte[] array)
+        {
+            Connection con = new Connection();
+
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+                command.CommandType = CommandType.Text;
+                command.CommandText = "delete from dbo.Recipe_Image where" +
+                                                         " Id_Recipe=@Id_Recipe;";
+
+                command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = id_recipe;
+                command.ExecuteNonQuery();
+            }
+
+
+
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+                command.CommandType = CommandType.Text;
+                command.CommandText = "insert into dbo.Recipe_Image (Id_Recipe, Image)" +
+                                                         "values (@Id_Recipe, @Image);";
+
+                command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = id_recipe;
+                command.Parameters.Add("@Image", SqlDbType.VarBinary).Value = array;
+
+
+                command.ExecuteNonQuery();
+            }
+            con.Close();
+        }
+
+        public byte[] GetRecipeImage(int id_recipe)
+        {
+            Connection con = new Connection();
+            byte[] b = null;
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT Image FROM [Recipe_Image] WHERE Id_Recipe=@Id_Recipe";
+                command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = id_recipe;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+
+                    if (result_querie.Rows.Count > 0)
+                    {
+                        DataRow row = result_querie.Rows[0];
+                        b = (byte[])row["Image"];
+                    }
+                }
+            }
+            con.Close();
+
+            return b;
         }
     }
 }

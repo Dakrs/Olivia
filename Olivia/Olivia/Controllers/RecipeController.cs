@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -76,14 +78,25 @@ namespace Olivia.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Create(Recipe recipe)
+        public IActionResult Create(Recipe recipe, IFormFile file)
         {
             RecipeDAO dao = new RecipeDAO();
 
             var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
             recipe.Creator = int.Parse(claim.Value);
 
-            dao.Insert(recipe);
+            int id = dao.Insert(recipe);
+
+            if (file != null)
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    file.CopyToAsync(ms);
+                    byte[] b = ms.ToArray();
+                    dao.InsertImage(id, b);
+                }
+            }
+
             return RedirectToAction("Index", "Recipe");
         }
 
@@ -101,10 +114,20 @@ namespace Olivia.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Edit(Recipe recipe)
+        public IActionResult Edit(Recipe recipe, IFormFile file)
         {
 
             RecipeDAO dao = new RecipeDAO();
+
+            if (file != null)
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    file.CopyToAsync(ms);
+                    byte[] b = ms.ToArray();
+                    dao.InsertImage(recipe.Id_Recipe, b);
+                }
+            }
 
             dao.Edit(recipe);
             return RedirectToAction("Index", "Recipe");
