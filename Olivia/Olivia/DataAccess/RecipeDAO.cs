@@ -667,5 +667,52 @@ namespace Olivia.DataAccess
 
             return result;
         }
+
+        public List<Recipe> searchByWords(List<string> words)
+        {
+            Dictionary<int, Recipe> dic_recipe = new Dictionary<int, Recipe>();
+
+            Connection con = new Connection();
+            foreach(string word in words)
+            {
+                using (SqlCommand command = con.Fetch().CreateCommand())
+                {
+
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = "SELECT * FROM [Recipe] WHERE Name LIKE Concat('%',@word,'%')";
+                    command.Parameters.Add("@word", SqlDbType.VarChar);
+                    command.Parameters["@word"].Value = word;
+
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        DataTable result_querie = new DataTable();
+                        adapter.Fill(result_querie);
+
+                        foreach (DataRow row in result_querie.Rows)
+                        {
+                            Recipe r = new Recipe
+                            {
+                                Id_Recipe = int.Parse(row["Id_Recipe"].ToString()),
+                                Name = row["Name"].ToString(),
+                                Description = row["Description"].ToString(),
+                                Creator = int.Parse(row["Creator"].ToString()),
+                                Type = int.Parse(row["Type"].ToString()),
+                                Calories = float.Parse(row["Calories"].ToString()),
+                                Protein = float.Parse(row["Protein"].ToString()),
+                                Fat = float.Parse(row["Fat"].ToString()),
+                                Carbs = float.Parse(row["Carbs"].ToString()),
+                                Fiber = float.Parse(row["Fiber"].ToString()),
+                                Sodium = float.Parse(row["Sodium"].ToString()),
+                                Duration = int.Parse(row["Duration"].ToString())
+                            };
+                            dic_recipe.Add(r.Id_Recipe, r);
+                        }
+                    }
+                }
+            }
+            con.Close();
+
+            return dic_recipe.Values.ToList();
+        }
     }
 }

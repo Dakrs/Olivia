@@ -134,6 +134,22 @@ namespace Olivia.Controllers
             return RedirectToAction("Details","Recipe", new {ID = id });
         }
 
+        [Authorize]
+        public IActionResult Search(string words)
+        {
+            if (words == null || words.Equals(""))
+            {
+                return View(new List<Recipe>());
+            }
+
+            List<string> l_words = words.Split(' ').ToList();
+            RecipeDAO dao = new RecipeDAO();
+            Dictionary<int, float> rating = dao.allRatings();
+            ViewBag.Ratings = rating;
+
+            return View(dao.searchByWords(l_words));
+        }
+
 
     }
 
