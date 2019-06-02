@@ -293,6 +293,7 @@ namespace Olivia.DataAccess
                         };
                         r.Instructions = r.InstructionDAO.GetInstructions(r.Id_Recipe);
                         r.Ingredients = r.IngredientDAO.GetIngredients(r.Id_Recipe);
+                        r.Warnings = GetWarnings(id);
                     }
                 }
             }
@@ -300,9 +301,9 @@ namespace Olivia.DataAccess
 
             return r;
         }
-                  
-            public int NumberReceipts(int idUser)
-            {
+
+        public int NumberReceipts(int idUser)
+        {
 
                 int nRecepits = 0;
                 Connection con = new Connection();
@@ -330,7 +331,7 @@ namespace Olivia.DataAccess
                 con.Close();
 
                 return nRecepits;
-            }
+        }
 
         public int NumberRated(int idUser)
         {
@@ -431,6 +432,7 @@ namespace Olivia.DataAccess
                         };
                         r.Instructions = r.InstructionDAO.GetInstructions(r.Id_Recipe);
                         r.Ingredients = r.IngredientDAO.GetIngredients(r.Id_Recipe);
+                        r.Warnings = GetWarnings(r.Id_Recipe);
                     }
                 }
             }
@@ -513,7 +515,7 @@ namespace Olivia.DataAccess
             {
 
                 command.CommandType = CommandType.Text;
-                command.CommandText = "SELECT * FROM [Recipe] AS R, [Favorite] AS F WHERE F.User_key = @user AND R.Active = 1 AND R.Id_Recipe = F.User_key";
+                command.CommandText = "SELECT * FROM [Recipe] AS R, [Favorite] AS F WHERE F.User_key = @user AND R.Active = 1 AND R.Id_Recipe = F.Recipe_key";
                 command.Parameters.Add("@user", SqlDbType.Int).Value = idUser;
 
                 using (SqlDataAdapter adapter = new SqlDataAdapter(command))
@@ -673,7 +675,7 @@ namespace Olivia.DataAccess
             Dictionary<int, Recipe> dic_recipe = new Dictionary<int, Recipe>();
 
             Connection con = new Connection();
-            foreach(string word in words)
+            foreach (string word in words)
             {
                 using (SqlCommand command = con.Fetch().CreateCommand())
                 {
@@ -711,8 +713,35 @@ namespace Olivia.DataAccess
                 }
             }
             con.Close();
-
             return dic_recipe.Values.ToList();
+        }
+        public List<string> GetWarnings(int id)
+        {
+            List<string> result = new List<string>();
+            string s;
+
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT Warning FROM [Warning] WHERE Id_Recipe = @id;";
+                command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+
+                    foreach (DataRow row in result_querie.Rows)
+                    {
+                        s = row["Warning"].ToString();
+                        result.Add(s);
+                    }
+                }
+            }
+            con.Close();
+            return result;
         }
     }
 }

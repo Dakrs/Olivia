@@ -1,5 +1,7 @@
 ﻿@model Olivia.Models.Recipe
+@using System.Text.RegularExpressions;
 @{
+
     Layout = "~/Views/Shared/_LayoutTest.cshtml";
     TempData["Id"] = Model.Id_Recipe;
 }
@@ -256,6 +258,20 @@
     <a href="/Recipe/Favorite/@Model.Id_Recipe" class="btn btn-icon btn-oliviay bg-gradient-oliviay" role="button" aria-pressed="true" style="margin-top:3%">
         <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
     </a>
-</div>
 
+    <div class="card-deck" style="margin-top:3%;margin-bottom:3%" >
+        @foreach (string warning in Model.Warnings)
+        {
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@Regex.Replace(warning, @":.*", "")</h5>
+                <p class="card-text">@Regex.Replace(warning, @".*:", "")</p>
+            </div>
+        </div>
+        }
+
+    </div>
+
+
+</div>
 

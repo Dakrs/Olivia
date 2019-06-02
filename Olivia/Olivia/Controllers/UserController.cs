@@ -147,6 +147,8 @@ namespace Olivia.Controllers
 
         }
 
+
+        [Authorize]
         public ActionResult ProfileEdited(int uid, string uname,string uemail)
         {
             UserDAO dao = new UserDAO();
@@ -170,6 +172,21 @@ namespace Olivia.Controllers
             list.Sort((pair1, pair2) => pair2.Key.CompareTo(pair1.Key));
 
             return View(list);
+        }
+
+
+        public IActionResult Favorites(){
+
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Name);
+            string username = claim.Value;
+            UserDAO dao = new UserDAO();
+            Utilizador user = dao.FindByUsername(username);
+            RecipeDAO rdao = new RecipeDAO();
+            List<Recipe> favoritos = rdao.getFavorites(user.Id_utilizador);
+            ViewBag.User = user;
+            ViewBag.Favoritos = favoritos;
+
+            return View();
         }
 
 
