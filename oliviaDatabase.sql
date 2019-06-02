@@ -120,7 +120,7 @@ GO
 CREATE TABLE [Menu] (
   [Id_Menu] INT IDENTITY(1,1) NOT NULL,
   [Id_User] INT NOT NULL,
-  [Date] DATE NULL,
+  [Date] DATETIME NULL,
   PRIMARY KEY ([Id_Menu]),
   CONSTRAINT [FK_User_Menu]
     FOREIGN KEY ([Id_User])
@@ -138,7 +138,8 @@ GO
 CREATE TABLE [Menu_Recipe] (
   [Id_Recipe] INT NOT NULL,
   [Id_Menu] INT NOT NULL,
-  PRIMARY KEY ([Id_Recipe], [Id_Menu]),
+  [Position] INT NOT NULL,
+  PRIMARY KEY ([Id_Recipe], [Id_Menu],[Position]),
   CONSTRAINT [FK_Menu_Recipe_Recipe]
     FOREIGN KEY ([Id_Recipe])
     REFERENCES [Recipe] ([Id_Recipe])
@@ -149,10 +150,13 @@ CREATE TABLE [Menu_Recipe] (
     REFERENCES [Menu] ([Id_Menu])
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
-
 GO
 
-CREATE INDEX [FK_Menu_Recipe_Recipe_Idx] ON [Menu_Recipe] ([Id_Menu] ASC);
+CREATE INDEX [FK_Menu_Recipe_Recipe_Idx] ON [Menu_Recipe] ([Id_Recipe] ASC);
+GO
+CREATE INDEX [FK_Menu_Recipe_Menu_Idx] ON [Menu_Recipe] ([Id_Menu] ASC);
+GO
+CREATE INDEX [FK_Menu_Recipe_Position_Idx] ON [Menu_Recipe] ([Position] ASC);
 GO
 
 -- -----------------------------------------------------

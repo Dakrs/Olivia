@@ -1,0 +1,48 @@
+﻿@model System.Collections.Generic.Dictionary<DateTime,KeyValuePair<Olivia.Models.Recipe,Olivia.Models.Recipe>>
+@{
+    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+}
+
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
+    <h1 class="display-1 opacity-9" style="color:white; margin-left:5%">Your 7 day plan</h1>
+</div>
+<div class="container-fluid mt--7">
+    @foreach (KeyValuePair<DateTime, KeyValuePair<Olivia.Models.Recipe, Olivia.Models.Recipe>> item in Model)
+    {
+    <div class="row" style="margin-top:10px">
+        <div class="col-sm-6">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row no-gutters">
+                    <div class="col-md-6">
+                        <img src="..." class="card-img" alt="...">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Key.ToShortDateString() - Lunch</h5>
+                            <p class="card-text">@item.Value.Key.Name</p>
+                            <a href="#" class="btn btn-olivia btn-gradient-olivia">Go Recipe</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row no-gutters">
+                    <div class="col-md-6">
+                        <img src="..." class="card-img" alt="...">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Key.ToShortDateString() - Dinner</h5>
+                            <p class="card-text">@item.Value.Value.Name</p>
+                            <a href="#" class="btn btn-olivia btn-gradient-olivia">Go Recipe</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+</div>
