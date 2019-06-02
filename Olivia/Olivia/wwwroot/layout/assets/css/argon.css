@@ -3131,10 +3131,21 @@ fieldset:disabled a.btn
     box-shadow: none, 0 0 0 0 rgba(17, 205, 239, .5);
 }
 
-.btn-oliviay
-{
+.btn-oliviay {
     color: #fff;
-    border-color: #FFC300;
+    border-color: #8b8b8b;
+    background-color: #FFC300;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+}
+.btn-oliviaymega {
+    color: #8b8b8b;
+    border-color: #8b8b8b;
+    background-color: #FFC300;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+}
+.btn-oliviaymegalike {
+    color: #F9074C;
+    border-color: #8b8b8b;
     background-color: #FFC300;
     box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
 }
@@ -15107,6 +15118,10 @@ button.bg-lighter:focus
     background: linear-gradient(87deg, #ff6633 0, #FFC300 100%) !important;
 }
 
+
+.bg-gradient-oliviaymega {
+    background: linear-gradient(87deg, #bababa 0, #e1dcc7 100%) !important;
+}
 .bg-gradient-info
 {
     background: linear-gradient(87deg, #11cdef 0, #1171ef 100%) !important;

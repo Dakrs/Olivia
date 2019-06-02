@@ -232,7 +232,7 @@
             };
             
             var currentLocation = window.location.href;
-            var urlAtual = currentLocation.match(/.*\/Cook/gi);
+            var urlAtual = currentLocation.match(/.*\/Cook$/gi);
             //var res = urlAtual[0];
             if (urlAtual == null) 
                 recognizer.startContinuousRecognitionAsync();

@@ -4,6 +4,8 @@
 
     Layout = "~/Views/Shared/_LayoutTest.cshtml";
     TempData["Id"] = Model.Id_Recipe;
+    Boolean boolean = ViewBag.boolean;
+
 }
 <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
     <h1 class="display-1 opacity-9" style="color:white; margin-left:5%">@Model.Name</h1>
@@ -194,7 +196,6 @@
             </div>
         </div>
     </div>
-
     <button type="button" class="btn btn-icon btn-olivia bg-gradient-olivia" data-toggle="modal" data-target="#RecipeStartCheck" style="margin-top:3%">
         <span class="btn-inner--icon"><i class="ni ni-button-play"></i></span>
     </button>
@@ -210,25 +211,26 @@
                 </div>
 
                 <div class="modal-body">
+                    <div class="row" style="margin-left:5%">
+                        <div class="col">
+                            <h4 class="heading mt-4">Ingredients</h4>
+                        </div>
+                        <div class="col">
+                            <h4 class="heading mt-4">Quantity</h4>
+                        </div>
+                    </div>
+
+                    @foreach (RecipeIngredient item in Model.Ingredients)
+                    {
                         <div class="row" style="margin-left:5%">
                             <div class="col">
-                                <h4 class="heading mt-4">Ingredients</h4>
+                                @item.Name
                             </div>
                             <div class="col">
-                                <h4 class="heading mt-4">Quantity</h4>
+                                @item.Quantity @item.Unit
                             </div>
                         </div>
-
-                        @foreach(RecipeIngredient item in Model.Ingredients){
-                            <div class="row" style="margin-left:5%">
-                                <div class="col">
-                                    @item.Name
-                                </div>
-                                <div class="col">
-                                    @item.Quantity @item.Unit
-                                </div>
-                            </div>
-                        }
+                    }
                 </div>
 
                 <div class="modal-footer">
@@ -254,20 +256,28 @@
             </div>
         </div>
     </div>
+    @if (boolean)
+    {
+        <a href="/Recipe/Favorite/@Model.Id_Recipe" class="btn btn-icon btn-oliviaymegalike bg-gradient-oliviaymega" role="button" aria-pressed="true" style="margin-top:3% ">
+            <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
+        </a>
+    }
+    else
+    {
+        <a href="/Recipe/Favorite/@Model.Id_Recipe" class="btn btn-icon btn-oliviaymega bg-gradient-oliviaymega" role="button" aria-pressed="true" style="margin-top:3% ">
+            <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
+        </a>
+    }
 
-    <a href="/Recipe/Favorite/@Model.Id_Recipe" class="btn btn-icon btn-oliviay bg-gradient-oliviay" role="button" aria-pressed="true" style="margin-top:3%">
-        <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
-    </a>
-
-    <div class="card-deck" style="margin-top:3%;margin-bottom:3%" >
+    <div class="card-deck" style="margin-top:3%;margin-bottom:3%">
         @foreach (string warning in Model.Warnings)
         {
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">@Regex.Replace(warning, @":.*", "")</h5>
-                <p class="card-text">@Regex.Replace(warning, @".*:", "")</p>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@Regex.Replace(warning, @":.*", "")</h5>
+                    <p class="card-text">@Regex.Replace(warning, @".*:", "")</p>
+                </div>
             </div>
-        </div>
         }
 
     </div>

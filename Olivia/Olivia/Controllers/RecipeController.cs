@@ -18,13 +18,27 @@ namespace Olivia.Controllers
         [Authorize]
         public IActionResult Details(int id)
         {
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
+            int idUser = int.Parse(claim.Value);
 
             RecipeDAO dao = new RecipeDAO();
             Recipe recipe = dao.FindById(id);
 
+
+
             if (recipe == null)
                 return RedirectToAction("Index","User");
 
+            List<Recipe> receitas = dao.getFavorites(idUser);
+            ViewBag.Boolean = false;
+            foreach (Recipe recp in receitas) {
+                if (recp.Id_Recipe == id)
+                {
+                    ViewBag.Boolean = true;
+                    break;
+                }
+
+            }
             return View(recipe);
         }
 
@@ -141,11 +155,22 @@ namespace Olivia.Controllers
             {
                 return View(new List<Recipe>());
             }
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
 
+            int idUser = int.Parse(claim.Value);
             List<string> l_words = words.Split(' ').ToList();
             RecipeDAO dao = new RecipeDAO();
             Dictionary<int, float> rating = dao.allRatings();
             ViewBag.Ratings = rating;
+
+
+            List<Recipe> receitas = dao.getFavorites(idUser);
+            List<int> favoritos = new List<int>();
+            foreach (Recipe recp in receitas)
+            {
+                favoritos.Add(recp.Id_Recipe);
+            }
+            ViewBag.Favorites = favoritos;
 
             return View(dao.searchByWords(l_words));
         }

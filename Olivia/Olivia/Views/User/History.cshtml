@@ -14,7 +14,7 @@
                 </div>
                 <div class="table-responsive">
                     <table class="table align-items-center table-flush">
-                        <thead class="thead-light">
+                        <thead class="thead-light" align="center">
                             <tr>
                                 <th scope="col">Recipe Id</th>
                                 <th scope="col">Name</th>
@@ -25,9 +25,9 @@
                             @foreach (KeyValuePair<DateTime, Recipe> item in Model)
                             {
                                 <tr>
-                                    <th scope="row">
+                                    <th scope="row" >
                                         <div class="media align-items-center">
-                                            <div class="media-body">
+                                            <div class="media-body" align="center">
                                                 <span class="mb-0 text-sm">@Html.ActionLink((@item.Value.Id_Recipe).ToString(), "Details", "Recipe", new { id = @item.Value.Id_Recipe }, new { @class = "text-default" })</span>
                                             </div>
                                         </div>
@@ -35,7 +35,7 @@
                                     <td>
                                         @item.Value.Name
                                     </td>
-                                    <td>
+                                    <td align="center">
                                         @item.Key.ToShortDateString()
                                     </td>
                                 </tr>
