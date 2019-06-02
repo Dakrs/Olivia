@@ -155,7 +155,7 @@ namespace Olivia.DataAccess
                     adapter.Fill(result);
 
 
-                    if (result.Rows.Count > 0)
+                    if (result.Rows.Count > 1)
                     {
 
                         DataRow row = result.Rows[0];
