@@ -209,7 +209,7 @@ namespace Olivia.DataAccess
             {
 
                 command.CommandType = CommandType.Text;
-                command.CommandText = "delete FROM Recipe_Ingredient where R.Id_Recipe=@Id_Recipe;";
+                command.CommandText = "delete FROM Recipe_Ingredient where Id_Recipe=@Id_Recipe;";
                 command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = recipe_id;
                 command.ExecuteNonQuery();
                 

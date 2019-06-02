@@ -51,12 +51,17 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="">
-                            <i class="ni ni-atom text-default"></i> Menu
+                            <i class="fas fa-bars text-default"></i> Menu
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/User/History">
                             <i class="ni ni-calendar-grid-58 text-default"></i> History
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Recipe/weekly">
+                            <i class="fas fa-heartbeat text-default"></i> Weekly menu
                         </a>
                     </li>
                     <li class="nav-item">
@@ -80,13 +85,13 @@
                 <!-- Brand -->
                 <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="/User">Dashboard</a>
                 <!-- Form -->
-                <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+                <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto" action=@Url.Action("Search", "Recipe")>
                     <div class="form-group mb-0">
                         <div class="input-group input-group-alternative">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-search"></i></span>
                             </div>
-                            <input class="form-control" placeholder="Search" type="text">
+                            <input class="form-control" name="words" placeholder="Search" type="text">
                         </div>
                     </div>
                 </form>
@@ -116,6 +121,7 @@
                 </ul>
             </div>
         </nav>
+        
         <!-- Header -->
         @RenderBody()
 
@@ -226,7 +232,7 @@
             };
             
             var currentLocation = window.location.href;
-            var urlAtual = currentLocation.match(/.*\/Cook/gi);
+            var urlAtual = currentLocation.match(/.*\/Cook$/gi);
             //var res = urlAtual[0];
             if (urlAtual == null) 
                 recognizer.startContinuousRecognitionAsync();

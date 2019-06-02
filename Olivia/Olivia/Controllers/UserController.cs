@@ -21,6 +21,10 @@ namespace Olivia.Controllers
         [Authorize]
         public IActionResult Index()
         {
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
+
+            int idUser = int.Parse(claim.Value);
+
             RecipeDAO dao = new RecipeDAO();
             List<Recipe> recipes = dao.LoadRecipes();
 
@@ -53,7 +57,13 @@ namespace Olivia.Controllers
                     aux.Remove(t);
                 }
             }
-
+            List<Recipe> receitas = dao.getFavorites(idUser);
+            List<int> favoritos = new List<int>();
+            foreach(Recipe recp in receitas)
+            {
+                favoritos.Add(recp.Id_Recipe);
+            }
+            ViewBag.Favorites = favoritos;
             ViewBag.Ratings = rating;
             ViewBag.CardRecipe = cardRecipes;
 
