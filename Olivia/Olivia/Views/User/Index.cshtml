@@ -28,10 +28,16 @@
                                     {
                                         <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> @ratings.GetValueOrDefault(item.Id_Recipe)</span>
                                     }
-                                    else{
+                                    else
+                                    {
                                         <span class="text-danger mr-2"><i class="fa fa-arrow-down"></i> @ratings.GetValueOrDefault(item.Id_Recipe)</span>
                                     }
-                                    <span class="text-nowrap">Stars</span>
+                                    <i class="fas fa-star " style="color:yellow"></i>
+                                    #textContainer estrela {
+                                        color: #fff;
+                                        text-shadow: 1px 1px 1px #ccc;
+                                        font-size: 1.5em;
+                                    }
                                 </p>
                             </div>
                         </div>
