@@ -59,6 +59,18 @@ GO
 CREATE INDEX [FK_Creator_Recipe_Idx] ON [Recipe] ([Creator] ASC);
 GO
 
+CREATE TABLE [Recipe_Image] (
+  [Id_Recipe] INT NOT NULL,
+  [Image] VARBINARY(MAX) NOT NULL,
+  PRIMARY KEY ([Id_Recipe]),
+  CONSTRAINT [FK_Id_Recipe_Image]
+    FOREIGN KEY ([Id_Recipe])
+    REFERENCES [Recipe] ([Id_Recipe])
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+;
+GO
+
 -- -----------------------------------------------------
 -- Table `Olivia`.`History`
 -- -----------------------------------------------------

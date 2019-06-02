@@ -2,7 +2,10 @@
 @{
     Layout = "~/Views/Shared/_LayoutTest.cshtml";
     Dictionary<int, float> ratings = ViewBag.Ratings;
+    
+    List<int> favorites = ViewBag.Favorites;
     List<Recipe> cards = ViewBag.CardRecipe;
+    int i;
 }
 <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
     <h1 class="display-1 opacity-9" style="color:white; margin-left:5%">Search Results</h1>
@@ -16,7 +19,7 @@
                 </div>
                 <div class="table-responsive">
                     <table class="table align-items-center table-flush">
-                        <thead class="thead-light">
+                        <thead class="thead-light" align="center">
                             <tr>
                                 <th scope="col">Recipe Id</th>
                                 <th scope="col">Name</th>
@@ -24,50 +27,84 @@
                                 <th scope="col">Categorie</th>
                                 <th scope="col">Calories</th>
                                 <th scope="col">Stars</th>
+                                <th scope="col">Fav</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (Recipe item in Model)
                             {
-                                <tr>
-                                    <th scope="row">
-                                        <div class="media align-items-center">
-                                            <div class="media-body">
-                                                <span class="mb-0 text-sm">@Html.ActionLink((@item.Id_Recipe).ToString(), "Details", "Recipe", new { id = @item.Id_Recipe }, new { @class = "text-default" })</span>
-                                            </div>
+                            <tr>
+                                <th scope="row">
+                                    <div class="media align-items-center">
+                                        <div class="media-body" align="center">
+                                            <span class="mb-0 text-sm">@Html.ActionLink((@item.Id_Recipe).ToString(), "Details", "Recipe", new { id = @item.Id_Recipe }, new { @class = "text-default" })</span>
                                         </div>
-                                    </th>
-                                    <td>
-                                        @item.Name
-                                    </td>
-                                    <td>
-                                        @item.Duration <i class="ni ni-time-alarm text-default"></i>
-                                    </td>
-                                    <td>
-                                        @if (item.Type == 1)
-                                        {
-                                            <b>Main Dish</b>
-                                        }
-                                        else if (item.Type == 2)
-                                        {
-                                            <b>Dessert</b>
-                                        }
-                                        else if (item.Type == 3)
-                                        {
-                                            <b>Appetizer</b>
-                                        }
-                                        else
-                                        {
-                                            <b>Vegetarian</b>
-                                        }
-                                    </td>
-                                    <td>
-                                        @item.Calories
-                                    </td>
-                                    <td>
-                                        @ratings.GetValueOrDefault(item.Id_Recipe)
-                                    </td>
-                                </tr>
+                                    </div>
+                                </th>
+                                <td>
+                                    @item.Name
+                                </td>
+                                <td align="center">
+                                    @item.Duration <i class="ni ni-time-alarm text-default"></i>
+                                </td>
+                                <td align="center">
+                                    @if (item.Type == 1)
+                                    {
+                                        <b>Main Dish</b>
+                                    }
+                                    else if (item.Type == 2)
+                                    {
+                                        <b>Dessert</b>
+                                    }
+                                    else if (item.Type == 3)
+                                    {
+                                        <b>Appetizer</b>
+                                    }
+                                    else
+                                    {
+                                        <b>Vegetarian</b>
+                                    }
+                                </td>
+                                <td align="center">
+                                    @item.Calories
+                                </td>
+                                <td align="center">
+                                    @for (i = 0; i < Math.Floor(@ratings.GetValueOrDefault(item.Id_Recipe)); i++)
+                                    {
+                                        <i class="fas fa-star " style="color:#f4d442"></i>
+                                    }
+
+                                    @if (Math.Round(ratings.GetValueOrDefault(item.Id_Recipe)) > @ratings.GetValueOrDefault(item.Id_Recipe))
+                                    {
+                                        <i class="fas fa-star-half-alt" style="color:#f4d442"></i>
+                                        i++;
+
+                                    }
+                                    else
+                                    {
+                                        <i class="far fa-star " style="color:#f4d442"></i>
+                                        i++;
+
+                                    }
+
+                                    @for (; i < 5; i++)
+                                    {
+                                        <i class="far fa-star " style="color:#f4d442"></i>
+                                    }
+                                </td>
+                                <td align="center">
+                                    @if (favorites.Contains(item.Id_Recipe))
+                                    {
+                                        <i class="fas fa-heart" style="color:#F62681"></i>
+
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-heart" style="color:#aeaeae"></i>
+                                    }
+
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>

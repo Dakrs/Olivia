@@ -1,4 +1,4 @@
-﻿@model Olivia.Models.Utilizador
+@model Olivia.Models.Utilizador
 @{
     Layout = "~/Views/Shared/_LayoutTest.cshtml";
     List<Recipe> favoritos = ViewBag.Favoritos;
@@ -25,39 +25,9 @@
             color: #E6E8E6;
             margin: 0;
         }
+        
 
-        #textContainer .outline {
-            -webkit-text-stroke-width: 2px;
-            -webkit-text-stroke-color: #000000;
-        }
-
-        #textContainer .strokeme {
-            color: white;
-            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-        }
-
-        #textContainer .deepshadow {
-            color: #e0dfdc;
-            letter-spacing: .1em;
-            text-shadow: 0 -1px 0 #fff, 0 1px 0 #2e2e2e, 0 2px 0 #2c2c2c, 0 3px 0 #2a2a2a, 0 4px 0 #282828, 0 5px 0 #262626, 0 6px 0 #242424, 0 7px 0 #222, 0 8px 0 #202020, 0 9px 0 #1e1e1e, 0 10px 0 #1c1c1c, 0 11px 0 #1a1a1a, 0 12px 0 #181818, 0 22px 30px rgba(0, 0, 0, 0.9);
-        }
-
-        #textContainer .retroshadow {
-            -webkit-text-stroke-width: 1px;
-            -webkit-text-stroke-color: #000000;
-            color: #FFFFFF;
-            letter-spacing: .05em;
-            text-shadow: 4px 4px 0px #29960E, 7px 7px 0px rgba(0, 0, 0, 0.5);
-        }
-
-        #textContainer .hit-the-floor {
-            color: #fff;
-            font-size: 12em;
-            font-weight: bold;
-            font-family: Helvetica;
-            text-shadow: 0 1px 0 #ccc, 0 2px 0 #cb0035, 0 3px 0 #bbb, 0 4px 0 #cb0035, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15);
-        }
-
+        #textContainer 
 
     </style>
 </head>
@@ -72,7 +42,7 @@
                 </div>
                 <div class="table-responsive">
                     <table class="table align-items-center table-flush">
-                        <thead class="thead-light">
+                        <thead class="thead-light" align="center">
                             <tr>
                                 <th scope="col">Recipe Id</th>
                                 <th scope="col">Name</th>
@@ -88,7 +58,7 @@
                                 <tr>
                                     <th scope="row">
                                         <div class="media align-items-center">
-                                            <div class="media-body">
+                                            <div class="media-body" align="center">
                                                 <span class="mb-0 text-sm">@Html.ActionLink((@item.Id_Recipe).ToString(), "Details", "Recipe", new { id = @item.Id_Recipe }, new { @class = "text-default" })</span>
                                             </div>
                                         </div>
@@ -96,10 +66,10 @@
                                     <td>
                                         @item.Name
                                     </td>
-                                    <td>
+                                    <td align="center">
                                         @item.Duration <i class="ni ni-time-alarm text-default"></i>
                                     </td>
-                                    <td>
+                                    <td align="center">
                                         @if (item.Type == 1)
                                         {
                                             <b>Main Dish</b>
@@ -117,11 +87,12 @@
                                             <b>Vegetarian</b>
                                         }
                                     </td>
-                                    <td>
+                                    <td align="center">
                                         @item.Calories
                                     </td>
                                     <td>
-                                        <a href="/Recipe/Favorite/@item.Id_Recipe" class="btn btn-icon btn-oliviay bg-gradient-oliviay btn-sm" role="button" aria-pressed="true" style="margin-top:3%">
+                                        <a href="/Recipe/Favorite/@item.Id_Recipe" class="btn btn-icon btn-olivia bg-gradient-olivia btn-sm" role="button" aria-pressed="true" style="margin-top:3%">
+
                                             <span class="btn-inner--icon"><i class="fa fa-trash"></i></span>
                                         </a>
                                     </td>
