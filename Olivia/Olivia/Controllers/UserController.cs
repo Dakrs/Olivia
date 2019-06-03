@@ -162,10 +162,10 @@ namespace Olivia.Controllers
 
 
         [Authorize]
-        public ActionResult ProfileEdited(int uid, string uname,string uemail)
+        public ActionResult ProfileEdited(int uid, string uname,string uemail, int upref)
         {
             UserDAO dao = new UserDAO();
-            dao.UpdateProfile(uid, uname, uemail);
+            dao.UpdateProfile(uid, uname, uemail, upref);
             Utilizador user = dao.FindById(uid);
             ViewBag.User = user;
            
