@@ -219,7 +219,7 @@ namespace Olivia.DataAccess
             return result;
         }
 
-        internal void PromoteUser(int id_User)
+        public void PromoteUser(int id_User)
         {
             Connection con = new Connection();
             using (SqlCommand command = con.Fetch().CreateCommand())
@@ -231,6 +231,48 @@ namespace Olivia.DataAccess
                 command.ExecuteNonQuery();
             }
             con.Close();
+        }
+
+        public Utilizador FindById(int idUser)
+        {
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "select * from[User] where Id_User=@user;";
+                command.Parameters.Add("@user", SqlDbType.Int).Value = idUser;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result = new DataTable();
+                    adapter.Fill(result);
+
+
+                    if (result.Rows.Count > 0)
+                    {
+
+                        DataRow row = result.Rows[0];
+
+                        Utilizador u = new Utilizador(
+                            int.Parse(row["Id_User"].ToString()),
+                            row["Username"].ToString(),
+                            row["Password"].ToString(),
+                            row["Email"].ToString(),
+                            int.Parse(row["Type"].ToString()),
+                            int.Parse(row["Preference"].ToString()),
+                            row["Name"].ToString());
+
+                        con.Close();
+                        return u;
+
+                    }
+
+                }
+
+            }
+            return null;
+
         }
 
 
