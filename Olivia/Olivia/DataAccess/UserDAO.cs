@@ -155,11 +155,20 @@ namespace Olivia.DataAccess
                     adapter.Fill(result);
 
 
-                    if (result.Rows.Count > 1)
+                    if (result.Rows.Count > 0)
                     {
 
                         DataRow row = result.Rows[0];
-                        pontos = int.Parse(row["Pontos"].ToString());
+                     
+                            try
+                            {
+                                pontos = int.Parse(row["Pontos"].ToString());
+                            }
+                            catch (Exception ex)
+                            {
+                                pontos = 0;
+                            }  
+
 
 
                         con.Close();
