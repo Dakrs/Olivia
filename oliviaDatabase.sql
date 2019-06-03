@@ -698,25 +698,25 @@ insert into Warning (Id_Recipe, Id_Warning, Warning) values
 
 
 INSERT INTO Recipe_image (Id_Recipe, Image) 
-	SELECT 1, BulkColumn FROM Openrowset( Bulk 'C:\Users\51-Megamind\Desktop\LI4\recipe_images\1.png', Single_Blob) as image
+	SELECT 1, BulkColumn FROM Openrowset( Bulk 'C:\Users\Asus\Desktop\LI4\recipe_images\1.png', Single_Blob) as image
 
 INSERT INTO Recipe_image (Id_Recipe, Image) 
-	SELECT 2, BulkColumn FROM Openrowset( Bulk 'C:\Users\51-Megamind\Desktop\LI4\recipe_images\2.png', Single_Blob) as image
+	SELECT 2, BulkColumn FROM Openrowset( Bulk 'C:\Users\Asus\Desktop\LI4\recipe_images\2.png', Single_Blob) as image
 
 INSERT INTO Recipe_image (Id_Recipe, Image) 
-	SELECT 3, BulkColumn FROM Openrowset( Bulk 'C:\Users\51-Megamind\Desktop\LI4\recipe_images\3.png', Single_Blob) as image
+	SELECT 3, BulkColumn FROM Openrowset( Bulk 'C:\Users\Asus\Desktop\LI4\recipe_images\3.png', Single_Blob) as image
 
 INSERT INTO Recipe_image (Id_Recipe, Image) 
-	SELECT 4, BulkColumn FROM Openrowset( Bulk 'C:\Users\51-Megamind\Desktop\LI4\recipe_images\4.png', Single_Blob) as image
+	SELECT 4, BulkColumn FROM Openrowset( Bulk 'C:\Users\Asus\Desktop\LI4\recipe_images\4.png', Single_Blob) as image
 
 INSERT INTO Recipe_image (Id_Recipe, Image) 
-	SELECT 5, BulkColumn FROM Openrowset( Bulk 'C:\Users\51-Megamind\Desktop\LI4\recipe_images\5.png', Single_Blob) as image
+	SELECT 5, BulkColumn FROM Openrowset( Bulk 'C:\Users\Asus\Desktop\LI4\recipe_images\5.png', Single_Blob) as image
 
 INSERT INTO Recipe_image (Id_Recipe, Image) 
-	SELECT 6, BulkColumn FROM Openrowset( Bulk 'C:\Users\51-Megamind\Desktop\LI4\recipe_images\6.png', Single_Blob) as image
+	SELECT 6, BulkColumn FROM Openrowset( Bulk 'C:\Users\Asus\Desktop\LI4\recipe_images\6.png', Single_Blob) as image
 
 INSERT INTO Recipe_image (Id_Recipe, Image) 
-	SELECT 7, BulkColumn FROM Openrowset( Bulk 'C:\Users\51-Megamind\Desktop\LI4\recipe_images\7.png', Single_Blob) as image
+	SELECT 7, BulkColumn FROM Openrowset( Bulk 'C:\Users\Asus\Desktop\LI4\recipe_images\7.png', Single_Blob) as image
 
 INSERT INTO Recipe_image (Id_Recipe, Image) 
-	SELECT 8, BulkColumn FROM Openrowset( Bulk 'C:\Users\51-Megamind\Desktop\LI4\recipe_images\8.png', Single_Blob) as image
+	SELECT 8, BulkColumn FROM Openrowset( Bulk 'C:\Users\Asus\Desktop\LI4\recipe_images\8.png', Single_Blob) as image
