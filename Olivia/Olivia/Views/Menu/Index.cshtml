@@ -2,6 +2,19 @@
 @{
     Layout = "~/Views/Shared/_LayoutTest.cshtml";
     Dictionary<int, byte[]> images = ViewBag.images;
+    Dictionary<int, string> image_strings = new Dictionary<int, string>();
+    foreach(int id in images.Keys)
+    {
+        if ( images[id] != null)
+        {
+            image_strings[id] = "data:image;base64," + System.Convert.ToBase64String(ViewBag.images[id]);
+        }
+        else
+        {
+            image_strings[id] = "/layout/assets/img/wallpaperLoggedin.jpg";
+        }
+
+    }
 }
 
 <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
@@ -19,7 +32,7 @@
             <div class="card mb-3" style="max-width: 540px;">
                 <div class="row no-gutters">
                     <div class="col-md-6">
-                        <img src="data:image;base64,@System.Convert.ToBase64String(images[item.Value.Key.Id_Recipe])" class="card-img" alt="...">
+                        <img src="@image_strings[item.Value.Key.Id_Recipe]" class="card-img" alt="...">
                     </div>
                     <div class="col-md-6">
                         <div class="card-body">
@@ -35,7 +48,7 @@
             <div class="card mb-3" style="max-width: 540px;">
                 <div class="row no-gutters">
                     <div class="col-md-6">
-                        <img src="data:image;base64,@System.Convert.ToBase64String(images[item.Value.Value.Id_Recipe])" class="card-img" alt="...">
+                        <img src="@image_strings[item.Value.Value.Id_Recipe]" class="card-img" alt="...">
                     </div>
                     <div class="col-md-6">
                         <div class="card-body">

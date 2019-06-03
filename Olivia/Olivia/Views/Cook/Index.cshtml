@@ -2,8 +2,17 @@
 @{
     Layout = "~/Views/Shared/_LayoutTest.cshtml";
     TempData.Keep("Id");
+    string image_string;
+    if (ViewBag.image != null)
+    {
+        image_string = "data:image;base64," + System.Convert.ToBase64String(ViewBag.image);
+    }
+    else
+    {
+        image_string = "/layout/assets/img/wallpaperLoggedin.jpg";
+    }
 }
-<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(data:image;base64,@System.Convert.ToBase64String(ViewBag.image)); background-size: cover; background-position: center;">
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(@image_string); background-size: cover; background-position: center;">
     <div id="textContainer" style="margin-left:3%">
         <p>
             <h1 style="font-size:54px;" class="retroshadow"> @Model.Name </h1>

@@ -28,7 +28,8 @@ namespace Olivia.Controllers
 
             RecipeDAO dao = new RecipeDAO();
             Recipe recipe;
-            if (u.Type == 1) {
+            if (u.Type == 1)
+            {
                 recipe = dao.FindByIdAdmin(id);
                 ViewBag.Admin = true;
             }
@@ -40,11 +41,12 @@ namespace Olivia.Controllers
 
 
             if (recipe == null)
-                return RedirectToAction("Index","User");
+                return RedirectToAction("Index", "User");
 
             List<Recipe> receitas = dao.getFavorites(idUser);
             ViewBag.Boolean = false;
-            foreach (Recipe recp in receitas) {
+            foreach (Recipe recp in receitas)
+            {
                 if (recp.Id_Recipe == id)
                 {
                     ViewBag.Boolean = true;
@@ -52,10 +54,11 @@ namespace Olivia.Controllers
                 }
             }
 
+
+            ViewBag.image = recipe.GetImage();
             int ativo = dao.IsActive(id);
             ViewBag.Teste = ativo;
 
-            
             return View(recipe);
         }
 
@@ -87,7 +90,7 @@ namespace Olivia.Controllers
 
             }
 
-            return View(dao.FindById(recipe.ElementAt(numero).Id_Recipe) );
+            return View(dao.FindById(recipe.ElementAt(numero).Id_Recipe));
         }
 
         [Authorize]
@@ -204,7 +207,7 @@ namespace Olivia.Controllers
                 dAO.AddToFavourite(aux, id);
             }
 
-            return RedirectToAction("Details","Recipe", new {ID = id });
+            return RedirectToAction("Details", "Recipe", new { ID = id });
         }
 
         [Authorize]

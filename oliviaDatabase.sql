@@ -47,7 +47,7 @@ CREATE TABLE [Recipe] (
   [Protein] FLOAT NOT NULL,
   [Fiber] FLOAT NOT NULL,
   [Sodium] FLOAT NOT NULL,
-  [Active] BIT NOT NULL DEFAULT 1,
+  [Active] INT NOT NULL DEFAULT 0,
   PRIMARY KEY ([Id_Recipe]),
   CONSTRAINT [FK_Id_Creator]
     FOREIGN KEY ([Creator])
@@ -286,7 +286,7 @@ INSERT into [User] VALUES
 
 SET IDENTITY_INSERT Recipe on;
 
-insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, Carbs, Protein, Fiber, Sodium, Duration)
+insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, Carbs, Protein, Fiber, Sodium, Duration, Active)
     values (  1,
                 'Bolo de Requeijão com Chocolate',
                 'Sobremesa deliciosa e de rápida confeção. Ideal para os apreciadores de chocolate e queijo fresco. Os frutos vermelhos enriquecem ainda mais o seu saber.',
@@ -298,7 +298,8 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, C
                 8,
                 5,
                 0,
-                45
+                45,
+				1
         ),
         (    2,
                 'Arroz de cabidela',
@@ -311,7 +312,8 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, C
                 25,
                 4,
                 0,
-                80
+                80,
+				1
         ),
         (    3,
                 'Gomos de marmelo com pistácios e lima',
@@ -324,7 +326,8 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, C
                 2,
                 4,
                 0,
-                45
+                45,
+				1
         ),
         (    4,
                 'Sopa de belgroegas com queijo de cabra',
@@ -337,7 +340,8 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, C
                 11,
                 6,
                 0,
-                45
+                45,
+				1
         ),
         ( 6,
            'Gelado merengado',
@@ -350,7 +354,8 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, C
            3,
            5,
            0,
-           13
+           13,
+		   1
          ),
          ( 5,
             'Caril de peru com coco e maçã',
@@ -363,7 +368,9 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, C
             25,
             4,
             0,
-            60),
+            60,
+			1
+		),
         ( 7,
            'Camembert com Avelãs e Mel',
            'Uma entrada, três paladares. De extrema rápida confeção, ideal para um estilo de vida sofisticado e acelerado.',
@@ -375,7 +382,8 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, C
            13,
            2,
            0,
-           8
+           8,
+		   1
         ),
         ( 8,
            'Coderniz no Forno',
@@ -388,7 +396,8 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, C
            18,
            5,
            0,
-           50
+           50,
+		   1
         );
 
 
