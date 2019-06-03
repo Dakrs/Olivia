@@ -139,7 +139,7 @@ namespace Olivia.Controllers
             }
 
 
-            return RedirectToAction("Index", "Recipe");
+            return RedirectToAction("Index", "User");
         }
 
         [Authorize]

@@ -201,6 +201,13 @@ namespace Olivia.Controllers
 
         public IActionResult Colab() 
         {
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Role);
+            int role = int.Parse(claim.Value);
+
+            if (role != 1)
+            {
+                return RedirectToAction("Index", "User");
+            }
             RecipeDAO rdao = new RecipeDAO();
             UserDAO udao = new UserDAO();
             List<Recipe> aproval = rdao.NeedAproval();

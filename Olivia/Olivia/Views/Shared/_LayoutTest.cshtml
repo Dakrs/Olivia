@@ -56,8 +56,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="/Recipe/Create">
+                            <i class="far fa-plus-square text-default"></i> Create Recipe
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="/Menu">
-                            <i class="fas fa-bars"></i>Menu
+                            <i class="fas fa-bars text-default"></i>Menu
                         </a>
                     </li>
                     <li class="nav-item">
@@ -119,7 +124,7 @@
                                 <h6 class="text-overflow m-0">Welcome!</h6>
                             </div>
                             <a class="dropdown-item" href="/User/Profile">
-                                <i class="ni ni-single-02" href="/User/Profile"></i>
+                                <i class="ni ni-single-02 text-default" href="/User/Profile"></i>
                                 <span>My profile</span>
 
                             </a>
@@ -319,6 +324,9 @@
                                         locationFinal = locationFinal.concat("/Cook")
                                         window.location.href = locationFinal;
                                     }
+                                } if (frase.includes("criar receita") || frase.includes("nova receita")) {
+                                        locationFinal = locationFinal.concat("/Recipe/Create")
+                                        window.location.href = locationFinal;
                                 }
                                 else if (frase.includes("desligar")) {
                                     readOutLoud("A sair");
@@ -337,10 +345,11 @@
                                     }, 2000);
                                     //window.location.href = locationFinal;
                                 }
-                            }
                             phraseDiv.innerHTML += result.text;
-
                             window.console.log(result);
+
+                            }
+
                             recognizer.close();
                             recognizer.startContinuousRecognitionAsync();
                             recognizer = undefined;
