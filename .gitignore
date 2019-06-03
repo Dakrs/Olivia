@@ -11,3 +11,7 @@ Olivia/Olivia/bin/*
 Olivia/Olivia/obj/*
 /Olivia/.vs/Olivia/v15/Server/*
 /Olivia/.vs/Olivia/v16/Server/sqlite3
+*.ide
+Olivia/.vs/Olivia/DesignTimeBuild/.dtbcache
+Olivia/.vs/Olivia/v16/.suo
+Olivia/.vs/Olivia/v16/Server/sqlite3/storage.ide
