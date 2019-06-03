@@ -154,9 +154,9 @@
     //  The event recognized signals that a final recognition result is received.
     recognizer.recognized = function (s, e) {
         var texto = e.result.text;
-        if ( texto.includes("avançar") || texto.includes("avança"))
+        if ( texto.includes("avançar") || texto.includes("avança") ||texto.includes("próximo"))
             $(".carousel-control-next").click();
-        if (texto.includes("recuar") || texto.includes("recua"))
+        if (texto.includes("recuar") || texto.includes("recua")||texto.includes("anterior"))
             $(".carousel-control-prev").click();
     };
     recognizer.startContinuousRecognitionAsync();

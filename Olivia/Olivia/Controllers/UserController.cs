@@ -70,10 +70,7 @@ namespace Olivia.Controllers
             return View(recipes);
         }
 
-        public IActionResult Test()
-        {
-            return View();
-        }
+        
 
 
         public async Task<IActionResult> Login(LogInModel model)

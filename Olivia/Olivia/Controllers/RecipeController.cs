@@ -90,7 +90,10 @@ namespace Olivia.Controllers
 
             }
 
-            return View(dao.FindById(recipe.ElementAt(numero).Id_Recipe));
+            Recipe r = dao.FindById(recipe.ElementAt(numero).Id_Recipe);
+            ViewBag.image = r.GetImage();            
+
+            return View(r);
         }
 
         [Authorize]
