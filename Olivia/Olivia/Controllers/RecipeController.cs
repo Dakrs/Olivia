@@ -57,7 +57,8 @@ namespace Olivia.Controllers
         [Authorize]
         public IActionResult Random()
         {
-
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
+            int idUser = int.Parse(claim.Value);
             RecipeDAO dao = new RecipeDAO();
 
             List<Recipe> recipe = dao.LoadRecipes();
@@ -69,7 +70,17 @@ namespace Olivia.Controllers
             }
 
             int numero = RandomNumber(0, recipe.Count);
+            List<Recipe> receitas = dao.getFavorites(idUser);
+            ViewBag.Boolean = false;
+            foreach (Recipe recp in receitas)
+            {
+                if (recp.Id_Recipe == numero)
+                {
+                    ViewBag.Boolean = true;
+                    break;
+                }
 
+            }
 
             return View(dao.FindById(recipe.ElementAt(numero).Id_Recipe) );
         }

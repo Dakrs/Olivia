@@ -1,13 +1,19 @@
 ﻿@model Olivia.Models.Recipe
+@using System.Text.RegularExpressions;
 @{
     Layout = "~/Views/Shared/_LayoutTest.cshtml";
     TempData["Id"] = Model.Id_Recipe;
+    Boolean boolean = ViewBag.boolean;
 }
 <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
-    <h1 class="display-1 opacity-9" style="color:white; margin-left:5%">@Model.Name</h1>
+    <div id="textContainer" style="margin-left:3%">
+        <p>
+            <h1 style="font-size:54px;" class="retroshadow"> @Model.Name </h1>
+        </p>
+    </div>
 </div>
 <div class="container-fluid mt--7">
-    <div class="nav-wrapper" style="margin-top:15%">
+    <div class="nav-wrapper" style="margin-top:10%">
         <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
             <li class="nav-item">
                 <a class="nav-link mb-sm-3 mb-md-0 active" id="tabs-icons-text-1-tab" data-toggle="tab" href="#tabs-icons-text-1" role="tab" aria-controls="tabs-icons-text-1" aria-selected="true"><i class="ni ni-badge mr-2" style="height:20px"> Description</i></a>
@@ -44,18 +50,18 @@
                                         <tbody>
                                             @foreach (RecipeIngredient item in Model.Ingredients)
                                             {
-                                            <tr>
-                                                <th scope="row">
-                                                    <div class="media align-items-center">
-                                                        <div class="media-body">
-                                                            <span class="mb-0 text-sm">@item.Name</span>
+                                                <tr>
+                                                    <th scope="row">
+                                                        <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                                <span class="mb-0 text-sm">@item.Name</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </th>
-                                                <td>
-                                                    @item.Quantity @item.Unit
-                                                </td>
-                                            </tr>
+                                                    </th>
+                                                    <td>
+                                                        @item.Quantity @item.Unit
+                                                    </td>
+                                                </tr>
                                             }
                                         </tbody>
                                     </table>
@@ -79,15 +85,15 @@
                                         <tbody>
                                             @foreach (Instruction item in Model.Instructions)
                                             {
-                                            <tr>
-                                                <th scope="row">
-                                                    <div class="media align-items-center">
-                                                        <div class="media-body">
-                                                            <span class="mb-0 text-sm">@item.Designation</span>
+                                                <tr>
+                                                    <th scope="row">
+                                                        <div class="media align-items-center">
+                                                            <div class="media-body">
+                                                                <span class="mb-0 text-sm">@item.Designation</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </th>
-                                            </tr>
+                                                    </th>
+                                                </tr>
                                             }
                                         </tbody>
                                     </table>
@@ -192,7 +198,6 @@
             </div>
         </div>
     </div>
-
     <button type="button" class="btn btn-icon btn-olivia bg-gradient-olivia" data-toggle="modal" data-target="#RecipeStartCheck" style="margin-top:3%">
         <span class="btn-inner--icon"><i class="ni ni-button-play"></i></span>
     </button>
@@ -217,15 +222,16 @@
                         </div>
                     </div>
 
-                    @foreach(RecipeIngredient item in Model.Ingredients){
-                    <div class="row" style="margin-left:5%">
-                        <div class="col">
-                            @item.Name
+                    @foreach (RecipeIngredient item in Model.Ingredients)
+                    {
+                        <div class="row" style="margin-left:5%">
+                            <div class="col">
+                                @item.Name
+                            </div>
+                            <div class="col">
+                                @item.Quantity @item.Unit
+                            </div>
                         </div>
-                        <div class="col">
-                            @item.Quantity @item.Unit
-                        </div>
-                    </div>
                     }
                 </div>
 
@@ -252,10 +258,33 @@
             </div>
         </div>
     </div>
+    @if (boolean)
+    {
+        <a href="/Recipe/Favorite/@Model.Id_Recipe" class="btn btn-icon btn-oliviaymegalike bg-gradient-oliviaymega" role="button" aria-pressed="true" style="margin-top:3% ">
+            <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
+        </a>
+    }
+    else
+    {
+        <a href="/Recipe/Favorite/@Model.Id_Recipe" class="btn btn-icon btn-oliviaymega bg-gradient-oliviaymega" role="button" aria-pressed="true" style="margin-top:3% ">
+            <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
+        </a>
+    }
 
-    <a href="/Recipe/Favorite/@Model.Id_Recipe" class="btn btn-icon btn-oliviay bg-gradient-oliviay" role="button" aria-pressed="true" style="margin-top:3%">
-        <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
-    </a>
+
+    <div class="card-deck" style="margin-top:3%;margin-bottom:3%">
+        @foreach (string warning in Model.Warnings)
+        {
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@Regex.Replace(warning, @":.*", "")</h5>
+                    <p class="card-text">@Regex.Replace(warning, @".*:", "")</p>
+                </div>
+            </div>
+        }
+
+    </div>
+
+
 </div>
-
 
