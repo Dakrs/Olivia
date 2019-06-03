@@ -23,9 +23,20 @@ namespace Olivia.Controllers
             var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
             int idUser = int.Parse(claim.Value);
 
-            RecipeDAO dao = new RecipeDAO();
-            Recipe recipe = dao.FindById(id);
+            UserDAO daou = new UserDAO();
+            Utilizador u = daou.FindById(idUser);
 
+            RecipeDAO dao = new RecipeDAO();
+            Recipe recipe;
+            if (u.Type == 1) {
+                recipe = dao.FindByIdAdmin(id);
+                ViewBag.Admin = true;
+            }
+            else
+            {
+                recipe = dao.FindById(id);
+                ViewBag.Admin = false;
+            }
 
 
             if (recipe == null)
@@ -39,7 +50,6 @@ namespace Olivia.Controllers
                     ViewBag.Boolean = true;
                     break;
                 }
-
             }
             return View(recipe);
         }
@@ -47,7 +57,8 @@ namespace Olivia.Controllers
         [Authorize]
         public IActionResult Random()
         {
-
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
+            int idUser = int.Parse(claim.Value);
             RecipeDAO dao = new RecipeDAO();
 
             List<Recipe> recipe = dao.LoadRecipes();
@@ -59,7 +70,17 @@ namespace Olivia.Controllers
             }
 
             int numero = RandomNumber(0, recipe.Count);
+            List<Recipe> receitas = dao.getFavorites(idUser);
+            ViewBag.Boolean = false;
+            foreach (Recipe recp in receitas)
+            {
+                if (recp.Id_Recipe == numero)
+                {
+                    ViewBag.Boolean = true;
+                    break;
+                }
 
+            }
 
             return View(dao.FindById(recipe.ElementAt(numero).Id_Recipe) );
         }
@@ -206,6 +227,24 @@ namespace Olivia.Controllers
             ViewBag.Favorites = favoritos;
 
             return View(dao.searchByWords(l_words));
+        }
+
+        [Authorize]
+        public IActionResult Approve(int id)
+        {
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
+            int idUser = int.Parse(claim.Value);
+
+            UserDAO dao = new UserDAO();
+            Utilizador u = dao.FindById(idUser);
+
+            if (u.Type != 1)
+                return RedirectToAction("Index", "User");
+
+            RecipeDAO daor = new RecipeDAO();
+            daor.ApproveRecipe(id);
+
+            return RedirectToAction("Colab", "User");
         }
 
 
