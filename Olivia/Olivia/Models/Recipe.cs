@@ -70,5 +70,10 @@ namespace Olivia.Models
         {
             return RecipeDAO.GetRecipeImage(Id_Recipe);
         }
+
+        public void Approve()
+        {
+            RecipeDAO.ApproveRecipe(Id_Recipe);
+        }
     }
 }

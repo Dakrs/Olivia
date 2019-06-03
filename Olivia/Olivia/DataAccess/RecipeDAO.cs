@@ -849,6 +849,7 @@ namespace Olivia.DataAccess
             return b;
         }
 
+
         public List<Recipe> NeedAproval()
         {
             List<Recipe> result = new List<Recipe>();
@@ -889,6 +890,21 @@ namespace Olivia.DataAccess
             }
 
             return result;
+        }
+
+
+        public void ApproveRecipe(int id_Recipe)
+        {
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+                command.CommandType = CommandType.Text;
+                command.CommandText = "update Recipe set Active=1 where Id_Recipe=@Id_Recipe";
+                command.Parameters.Add("@Id_Recipe", SqlDbType.Int).Value = id_Recipe;
+
+                command.ExecuteNonQuery();
+            }
+            con.Close();
         }
 
     }

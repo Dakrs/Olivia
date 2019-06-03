@@ -219,6 +219,20 @@ namespace Olivia.DataAccess
             return result;
         }
 
-        
+        internal void PromoteUser(int id_User)
+        {
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+                command.CommandType = CommandType.Text;
+                command.CommandText = "update User set Type=1 where Id_User=@Id_User";
+                command.Parameters.Add("@Id_User", SqlDbType.Int).Value = id_User;
+
+                command.ExecuteNonQuery();
+            }
+            con.Close();
+        }
+
+
     }
 }
