@@ -3,6 +3,7 @@
 @{
     Layout = "~/Views/Shared/_LayoutTest.cshtml";
     TempData["Id"] = Model.Id_Recipe;
+    bool type = ViewBag.Admin;
     Boolean boolean = ViewBag.boolean;
 }
 <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
@@ -270,9 +271,16 @@
             <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
         </a>
     }
+    @if (type)
+    {
+        <a href="/Recipe/Approve/@Model.Id_Recipe" class="btn btn-icon btn-olivia bg-gradient-olivia btn-sm" role="button" aria-pressed="true" style="margin-top:3% ">
+            <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
+        </a>
+    }
 
 
-    <div class="card-deck" style="margin-top:3%;margin-bottom:3%" >
+
+    <div class="card-deck" style="margin-top:3%;margin-bottom:3%">
         @foreach (string warning in Model.Warnings)
         {
             <div class="card">

@@ -39,7 +39,7 @@ namespace Olivia.DataAccess
 
             }
 
-            int recipe_id = FindByName(recipe.Name).Id_Recipe;
+            int recipe_id = FindByNameAdmin(recipe.Name).Id_Recipe;
             foreach (RecipeIngredient ing in recipe.Ingredients)
             {
                 if (ing.Name == null)
@@ -905,6 +905,97 @@ namespace Olivia.DataAccess
                 command.ExecuteNonQuery();
             }
             con.Close();
+        }
+
+        public Recipe FindByIdAdmin(int id)
+        {
+            Recipe r = null;
+
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT * FROM [Recipe] WHERE Id_Recipe=@id";
+                command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+
+                    if (result_querie.Rows.Count > 0)
+                    {
+                        DataRow row = result_querie.Rows[0];
+                        r = new Recipe
+                        {
+                            Id_Recipe = int.Parse(row["Id_Recipe"].ToString()),
+                            Name = row["Name"].ToString(),
+                            Description = row["Description"].ToString(),
+                            Creator = int.Parse(row["Creator"].ToString()),
+                            Type = int.Parse(row["Type"].ToString()),
+                            Calories = float.Parse(row["Calories"].ToString()),
+                            Protein = float.Parse(row["Protein"].ToString()),
+                            Fat = float.Parse(row["Fat"].ToString()),
+                            Carbs = float.Parse(row["Carbs"].ToString()),
+                            Fiber = float.Parse(row["Fiber"].ToString()),
+                            Sodium = float.Parse(row["Sodium"].ToString()),
+                            Duration = int.Parse(row["Duration"].ToString())
+                        };
+                        r.Instructions = r.InstructionDAO.GetInstructions(r.Id_Recipe);
+                        r.Ingredients = r.IngredientDAO.GetIngredients(r.Id_Recipe);
+                        r.Warnings = GetWarnings(id);
+                    }
+                }
+            }
+            con.Close();
+
+            return r;
+        }
+
+        public Recipe FindByNameAdmin(string name)
+        {
+            Recipe r = null;
+
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+                command.CommandType = CommandType.Text;
+                command.CommandText = "select * from [Recipe] where Name=@name";
+                command.Parameters.Add("@name", SqlDbType.VarChar);
+                command.Parameters["@name"].Value = name;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+
+                    if (result_querie.Rows.Count > 0)
+                    {
+                        DataRow row = result_querie.Rows[0];
+                        r = new Recipe
+                        {
+                            Id_Recipe = int.Parse(row["Id_Recipe"].ToString()),
+                            Name = row["Name"].ToString(),
+                            Description = row["Description"].ToString(),
+                            Creator = int.Parse(row["Creator"].ToString()),
+                            Type = int.Parse(row["Type"].ToString()),
+                            Calories = float.Parse(row["Calories"].ToString()),
+                            Protein = float.Parse(row["Protein"].ToString()),
+                            Fat = float.Parse(row["Fat"].ToString()),
+                            Carbs = float.Parse(row["Carbs"].ToString()),
+                            Fiber = float.Parse(row["Fiber"].ToString()),
+                            Sodium = float.Parse(row["Sodium"].ToString()),
+                            Duration = int.Parse(row["Duration"].ToString())
+                        };
+                        r.Instructions = r.InstructionDAO.GetInstructions(r.Id_Recipe);
+                        r.Ingredients = r.IngredientDAO.GetIngredients(r.Id_Recipe);
+                        r.Warnings = GetWarnings(r.Id_Recipe);
+                    }
+                }
+            }
+            con.Close();
+
+            return r;
         }
 
     }
