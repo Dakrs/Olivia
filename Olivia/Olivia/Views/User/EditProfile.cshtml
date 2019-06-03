@@ -27,10 +27,23 @@
                 </div>
                 <input class="form-control" type="email" name="uemail" value="@ViewBag.User.Email" id="example-search-input">
             </div>
-            <div style="margin-top: 3%">
+
+            <div class="input-group" style="margin-top:3%">
+                <div class="form-group">
+                    <select class="form-control" name="upref">
+                        <option value="1"> Main Dish</option>
+                        <option value="2"> Desert </option>
+                        <option value="3"> Appetizer </option>
+                        <option value="4"> Vegeterian </option>
+
+                    </select>
+                </div>
+            </div>
+
+            <div style="margin-top:-1%">
                 <button type="submit" class="btn btn-olivia bg-gradient-olivia">Update</button>
             </div>
-</form>
+        </form>
     </div>
 </div>
 

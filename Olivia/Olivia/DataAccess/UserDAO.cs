@@ -122,16 +122,17 @@ namespace Olivia.DataAccess
             return id;
         }
 
-        public void UpdateProfile(int id, string name, string email) {
+        public void UpdateProfile(int id, string name, string email, int pref) {
 
             Connection con = new Connection();
             using (SqlCommand command = con.Fetch().CreateCommand())
             {
 
                 command.CommandType = CommandType.Text;
-                command.CommandText = "Update[User] set Name = @user, Email = @email where Id_User = @id ;";
+                command.CommandText = "Update[User] set Name = @user, Email = @email , Preference = @pref where Id_User = @id ;";
                 command.Parameters.Add("@user", SqlDbType.VarChar).Value = name;
                 command.Parameters.Add("@email", SqlDbType.VarChar).Value = email;
+                command.Parameters.Add("@pref", SqlDbType.VarChar).Value = pref;
                 command.Parameters.Add("@id", SqlDbType.Int).Value = id;
 
                 command.ExecuteNonQuery();
