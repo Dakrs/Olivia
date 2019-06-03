@@ -282,7 +282,7 @@ GO
 
 
 INSERT into [User] VALUES
-('admin','21232f297a57a5a743894a0e4a801fc3','admin@olivia.pt',1,0,'admin',1);
+('admin','21232f297a57a5a743894a0e4a801fc3','admin@olivia.pt',1,1,'admin',1);
 
 SET IDENTITY_INSERT Recipe on;
 

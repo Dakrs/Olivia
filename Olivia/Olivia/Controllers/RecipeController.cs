@@ -139,7 +139,7 @@ namespace Olivia.Controllers
             }
 
 
-            return RedirectToAction("Index", "Recipe");
+            return RedirectToAction("Index", "User");
         }
 
         [Authorize]
@@ -216,15 +216,20 @@ namespace Olivia.Controllers
         [Authorize]
         public IActionResult Search(string words)
         {
+            RecipeDAO dao = new RecipeDAO();
+            List<Recipe> result;
             if (words == null || words.Equals(""))
             {
-                return View(new List<Recipe>());
+                result = dao.LoadRecipes();
+            }
+            else
+            {
+                List<string> l_words = words.Split(' ').ToList();
+                result = dao.searchByWords(l_words);
             }
             var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
-
             int idUser = int.Parse(claim.Value);
-            List<string> l_words = words.Split(' ').ToList();
-            RecipeDAO dao = new RecipeDAO();
+
             Dictionary<int, float> rating = dao.allRatings();
             ViewBag.Ratings = rating;
 
@@ -237,7 +242,7 @@ namespace Olivia.Controllers
             }
             ViewBag.Favorites = favoritos;
 
-            return View(dao.searchByWords(l_words));
+            return View(result);
         }
 
         [Authorize]
