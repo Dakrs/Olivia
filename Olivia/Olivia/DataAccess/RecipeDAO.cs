@@ -849,7 +849,51 @@ namespace Olivia.DataAccess
             return b;
         }
 
-        internal void ApproveRecipe(int id_Recipe)
+
+        public List<Recipe> NeedAproval()
+        {
+            List<Recipe> result = new List<Recipe>();
+
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT * FROM [Recipe] WHERE Active=0";
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+
+                    foreach (DataRow row in result_querie.Rows)
+                    {
+                        Recipe r = new Recipe
+                        {
+                            Id_Recipe = int.Parse(row["Id_Recipe"].ToString()),
+                            Name = row["Name"].ToString(),
+                            Description = row["Description"].ToString(),
+                            Creator = int.Parse(row["Creator"].ToString()),
+                            Type = int.Parse(row["Type"].ToString()),
+                            Calories = float.Parse(row["Calories"].ToString()),
+                            Protein = float.Parse(row["Protein"].ToString()),
+                            Fat = float.Parse(row["Fat"].ToString()),
+                            Carbs = float.Parse(row["Carbs"].ToString()),
+                            Fiber = float.Parse(row["Fiber"].ToString()),
+                            Sodium = float.Parse(row["Sodium"].ToString()),
+                            Duration = int.Parse(row["Duration"].ToString())
+                        };
+
+                        result.Add(r);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+
+        public void ApproveRecipe(int id_Recipe)
         {
             Connection con = new Connection();
             using (SqlCommand command = con.Fetch().CreateCommand())
@@ -862,5 +906,6 @@ namespace Olivia.DataAccess
             }
             con.Close();
         }
+
     }
 }

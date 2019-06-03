@@ -200,5 +200,13 @@ namespace Olivia.Controllers
         }
 
 
+        public IActionResult Colab() 
+        {
+            RecipeDAO rdao = new RecipeDAO();
+            List<Recipe> aproval = rdao.NeedAproval();
+            ViewBag.Need = aproval;
+            return View();
+        }
+
     }
 }
