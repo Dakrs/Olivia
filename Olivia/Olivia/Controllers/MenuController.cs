@@ -32,6 +32,13 @@ namespace Olivia.Controllers
             if (date.Date.CompareTo(DateTime.Now.Date) == -1)
                 return RedirectToAction("Create", "Menu");
 
+            Dictionary<int, byte[]> dict = new Dictionary<int, byte[]>();
+            foreach ( Recipe r in m.Recipes)
+            {
+                dict[r.Id_Recipe] = r.GetImage();
+            }
+            ViewBag.images = dict;
+
             return View(m.OrderedRecipes());
         }
 

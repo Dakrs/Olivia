@@ -26,7 +26,7 @@ namespace Olivia.Controllers
             RecipeDAO dao = new RecipeDAO();
             Recipe recipe = dao.FindById(id);
 
-
+            
 
             if (recipe == null)
                 return RedirectToAction("Index","User");
@@ -41,6 +41,9 @@ namespace Olivia.Controllers
                 }
 
             }
+
+            ViewBag.image = recipe.GetImage();
+
             return View(recipe);
         }
 

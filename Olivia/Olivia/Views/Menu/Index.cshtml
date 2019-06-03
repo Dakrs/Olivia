@@ -1,6 +1,7 @@
 ﻿@model System.Collections.Generic.Dictionary<DateTime,KeyValuePair<Olivia.Models.Recipe,Olivia.Models.Recipe>>
 @{
     Layout = "~/Views/Shared/_LayoutTest.cshtml";
+    Dictionary<int, byte[]> images = ViewBag.images;
 }
 
 <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
@@ -18,7 +19,7 @@
             <div class="card mb-3" style="max-width: 540px;">
                 <div class="row no-gutters">
                     <div class="col-md-6">
-                        <img src="..." class="card-img" alt="...">
+                        <img src="data:image;base64,@System.Convert.ToBase64String(images[item.Value.Key.Id_Recipe])" class="card-img" alt="...">
                     </div>
                     <div class="col-md-6">
                         <div class="card-body">
@@ -34,7 +35,7 @@
             <div class="card mb-3" style="max-width: 540px;">
                 <div class="row no-gutters">
                     <div class="col-md-6">
-                        <img src="..." class="card-img" alt="...">
+                        <img src="data:image;base64,@System.Convert.ToBase64String(images[item.Value.Value.Id_Recipe])" class="card-img" alt="...">
                     </div>
                     <div class="col-md-6">
                         <div class="card-body">
