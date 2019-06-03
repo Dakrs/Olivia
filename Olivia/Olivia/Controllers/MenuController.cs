@@ -69,6 +69,13 @@ namespace Olivia.Controllers
             }
 
             DateTime parsedDate = DateTime.Parse(rdata);
+
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
+            int idUser = int.Parse(claim.Value);
+
+            MenuDAO daoM = new MenuDAO();
+            daoM.Insert(parsedDate, r_menu, idUser);
+
             return RedirectToAction("Index", "Menu");
         }
 
