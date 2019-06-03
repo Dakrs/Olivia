@@ -1,6 +1,8 @@
 ﻿@{
     string name = @User.Identity.Name;
     string id = @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Sid)?.Value;
+    string type = @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Sid)?.Value;
+
 }
 <!DOCTYPE html>
 <html>
@@ -73,7 +75,7 @@
                 <textarea id="phraseDiv" style="display: inline-block;width:100px;height:200px"></textarea>
                 <hr class="my-3">
                 <!-- por aprovar -->
-                @if (new Olivia.DataAccess.UserDAO().FindByUsername(name).Type == 1)            
+                @if (type == "1")            
                 {
                     <button href="#" class="btn btn-outline-warning">Needs Approval</button>
                 }
@@ -116,10 +118,16 @@
                             <div class=" dropdown-header noti-title">
                                 <h6 class="text-overflow m-0">Welcome!</h6>
                             </div>
-                            <a href="" class="dropdown-item">
-                                <i class="ni ni-single-02"></i>
+                            <a class="dropdown-item" href="/User/Profile">
+                                <i class="ni ni-single-02" href="/User/Profile"></i>
                                 <span>My profile</span>
+
                             </a>
+                            <a class="dropdown-item" href="/User/Logout">
+                                <i class="ni ni-button-power text-default" ></i>
+                                <span>Log out</span>
+                            </a>
+
                         </div>
                     </li>
                 </ul>
