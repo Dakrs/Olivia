@@ -41,7 +41,7 @@
                                         }
                                         @if (i != 0 && i != 5)
                                         {
-                                            @if (Math.Round(ratings.GetValueOrDefault(item.Id_Recipe)) > @ratings.GetValueOrDefault(item.Id_Recipe))
+                                            @if (Math.Round(@ratings.GetValueOrDefault(item.Id_Recipe)) != @ratings.GetValueOrDefault(item.Id_Recipe))
                                             {
                                                 <i class="fas fa-star-half-alt" style="color:#f4d442"></i>
                                                 i++;
@@ -139,7 +139,7 @@
                                         }
                                         @if (i != 0 && i != 5)
                                         {
-                                            @if (Math.Round(ratings.GetValueOrDefault(item.Id_Recipe)) > @ratings.GetValueOrDefault(item.Id_Recipe))
+                                            @if (Math.Round(ratings.GetValueOrDefault(item.Id_Recipe)) != @ratings.GetValueOrDefault(item.Id_Recipe))
                                             {
                                                 <i class="fas fa-star-half-alt" style="color:#f4d442"></i>
                                                 i++;
