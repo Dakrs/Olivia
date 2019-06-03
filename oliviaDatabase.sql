@@ -47,7 +47,7 @@ CREATE TABLE [Recipe] (
   [Protein] FLOAT NOT NULL,
   [Fiber] FLOAT NOT NULL,
   [Sodium] FLOAT NOT NULL,
-  [Active] BIT NOT NULL DEFAULT 1,
+  [Active] BIT NOT NULL DEFAULT 0,
   PRIMARY KEY ([Id_Recipe]),
   CONSTRAINT [FK_Id_Creator]
     FOREIGN KEY ([Creator])
