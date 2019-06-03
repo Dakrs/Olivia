@@ -56,10 +56,10 @@ namespace Olivia.Controllers
         }
 
         [Authorize]
-        public IActionResult Random(int id,string date)
+        public ActionResult Random(int rid,string rdata)
         {
             RecipeDAO dao = new RecipeDAO();
-            List<Recipe> recipes = dao.LoadRecipeByType(id);
+            List<Recipe> recipes = dao.LoadRecipeByType(rid);
             Random rnd = new Random();
             List<Recipe> r_menu = new List<Recipe>();
             for (int i=0; i < 14; i++)
@@ -68,8 +68,10 @@ namespace Olivia.Controllers
                 r_menu.Add(recipes[rand]);
             }
 
-            DateTime parsedDate = DateTime.Parse(date);
+            DateTime parsedDate = DateTime.Parse(rdata);
             return RedirectToAction("Index", "Menu");
         }
+
+
     }
 }

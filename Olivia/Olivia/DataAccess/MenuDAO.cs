@@ -21,8 +21,11 @@ namespace Olivia.DataAccess
 
                 using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                 {
-                    DataTable result_querie = new DataTable();
-                    adapter.Fill(result_querie);
+                    DataTable result_query = new DataTable();
+                    adapter.Fill(result_query);
+
+                    if (result_query.Rows.Count == 0)
+                        return null;
 
                     if (result_querie.Rows.Count == 0)
                         return null;
