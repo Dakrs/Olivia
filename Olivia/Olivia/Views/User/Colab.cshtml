@@ -2,6 +2,8 @@
 @{
     Layout = "~/Views/Shared/_LayoutTest.cshtml";
     List<Recipe> cards = ViewBag.Need;
+    List<Utilizador> users = ViewBag.GoodBoyz;
+    Dictionary<int, Triplo> myDic = ViewBag.Dic;
 
 }
 <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
@@ -17,7 +19,7 @@
         <div class="col">
             <div class="card shadow">
                 <div class="card-header border-0">
-                    <h3 class="mb-0 text-center">Recipes</h3>
+                    <h3 class="mb-0 text-center">Recipes Needing Approval</h3>
                 </div>
                 <div class="table-responsive">
                     <table class="table align-items-center table-flush">
@@ -77,6 +79,61 @@
 
                                 </tr>
                             }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card shadow" style="margin-top:5%">
+                <div class="card-header border-0">
+                    <h3 class="mb-0 text-center">Users Available to be Colaborats</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+                        <thead class="thead-light" align="center">
+                            <tr>
+                                <th scope="col">User Id </th>
+                                <th scope="col">Usermame</th>
+                                <th scope="col">Created</th>
+                                <th scope="col">Rated</th>
+                                <th scope="col">Points</th>
+                                <th scope="col"></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Utilizador item in users)
+                {
+                            <tr>
+                                <th scope="row">
+                                    <div class="media align-items-center">
+                                        <div class="media-body" align="center">
+                                            <span class="mb-0 text-sm">@item.Id_utilizador</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td align="center">
+                                    @item.Username
+                                </td>
+                                <td align="center">
+                                    <i class="fas fa-plus"></i> @myDic.GetValueOrDefault(item.Id_utilizador).Created
+                                </td>
+                                <td align="center">
+                                    @myDic.GetValueOrDefault(item.Id_utilizador).Rated
+                            </td>
+
+                            <td align="center">
+                                @myDic.GetValueOrDefault(item.Id_utilizador).Points
+                            </td>
+                            <td>
+                                <a href="/User/Promote/@item.Id_utilizador" class="btn btn-icon btn-olivia bg-gradient-olivia btn-sm" role="button" aria-pressed="true" style="margin-top:3%">
+
+                                    <span class="btn-inner--icon"><i class="fas fa-check"></i></span>
+                                </a>
+                            </td>
+
+
+                            </tr>
+    }
                         </tbody>
                     </table>
                 </div>

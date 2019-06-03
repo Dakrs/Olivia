@@ -225,7 +225,7 @@ namespace Olivia.DataAccess
             using (SqlCommand command = con.Fetch().CreateCommand())
             {
                 command.CommandType = CommandType.Text;
-                command.CommandText = "update User set Type=1 where Id_User=@Id_User";
+                command.CommandText = "update [User] set Type=1 where Id_User=@Id_User";
                 command.Parameters.Add("@Id_User", SqlDbType.Int).Value = id_User;
 
                 command.ExecuteNonQuery();
@@ -273,6 +273,41 @@ namespace Olivia.DataAccess
             }
             return null;
 
+        }
+
+
+        public List<int> IdUpgradeColab() { 
+
+            List<int> able = new List<int>();
+            Connection con = new Connection();
+                using (SqlCommand command = con.Fetch().CreateCommand())
+                {
+
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = "select Id_User from (select [User].Id_User , sum(Rating) AS TOTAL_POINTS  from [User]  inner join Recipe on [User].Id_User = [Recipe].Creator AND [User].Type = 0 inner join Rating on [Rating].Id_Recipe = [Recipe].Id_Recipe GROUP BY [User].Id_User) AS able where TOTAL_POINTS > 20;"; 
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        DataTable result = new DataTable();
+                        adapter.Fill(result);
+    
+                        
+                    foreach (DataRow row in result.Rows)
+                    {
+                        try
+                        {
+
+                        int x = int.Parse(row["Id_user"].ToString());
+                        able.Add(x);
+
+                        }
+                        catch(Exception e) { }
+                    }
+
+                    }
+
+                }
+                return able;
+        
         }
 
 
