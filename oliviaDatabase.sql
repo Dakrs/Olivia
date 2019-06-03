@@ -286,7 +286,7 @@ INSERT into [User] VALUES
 
 SET IDENTITY_INSERT Recipe on;
 
-insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, Carbs, Protein, Fiber, Sodium, Duration,Active)
+insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, Carbs, Protein, Fiber, Sodium, Duration, Active)
     values (  1,
                 'Bolo de Requeijão com Chocolate',
                 'Sobremesa deliciosa e de rápida confeção. Ideal para os apreciadores de chocolate e queijo fresco. Os frutos vermelhos enriquecem ainda mais o seu saber.',
@@ -299,7 +299,7 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, C
                 5,
                 0,
                 45,
-                1
+				1
         ),
         (    2,
                 'Arroz de cabidela',
@@ -313,7 +313,7 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, C
                 4,
                 0,
                 80,
-                1
+				1
         ),
         (    3,
                 'Gomos de marmelo com pistácios e lima',
@@ -327,7 +327,7 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, C
                 4,
                 0,
                 45,
-                1
+				1
         ),
         (    4,
                 'Sopa de belgroegas com queijo de cabra',
@@ -341,7 +341,7 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, C
                 6,
                 0,
                 45,
-                1
+				1
         ),
         ( 6,
            'Gelado merengado',
@@ -355,7 +355,7 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, C
            5,
            0,
            13,
-           1
+		   1
          ),
          ( 5,
             'Caril de peru com coco e maçã',
@@ -369,8 +369,8 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, C
             4,
             0,
             60,
-            1
-          ),
+			1
+		),
         ( 7,
            'Camembert com Avelãs e Mel',
            'Uma entrada, três paladares. De extrema rápida confeção, ideal para um estilo de vida sofisticado e acelerado.',
@@ -383,7 +383,7 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, C
            2,
            0,
            8,
-           1
+		   1
         ),
         ( 8,
            'Coderniz no Forno',
@@ -397,7 +397,7 @@ insert into Recipe (Id_Recipe, Name, Description, Creator, Type,Calories, Fat, C
            5,
            0,
            50,
-           1
+		   1
         );
 
 
@@ -693,6 +693,30 @@ insert into Warning (Id_Recipe, Id_Warning, Warning) values
     (8,1,'TESOURO NUTRICIONAL: Excelente fonte de potássio, vitamina B6, B1 e niacina.'),
     (8,2,'GLOSSÁRIO GASTRONÓMICO: Salter - cozinhar rapidamente em gordura bem quente.');
 
-select * from [Recipe];
 
-SELECT Active FROM [Recipe] WHERE Id_Recipe = 1;
+---------------------------
+
+
+INSERT INTO Recipe_image (Id_Recipe, Image) 
+	SELECT 1, BulkColumn FROM Openrowset( Bulk 'C:\Users\Asus\Desktop\LI4\recipe_images\1.png', Single_Blob) as image
+
+INSERT INTO Recipe_image (Id_Recipe, Image) 
+	SELECT 2, BulkColumn FROM Openrowset( Bulk 'C:\Users\Asus\Desktop\LI4\recipe_images\2.png', Single_Blob) as image
+
+INSERT INTO Recipe_image (Id_Recipe, Image) 
+	SELECT 3, BulkColumn FROM Openrowset( Bulk 'C:\Users\Asus\Desktop\LI4\recipe_images\3.png', Single_Blob) as image
+
+INSERT INTO Recipe_image (Id_Recipe, Image) 
+	SELECT 4, BulkColumn FROM Openrowset( Bulk 'C:\Users\Asus\Desktop\LI4\recipe_images\4.png', Single_Blob) as image
+
+INSERT INTO Recipe_image (Id_Recipe, Image) 
+	SELECT 5, BulkColumn FROM Openrowset( Bulk 'C:\Users\Asus\Desktop\LI4\recipe_images\5.png', Single_Blob) as image
+
+INSERT INTO Recipe_image (Id_Recipe, Image) 
+	SELECT 6, BulkColumn FROM Openrowset( Bulk 'C:\Users\Asus\Desktop\LI4\recipe_images\6.png', Single_Blob) as image
+
+INSERT INTO Recipe_image (Id_Recipe, Image) 
+	SELECT 7, BulkColumn FROM Openrowset( Bulk 'C:\Users\Asus\Desktop\LI4\recipe_images\7.png', Single_Blob) as image
+
+INSERT INTO Recipe_image (Id_Recipe, Image) 
+	SELECT 8, BulkColumn FROM Openrowset( Bulk 'C:\Users\Asus\Desktop\LI4\recipe_images\8.png', Single_Blob) as image
