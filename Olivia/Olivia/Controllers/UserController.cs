@@ -85,10 +85,12 @@ namespace Olivia.Controllers
 
                 if (id != -1)
                 {
+                    Utilizador user = dAO.FindByUsername(model.Username);
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, model.Username),
-                        new Claim(ClaimTypes.Sid,id.ToString())
+                        new Claim(ClaimTypes.Sid,id.ToString()),
+                        new Claim(ClaimTypes.Role,user.Type.ToString())
                     };
                     ClaimsIdentity userIdentity = new ClaimsIdentity(claims, "login");
                     ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
@@ -199,6 +201,14 @@ namespace Olivia.Controllers
             return View();
         }
 
+
+        public IActionResult Colab() 
+        {
+            RecipeDAO rdao = new RecipeDAO();
+            List<Recipe> aproval = rdao.NeedAproval();
+            ViewBag.Need = aproval;
+            return View();
+        }
 
     }
 }

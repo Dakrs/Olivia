@@ -3154,25 +3154,25 @@ fieldset:disabled a.btn
 }
 .btn-oliviaymega {
     color: #8b8b8b;
-    border-color: #8b8b8b;
-    background-color: #FFC300;
-    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+    border-color: #fff;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 6px rgba(0, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
 }
 .btn-oliviaymegalike {
     color: #F9074C;
-    border-color: #8b8b8b;
-    background-color: #FFC300;
+    border-color: #fff;
+    background-color: #F9074C;
     box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
 }
     .btn-oliviaymegalike:hover {
         color: #8b8b8b;
         border-color: #FFC300;
-        background-color: #FFC300;
+        background-color: #FFFFFF;
     }
 .btn-oliviaymega:hover {
     color: #F9074C;
     border-color: #FFC300;
-    background-color: #FFC300;
+    background-color: #FFFFFF;
 }
 .btn-oliviay:hover {
     color: #fff;
@@ -15144,7 +15144,7 @@ button.bg-lighter:focus
 
 
 .bg-gradient-oliviaymega {
-    background: linear-gradient(87deg, #bababa 0, #e1dcc7 100%) !important;
+    background: linear-gradient(87deg, #fff 0, #fff 100%) !important;
 }
 .bg-gradient-info
 {
