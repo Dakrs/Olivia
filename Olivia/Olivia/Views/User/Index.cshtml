@@ -40,28 +40,29 @@
                                         {
                                             <span class="text-danger mr-2"><i class="fa fa-arrow-down"></i> @ratings.GetValueOrDefault(item.Id_Recipe)</span>
                                         }
-                                        @for (i = 0; i < Math.Floor(@ratings.GetValueOrDefault(item.Id_Recipe)); i++)
+                                        @for (i = 0; i < Math.Floor(@ratings.GetValueOrDefault(item.Id_Recipe)) && Math.Floor(@ratings.GetValueOrDefault(item.Id_Recipe)) > 0; i++)
                                         {
                                             <i class="fas fa-star " style="color:#f4d442"></i>
                                         }
-
-                                        @if (Math.Round(ratings.GetValueOrDefault(item.Id_Recipe)) > @ratings.GetValueOrDefault(item.Id_Recipe))
+                                        @if (i != 0 && i != 5)
                                         {
-                                            <i class="fas fa-star-half-alt" style="color:#f4d442"></i>
-                                            i++;
+                                            @if (Math.Round(ratings.GetValueOrDefault(item.Id_Recipe)) > @ratings.GetValueOrDefault(item.Id_Recipe))
+                                            {
+                                                <i class="fas fa-star-half-alt" style="color:#f4d442"></i>
+                                                i++;
 
-                                        }
-                                        else
-                                        {
-                                            <i class="far fa-star " style="color:#f4d442"></i>
-                                            i++;
+                                            }
+                                            else
+                                            {
+                                                <i class="far fa-star " style="color:#f4d442"></i>
+                                                i++;
 
+                                            }
                                         }
-
-                                        @for (; i < 5; i++)
-                                        {
-                                            <i class="far fa-star " style="color:#f4d442"></i>
-                                        }
+                                            @for (; i < 5; i++)
+                                            {
+                                                <i class="far fa-star " style="color:#f4d442"></i>
+                                            }
 
                                     </p>
                                 </div>
@@ -137,28 +138,30 @@
                                     </td>
                                     <td align="center">
 
-                                        @for (i = 0; i < Math.Floor(@ratings.GetValueOrDefault(item.Id_Recipe)); i++)
+                                        @for (i = 0; i < Math.Floor(@ratings.GetValueOrDefault(item.Id_Recipe)) && Math.Floor(@ratings.GetValueOrDefault(item.Id_Recipe)) > 0; i++)
                                         {
                                             <i class="fas fa-star " style="color:#f4d442"></i>
                                         }
-
-                                        @if (Math.Round(ratings.GetValueOrDefault(item.Id_Recipe)) > @ratings.GetValueOrDefault(item.Id_Recipe))
+                                        @if (i != 0 && i != 5)
                                         {
-                                            <i class="fas fa-star-half-alt" style="color:#f4d442"></i>
-                                            i++;
+                                            @if (Math.Round(ratings.GetValueOrDefault(item.Id_Recipe)) > @ratings.GetValueOrDefault(item.Id_Recipe))
+                                            {
+                                                <i class="fas fa-star-half-alt" style="color:#f4d442"></i>
+                                                i++;
 
+                                            }
+                                            else
+                                            {
+                                                <i class="far fa-star " style="color:#f4d442"></i>
+                                                i++;
+
+                                            }
                                         }
-                                        else
-                                        {
-                                            <i class="far fa-star " style="color:#f4d442"></i>
-                                            i++;
-
-                                        }
-
                                         @for (; i < 5; i++)
                                         {
                                             <i class="far fa-star " style="color:#f4d442"></i>
                                         }
+
                                     </td>
                                     <td align="center">
                                         @if (favorites.Contains(item.Id_Recipe))

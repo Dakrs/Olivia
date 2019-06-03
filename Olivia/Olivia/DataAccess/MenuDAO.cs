@@ -16,21 +16,26 @@ namespace Olivia.DataAccess
             using (SqlCommand command = con.Fetch().CreateCommand())
             {
                 command.CommandType = CommandType.Text;
-                command.CommandText = "SELECT MAX(Id_Menu)  AS Menu,Date FROM Menu WHERE Id_User=@user GROUP BY Date";
+                command.CommandText = "SELECT Id_Menu AS Menu,Date FROM Menu WHERE Id_User=@user ORDER BY Date DESC";
                 command.Parameters.Add("@user", SqlDbType.Int).Value = idUser;
 
                 using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                 {
-                    DataTable result_querie = new DataTable();
-                    adapter.Fill(result_querie);
+                    DataTable result_query = new DataTable();
+                    adapter.Fill(result_query);
 
-                    DataRow row = result_querie.Rows[0];
+                    if (result_query.Rows.Count == 0)
+                        return null;
+                        
+
+                    DataRow row = result_query.Rows[0];
                     int idMenu;
                     bool flag = int.TryParse(row["Menu"].ToString(), out idMenu);
                     DateTime date = (DateTime)row["Date"];
 
                     if (!flag)
                         return null;
+
                     result.Id_Menu = idMenu;
                     result.StartingDate = date;
                 }
@@ -45,10 +50,10 @@ namespace Olivia.DataAccess
 
                 using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                 {
-                    DataTable result_querie = new DataTable();
-                    adapter.Fill(result_querie);
+                    DataTable result_query = new DataTable();
+                    adapter.Fill(result_query);
 
-                    foreach (DataRow row in result_querie.Rows)
+                    foreach (DataRow row in result_query.Rows)
                     {
                         aux.Add((int)row["Id_Recipe"]);
                     }
@@ -67,8 +72,9 @@ namespace Olivia.DataAccess
 
         public void Insert(DateTime date,List<Recipe> recipes,int idUser)
         {
+            Console.WriteLine(date.ToString());
+
             Connection con = new Connection();
-            int idMenu;
             using (SqlCommand command = con.Fetch().CreateCommand())
             {
                 command.CommandType = CommandType.Text;
@@ -76,10 +82,14 @@ namespace Olivia.DataAccess
                 command.Parameters.Add("@user", SqlDbType.Int).Value = idUser;
                 command.Parameters.AddWithValue("@date", date);
 
-                idMenu = (int)command.ExecuteScalar();
+                command.ExecuteNonQuery();
             }
             int i = 0;
-            foreach(Recipe r in recipes)
+
+            Menu m = getLastestMenu(idUser);
+            int idMenu = m.Id_Menu;
+
+            foreach (Recipe r in recipes)
             {
                 using (SqlCommand command = con.Fetch().CreateCommand())
                 {

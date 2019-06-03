@@ -25,12 +25,12 @@ namespace Olivia.Controllers
             MenuDAO dao = new MenuDAO();
             Menu m = dao.getLastestMenu(idUser);
             if (m == null) // falta verificar a data
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Create", "Menu");
 
             DateTime date = m.StartingDate.AddDays(6);
 
             if (date.Date.CompareTo(DateTime.Now.Date) == -1)
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Create", "Menu");
 
             return View(m.OrderedRecipes());
         }
@@ -56,10 +56,10 @@ namespace Olivia.Controllers
         }
 
         [Authorize]
-        public IActionResult Random(int id,string date)
+        public ActionResult Random(int rid,string rdata)
         {
             RecipeDAO dao = new RecipeDAO();
-            List<Recipe> recipes = dao.LoadRecipeByType(id);
+            List<Recipe> recipes = dao.LoadRecipeByType(rid);
             Random rnd = new Random();
             List<Recipe> r_menu = new List<Recipe>();
             for (int i=0; i < 14; i++)
@@ -68,8 +68,17 @@ namespace Olivia.Controllers
                 r_menu.Add(recipes[rand]);
             }
 
-            DateTime parsedDate = DateTime.Parse(date);
-            return View();
+            DateTime parsedDate = DateTime.Parse(rdata);
+
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Sid);
+            int idUser = int.Parse(claim.Value);
+
+            MenuDAO daoM = new MenuDAO();
+            daoM.Insert(parsedDate, r_menu, idUser);
+
+            return RedirectToAction("Index", "Menu");
         }
+
+
     }
 }

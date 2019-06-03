@@ -1,0 +1,52 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+}
+<script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+</script>
+
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
+    <div id="textContainer" style="margin-left:3%">
+        <p>
+            <h1 style="font-size:54px;" class="retroshadow"> Generating your 7 day plan </h1>
+        </p>
+    </div>
+</div>
+<div class="container-fluid mt--7">
+    <div class="nav-wrapper" style="margin-top: 10%; margin-right: 50%">
+        <form action="Random" method="post">
+            <div class="input-group">
+                <div class="form-group">
+                    <select class="form-control" name="rid" >
+                        <option value="1"> Main Dish</option>
+                        <option value="2"> Desert </option>
+                        <option value="3"> Appetizer </option>
+                        <option value="4"> Vegeterian </option>
+
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="input-group" style="margin-top:3%">
+                <div class="input-group-prepend">
+                    <div class="input-group input-group-alternative">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                        </div>
+                        <input class="form-control datepicker" placeholder="Select date" type="date" name="rdata" value="06/20/2018">
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div style="margin-top: 3%">
+                <button type="submit" class="btn btn-olivia bg-gradient-olivia">Confirm</button>
+            </div>
+        </form>
+    </div>
+</div>
+
