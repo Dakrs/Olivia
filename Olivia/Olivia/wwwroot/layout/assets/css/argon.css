@@ -3164,8 +3164,17 @@ fieldset:disabled a.btn
     background-color: #FFC300;
     box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
 }
-.btn-oliviay:hover
-{
+    .btn-oliviaymegalike:hover {
+        color: #8b8b8b;
+        border-color: #FFC300;
+        background-color: #FFC300;
+    }
+.btn-oliviaymega:hover {
+    color: #F9074C;
+    border-color: #FFC300;
+    background-color: #FFC300;
+}
+.btn-oliviay:hover {
     color: #fff;
     border-color: #FFC300;
     background-color: #FFC300;

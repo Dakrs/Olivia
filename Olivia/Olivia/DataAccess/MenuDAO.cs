@@ -27,7 +27,10 @@ namespace Olivia.DataAccess
                     if (result_query.Rows.Count == 0)
                         return null;
 
-                    DataRow row = result_query.Rows[0];
+                    if (result_querie.Rows.Count == 0)
+                        return null;
+
+                    DataRow row = result_querie.Rows[0];
                     int idMenu;
                     bool flag = int.TryParse(row["Menu"].ToString(), out idMenu);
                     DateTime date = (DateTime)row["Date"];
