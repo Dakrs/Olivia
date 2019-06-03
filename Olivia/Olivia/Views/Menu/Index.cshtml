@@ -4,7 +4,11 @@
 }
 
 <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
-    <h1 class="display-1 opacity-9" style="color:white; margin-left:5%">Your 7 day plan</h1>
+    <div id="textContainer" style="margin-left:3%">
+        <p>
+            <h1 style="font-size:54px;" class="retroshadow"> Your 7 day plan </h1>
+        </p>
+    </div>
 </div>
 <div class="container-fluid mt--7">
     @foreach (KeyValuePair<DateTime, KeyValuePair<Olivia.Models.Recipe, Olivia.Models.Recipe>> item in Model)
@@ -20,7 +24,7 @@
                         <div class="card-body">
                             <h5 class="card-title">@item.Key.ToShortDateString() - Lunch</h5>
                             <p class="card-text">@item.Value.Key.Name</p>
-                            <a href="#" class="btn btn-olivia btn-gradient-olivia">Go Recipe</a>
+                            <a href="/Recipe/Details/@item.Value.Key.Id_Recipe" class="btn btn-olivia btn-gradient-olivia">Go Recipe</a>
                         </div>
                     </div>
                 </div>
@@ -36,7 +40,7 @@
                         <div class="card-body">
                             <h5 class="card-title">@item.Key.ToShortDateString() - Dinner</h5>
                             <p class="card-text">@item.Value.Value.Name</p>
-                            <a href="#" class="btn btn-olivia btn-gradient-olivia">Go Recipe</a>
+                            <a href="@item.Value.Value.Id_Recipe" class="btn btn-olivia btn-gradient-olivia">Go Recipe</a>
                         </div>
                     </div>
                 </div>
