@@ -26,7 +26,11 @@ namespace Olivia.Controllers
             int idUser = int.Parse(claim.Value);
 
             RecipeDAO dao = new RecipeDAO();
-            List<Recipe> recipes = dao.LoadRecipes();
+
+            UserDAO daou = new UserDAO();
+            Utilizador u = daou.FindById(idUser);
+
+            List<Recipe> recipes = dao.LoadRecipeByType(u.Preferencia);
 
             Dictionary<int, float> rating = dao.allRatings();
             List<KeyValuePair<int, float>> sortingDic = rating.ToList();
@@ -105,7 +109,7 @@ namespace Olivia.Controllers
         {
             if (ModelState.IsValid)
             {
-                Utilizador u = new Utilizador(-1, model.Username, Utilizador.HashPassword(model.Password), model.Email, 0, 0, model.Name);
+                Utilizador u = new Utilizador(-1, model.Username, Utilizador.HashPassword(model.Password), model.Email, 0, 1, model.Name);
                 UserDAO dAO = new UserDAO();
 
                 bool flag = dAO.Insert(u);
