@@ -162,7 +162,7 @@ namespace Olivia.Controllers
         {
             UserDAO dao = new UserDAO();
             dao.UpdateProfile(uid, uname, uemail);
-            Utilizador user = dao.FindByUsername("yolo");
+            Utilizador user = dao.FindById(uid);
             ViewBag.User = user;
            
 
@@ -202,9 +202,48 @@ namespace Olivia.Controllers
         public IActionResult Colab() 
         {
             RecipeDAO rdao = new RecipeDAO();
+            UserDAO udao = new UserDAO();
             List<Recipe> aproval = rdao.NeedAproval();
+            List<int> goodBoys = udao.IdUpgradeColab();
+
+            List<Utilizador> goodBoyz = new List<Utilizador>();
+
+            Dictionary<int,  Triplo> myDict =  
+                       new Dictionary<int, Triplo>(); 
+
+            foreach(int u in goodBoys) {
+                Utilizador goColab = udao.FindById(u);
+                goodBoyz.Add(goColab);
+                int nReceipts = rdao.NumberReceipts(u);
+                int rated = rdao.NumberRated(u);
+                int points = udao.CalculatePontos(u);
+                Triplo infos = new Triplo(nReceipts,rated,points);
+                myDict.Add(u,infos);
+
+
+            }
+
+
+            ViewBag.Dic = myDict;
             ViewBag.Need = aproval;
+            ViewBag.GoodBoyz = goodBoyz;
             return View();
+        }
+
+        public IActionResult Promote(int id)
+        {
+            UserDAO dao = new UserDAO();
+            var claim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Role);
+            int role = int.Parse(claim.Value);
+
+            if (role != 1)
+            {
+                return RedirectToAction("Index", "User");
+            }
+
+
+            dao.PromoteUser(id);
+            return RedirectToAction("Colab", "User");
         }
 
     }

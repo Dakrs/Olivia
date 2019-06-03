@@ -1,7 +1,7 @@
 ﻿@{
     string name = @User.Identity.Name;
     string id = @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Sid)?.Value;
-    string type = @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Sid)?.Value;
+    string type = @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value;
 
 }
 <!DOCTYPE html>
