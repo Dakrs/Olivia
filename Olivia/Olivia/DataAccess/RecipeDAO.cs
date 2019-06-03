@@ -998,5 +998,38 @@ namespace Olivia.DataAccess
             return r;
         }
 
+
+        public int IsActive(int idRecipe)
+        {
+
+            int ativo = 0;
+            Connection con = new Connection();
+            using (SqlCommand command = con.Fetch().CreateCommand())
+            {
+
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT Active FROM [Recipe] WHERE Id_Recipe = @id";
+                command.Parameters.Add("@id", SqlDbType.Int).Value = idRecipe;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable result_querie = new DataTable();
+                    adapter.Fill(result_querie);
+                    if (result_querie.Rows.Count > 0)
+                    {
+
+                        DataRow row = result_querie.Rows[0];
+                        ativo = int.Parse(row["Active"].ToString());
+                    }
+
+                }
+            }
+            con.Close();
+
+            return ativo;
+        }
+
+
+
     }
 }

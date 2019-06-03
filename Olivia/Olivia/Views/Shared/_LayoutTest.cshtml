@@ -75,7 +75,7 @@
                 <!-- por aprovar -->
                 @if (new Olivia.DataAccess.UserDAO().FindByUsername(name).Type == 1)            
                 {
-                    <button href="#" class="btn btn-outline-warning">Needs Approval</button>
+                    <a href="/User/Colab" class="btn btn-outline-warning">Needs Approval</a>
                 }
 
             </div>

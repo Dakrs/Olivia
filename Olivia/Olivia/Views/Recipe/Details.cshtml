@@ -5,6 +5,7 @@
     TempData["Id"] = Model.Id_Recipe;
     bool type = ViewBag.Admin;
     Boolean boolean = ViewBag.boolean;
+    int ativo = ViewBag.Teste;
 }
 <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url(/layout/assets/img/wallpaperLoggedin.jpg); background-size: cover; background-position: center;">
     <div id="textContainer" style="margin-left:3%">
@@ -259,22 +260,25 @@
             </div>
         </div>
     </div>
-    @if (boolean)
+    @if (ativo == 1)
     {
-        <a href="/Recipe/Favorite/@Model.Id_Recipe" class="btn btn-icon btn-oliviaymegalike bg-gradient-oliviaymega" role="button" aria-pressed="true" style="margin-top:3% ">
-            <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
-        </a>
+        @if (boolean)
+        {
+            <a href="/Recipe/Favorite/@Model.Id_Recipe" class="btn btn-icon btn-oliviaymegalike bg-gradient-oliviaymega" role="button" aria-pressed="true" style="margin-top:3% ">
+                <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
+            </a>
+        }
+        else
+        {
+            <a href="/Recipe/Favorite/@Model.Id_Recipe" class="btn btn-icon btn-oliviaymega bg-gradient-oliviaymega" role="button" aria-pressed="true" style="margin-top:3% ">
+                <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
+            </a>
+        }
     }
-    else
+    @if (type && ativo == 0)
     {
-        <a href="/Recipe/Favorite/@Model.Id_Recipe" class="btn btn-icon btn-oliviaymega bg-gradient-oliviaymega" role="button" aria-pressed="true" style="margin-top:3% ">
-            <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
-        </a>
-    }
-    @if (type)
-    {
-        <a href="/Recipe/Approve/@Model.Id_Recipe" class="btn btn-icon btn-olivia bg-gradient-olivia btn-sm" role="button" aria-pressed="true" style="margin-top:3% ">
-            <span class="btn-inner--icon"><i class="ni ni-favourite-28"></i></span>
+        <a href="/Recipe/Approve/@Model.Id_Recipe" class="btn btn-icon btn-olivia bg-gradient-olivia btn-sm" role="button" aria-pressed="true" style="margin-top:4.41%; ">
+            <span class="btn-inner--icon"><i class="fas fa-check"></i></span>
         </a>
     }
 

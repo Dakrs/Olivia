@@ -51,6 +51,11 @@ namespace Olivia.Controllers
                     break;
                 }
             }
+
+            int ativo = dao.IsActive(id);
+            ViewBag.Teste = ativo;
+
+            
             return View(recipe);
         }
 
